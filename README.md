@@ -63,12 +63,28 @@ Open the `server` and `client` in separate VSCode workspaces or open the combine
 
 ### Purpose
 
-2-5 sentences describing what the system does
+Our system intends to help the user keep any nessecary supplies at home in case of an emergency. The application will track how much food and water the user currently has, and make sure to give advice on other emergency supplies that should always be stockpiled at home. The information shall be displayed in a convenient way so that the user can get a good overview of their current situation.
 
 ### Pages
 
-* Home: 1-3 sentences describing what the page displays and what a user can do
-* Shopping cart: ...
+1. Login Page<br>
+This page prompts the user to enter their credentials to log in or create a new account if they do not have one already.
+
+2. Account Creation Page<br>
+This page prompts the user to type in a username, email, password and characteristics.
+
+3. Household Page<br>
+This page allows the user to enter their location and add and remove people to their household.
+
+4. Main Page<br>
+This page will display overviews of the users food, water and emergency supplies. It will be structured as a dashboard so that the user can easily glance over their current preparedness. The page will also display a quote based on what the current status of preparedness is.
+
+5. Food Page<br>
+This page will allow the user to see what food they currently have in stock and allow the user to enter new food items. The page will also give the user hints about good practices when it comes to storing food and what types are preferred.
+
+6. Emergency Supplies Page<br>
+This page will be a static list of items that the user should have at home in case of emergency. The list will have check marks so that the user can indicate if they have the item at home or not. The page will also give the user hints about good practices when it comes to lifetimes of batteries etc.
+
 
 ### Entity-Relationship (ER) Diagram
 
