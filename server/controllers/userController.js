@@ -65,12 +65,13 @@ async updateByID(req, res){
   const updateData = req.body;
 
   try {
-    const updatedUser = await UserModel.findByIdAndUpdate(id, updateData, { new: true });  // { new: true } returns the updated object
-    if (!updatedUser) {
+    const user = await UserModel.findById(id);
+    if (!user) {
         return res.status(404).send('User not found');
     }
+    const updatedUser = await UserModel.findByIdAndUpdate(id, updateData, { new: true });  // { new: true }
     res.status(200).json(updatedUser);
-  } catch (error) {
+} catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
