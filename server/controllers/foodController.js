@@ -13,13 +13,13 @@ class FoodController {
             "foodname": foodname,
             "calories": calories,
             "weight": weight,
-            "userid": userid
+            "userid": userid,
           })
           await newFood.save();
           res.status(201).json(newFood);
     
         } catch (err) {
-          res.status(500).json({err: "ERROR"});
+          res.status(500).json({err: "Fuck you for trying"});
         }
       }
   
