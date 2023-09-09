@@ -1,16 +1,17 @@
-var express = require('express');
-var mongoose = require('mongoose');
-var morgan = require('morgan');
-var path = require('path');
-var cors = require('cors');
-var history = require('connect-history-api-fallback');
+const express = require('express');
+const mongoose = require('mongoose');
+const morgan = require('morgan');
+const path = require('path');
+const cors = require('cors');
+const history = require('connect-history-api-fallback');
+const userRouter = require('./routers/userRouter');
+const config = require('./config');
 
 // Variables
-var mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/animalDevelopmentDB';
-var port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
+const app = express();
 
-// Connect to MongoDB
-mongoose.connect(mongoURI).catch(function(err) {
+/*mongoose.connect(config).catch(function(err) {
     if (err) {
         console.error(`Failed to connect to MongoDB with URI: ${mongoURI}`);
         console.error(err.stack);
@@ -18,9 +19,8 @@ mongoose.connect(mongoURI).catch(function(err) {
     }
     console.log(`Connected to MongoDB with URI: ${mongoURI}`);
 });
+*/
 
-// Create Express app
-var app = express();
 // Parse requests of content-type 'application/json'
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -30,10 +30,26 @@ app.use(morgan('dev'));
 app.options('*', cors());
 app.use(cors());
 
+// Connect to database
+mongoose.connect(config.database, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  
+  mongoose.connection.on("connected", () => {
+    console.log("Connected to MongoDB Atlas");
+  });
+  
+  mongoose.connection.on("error", (err) => {
+    console.error(`MongoDB Atlas connection error: ${err}`);
+  });
+
 // Import routes
 app.get('/api', function(req, res) {
     res.json({'message': 'Welcome to your DIT342 backend ExpressJS project!'});
 });
+
+app.use('/users', userRouter);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
