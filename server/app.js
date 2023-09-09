@@ -1,26 +1,17 @@
-var express = require('express');
-var mongoose = require('mongoose');
-var morgan = require('morgan');
-var path = require('path');
-var cors = require('cors');
-var history = require('connect-history-api-fallback');
+const express = require('express');
+const mongoose = require('mongoose');
+const morgan = require('morgan');
+const path = require('path');
+const cors = require('cors');
+const history = require('connect-history-api-fallback');
+const config = require('./config');
 
 // Variables
-var mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/animalDevelopmentDB';
-var port = process.env.PORT || 3000;
-
-// Connect to MongoDB
-mongoose.connect(mongoURI).catch(function(err) {
-    if (err) {
-        console.error(`Failed to connect to MongoDB with URI: ${mongoURI}`);
-        console.error(err.stack);
-        process.exit(1);
-    }
-    console.log(`Connected to MongoDB with URI: ${mongoURI}`);
-});
+const mongoURI = process.env.MONGODB_URI || config.database;
+const port = process.env.PORT || 3000;
 
 // Create Express app
-var app = express();
+const app = express();
 // Parse requests of content-type 'application/json'
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -29,6 +20,20 @@ app.use(morgan('dev'));
 // Enable cross-origin resource sharing for frontend must be registered before api
 app.options('*', cors());
 app.use(cors());
+
+// Connect to database
+mongoose.connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  
+  mongoose.connection.on("connected", () => {
+    console.log("Connected to MongoDB Atlas");
+  });
+  
+  mongoose.connection.on("error", (err) => {
+    console.error(`MongoDB Atlas connection error: ${err}`);
+  });
 
 // Import routes
 app.get('/api', function(req, res) {
