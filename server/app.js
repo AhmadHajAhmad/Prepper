@@ -4,14 +4,23 @@ const morgan = require('morgan');
 const path = require('path');
 const cors = require('cors');
 const history = require('connect-history-api-fallback');
+const userRouter = require('./routers/userRouter');
 const config = require('./config');
 
 // Variables
-const mongoURI = process.env.MONGODB_URI || config.database;
 const port = process.env.PORT || 3000;
-
-// Create Express app
 const app = express();
+
+/*mongoose.connect(config).catch(function(err) {
+    if (err) {
+        console.error(`Failed to connect to MongoDB with URI: ${mongoURI}`);
+        console.error(err.stack);
+        process.exit(1);
+    }
+    console.log(`Connected to MongoDB with URI: ${mongoURI}`);
+});
+*/
+
 // Parse requests of content-type 'application/json'
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -22,7 +31,7 @@ app.options('*', cors());
 app.use(cors());
 
 // Connect to database
-mongoose.connect(mongoURI, {
+mongoose.connect(config.database, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
@@ -39,6 +48,8 @@ mongoose.connect(mongoURI, {
 app.get('/api', function(req, res) {
     res.json({'message': 'Welcome to your DIT342 backend ExpressJS project!'});
 });
+
+app.use('/users', userRouter);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
