@@ -6,7 +6,7 @@ const controller = new personController();
 
 router.get("/", controller.getAllPersons);
 router.get("/:id", controller.getpersonById);
-router.post("/", controller.createperson);
+router.post("/", controller.createPerson);
 router.delete("/:id", controller.deleteById);
 router.patch("/:id", controller.updateByID);
 module.exports = router;
