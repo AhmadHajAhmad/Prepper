@@ -1,12 +1,13 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const morgan = require('morgan');
-const path = require('path');
-const cors = require('cors');
-const history = require('connect-history-api-fallback');
-const userRouter = require('./routers/userRouter');
-const foodRouter = require('./routers/foodRouter');
-const config = require('./config');
+const express = require("express");
+const mongoose = require("mongoose");
+const morgan = require("morgan");
+const path = require("path");
+const cors = require("cors");
+const history = require("connect-history-api-fallback");
+const userRouter = require("./routers/userRouter");
+const personRouter = require("./routers/personRouter");
+const foodRouter = require("./routers/foodRouter");
+const config = require("./config");
 
 // Variables
 const port = process.env.PORT || 3000;
@@ -26,68 +27,69 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // HTTP request logger
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 // Enable cross-origin resource sharing for frontend must be registered before api
-app.options('*', cors());
+app.options("*", cors());
 app.use(cors());
 
 // Connect to database
 mongoose.connect(config.database, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-  
-  mongoose.connection.on("connected", () => {
-    console.log("Connected to MongoDB Atlas");
-  });
-  
-  mongoose.connection.on("error", (err) => {
-    console.error(`MongoDB Atlas connection error: ${err}`);
-  });
-
-// Import routes
-app.get('/api', function(req, res) {
-    res.json({'message': 'Welcome to your DIT342 backend ExpressJS project!'});
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-app.use('/users', userRouter);
-app.use('/food', foodRouter);
+mongoose.connection.on("connected", () => {
+  console.log("Connected to MongoDB Atlas");
+});
+
+mongoose.connection.on("error", (err) => {
+  console.error(`MongoDB Atlas connection error: ${err}`);
+});
+
+// Import routes
+app.get("/api", function (req, res) {
+  res.json({ message: "Welcome to your DIT342 backend ExpressJS project!" });
+});
+
+app.use("/users", userRouter);
+app.use("/persons", personRouter);
+app.use("/food", foodRouter);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
-app.use('/api/*', function (req, res) {
-    res.status(404).json({ 'message': 'Not Found' });
+app.use("/api/*", function (req, res) {
+  res.status(404).json({ message: "Not Found" });
 });
 
 // Configuration for serving frontend in production mode
 // Support Vuejs HTML 5 history mode
 app.use(history());
 // Serve static assets
-var root = path.normalize(__dirname + '/..');
-var client = path.join(root, 'client', 'dist');
+var root = path.normalize(__dirname + "/..");
+var client = path.join(root, "client", "dist");
 app.use(express.static(client));
 
 // Error handler (i.e., when exception is thrown) must be registered last
-var env = app.get('env');
+var env = app.get("env");
 // eslint-disable-next-line no-unused-vars
-app.use(function(err, req, res, next) {
-    console.error(err.stack);
-    var err_res = {
-        'message': err.message,
-        'error': {}
-    };
-    if (env === 'development') {
-        // Return sensitive stack trace only in dev mode
-        err_res['error'] = err.stack;
-    }
-    res.status(err.status || 500);
-    res.json(err_res);
+app.use(function (err, req, res, next) {
+  console.error(err.stack);
+  var err_res = {
+    message: err.message,
+    error: {},
+  };
+  if (env === "development") {
+    // Return sensitive stack trace only in dev mode
+    err_res["error"] = err.stack;
+  }
+  res.status(err.status || 500);
+  res.json(err_res);
 });
 
-app.listen(port, function(err) {
-    if (err) throw err;
-    console.log(`Express server listening on port ${port}, in ${env} mode`);
-    console.log(`Backend: http://localhost:${port}/api/`);
-    console.log(`Frontend (production): http://localhost:${port}/`);
+app.listen(port, function (err) {
+  if (err) throw err;
+  console.log(`Express server listening on port ${port}, in ${env} mode`);
+  console.log(`Backend: http://localhost:${port}/api/`);
+  console.log(`Frontend (production): http://localhost:${port}/`);
 });
 
 module.exports = app;
