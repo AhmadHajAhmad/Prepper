@@ -6,6 +6,7 @@ const cors = require("cors");
 const history = require("connect-history-api-fallback");
 const userRouter = require("./routers/userRouter");
 const personRouter = require("./routers/personRouter");
+const foodRouter = require("./routers/foodRouter");
 const config = require("./config");
 
 // Variables
@@ -52,6 +53,7 @@ app.get("/api", function (req, res) {
 
 app.use("/users", userRouter);
 app.use("/persons", personRouter);
+app.use("/food", foodRouter);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use("/api/*", function (req, res) {
