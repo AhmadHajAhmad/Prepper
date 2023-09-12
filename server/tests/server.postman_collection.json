@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "99436a32-b72b-403a-ab7e-3583fbbddce9",
+		"_postman_id": "44d10c65-ce14-4af1-845f-812a4eca1c38",
 		"name": "server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29663010"
+		"_exporter_id": "29427724"
 	},
 	"item": [
 		{
@@ -947,6 +947,194 @@
 							"path": [
 								"water",
 								"{{waterID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Supplies",
+			"item": [
+				{
+					"name": "POST /supplies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"bodyData = JSON.parse(responseBody);",
+									"value = bodyData._id;",
+									"pm.environment.set(\"supplyID\", value);",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response has all the necessary attributes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"itemname\");",
+									"    pm.expect(jsonData).to.have.property(\"instock\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemname\": \"Test Item\",\n    \"instock\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/supplies",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"supplies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /supplies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/supplies",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"supplies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /supplies/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/supplies/{{supplyID}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"supplies",
+								"{{supplyID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /supplies/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemname\": \"Updated Item\",\n    \"instock\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/supplies/{{supplyID}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"supplies",
+								"{{supplyID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /supplies/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/supplies/{{supplyID}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"supplies",
+								"{{supplyID}}"
 							]
 						}
 					},
