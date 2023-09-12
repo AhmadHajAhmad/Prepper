@@ -8,6 +8,7 @@ const userRouter = require("./routers/userRouter");
 const personRouter = require("./routers/personRouter");
 const foodRouter = require("./routers/foodRouter");
 const houseRouter = require("./routers/houseRouter");
+const waterRouter = require("./routers/waterRouter");
 const config = require("./config");
 
 // Variables
@@ -56,6 +57,7 @@ app.use("/users", userRouter);
 app.use("/persons", personRouter);
 app.use("/food", foodRouter);
 app.use("/house",houseRouter);
+app.use("/water", waterRouter);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use("/api/*", function (req, res) {
