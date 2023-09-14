@@ -8,6 +8,7 @@ class PersonController {
       const age = req.body.age;
       const weight = req.body.weight;
       const sex = req.body.sex;
+      const userId = req.user.userId;
 
       // Other person-related fields from the request body
 
@@ -16,9 +17,7 @@ class PersonController {
         age: age,
         weight: weight,
         sex: sex,
-
-        //user: userId, // Associate the person with the logged-in user
-        // Other person-related fields
+        userId: userId,
       });
 
       await newPerson.save();
