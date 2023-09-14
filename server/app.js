@@ -4,12 +4,15 @@ const morgan = require("morgan");
 const path = require("path");
 const cors = require("cors");
 const history = require("connect-history-api-fallback");
+const cookieParser = require("cookie-parser");
 const userRouter = require("./routers/userRouter");
 const personRouter = require("./routers/personRouter");
 const foodRouter = require("./routers/foodRouter");
 const houseRouter = require("./routers/houseRouter");
 const waterRouter = require("./routers/waterRouter");
 const supplyRouter = require("./routers/supplyRouter");
+const loginRouter = require("./routers/loginRouter");
+
 const config = require("./config");
 
 // Variables
@@ -29,6 +32,7 @@ const app = express();
 // Parse requests of content-type 'application/json'
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 // HTTP request logger
 app.use(morgan("dev"));
 // Enable cross-origin resource sharing for frontend must be registered before api
@@ -54,10 +58,11 @@ app.get("/api", function (req, res) {
   res.json({ message: "Welcome to your DIT342 backend ExpressJS project!" });
 });
 
+app.use("/login", loginRouter);
 app.use("/users", userRouter);
 app.use("/persons", personRouter);
 app.use("/food", foodRouter);
-app.use("/house",houseRouter);
+app.use("/house", houseRouter);
 app.use("/water", waterRouter);
 app.use("/supplies", supplyRouter);
 
