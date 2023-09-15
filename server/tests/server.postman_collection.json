@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4902e96f-a19f-4988-9579-bc2a419f7f12",
+		"_postman_id": "797c607b-57ef-4881-8e79-4413df64928c",
 		"name": "server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29427724"
@@ -259,6 +259,61 @@
 			"name": "Food",
 			"item": [
 				{
+					"name": "Log In baseCase Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"bodyData = JSON.parse(responseBody);",
+									"value = bodyData.token;",
+									"pm.environment.set(\"loginToken\", value);",
+									"",
+									"bodyData = JSON.parse(responseBody);",
+									"value = bodyData.userid;",
+									"pm.environment.set(\"userID\", value);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has all the necessary attributes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData).to.have.property(\"token\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "POST /food",
 					"event": [
 						{
@@ -279,6 +334,7 @@
 									"    pm.expect(jsonData).to.have.property(\"foodname\");",
 									"    pm.expect(jsonData).to.have.property(\"calories\");",
 									"    pm.expect(jsonData).to.have.property(\"weight\");",
+									"    pm.expect(jsonData).to.have.property(\"_userid\");",
 									"});",
 									""
 								],
@@ -291,7 +347,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"foodname\": \"Test Banana\",\n    \"calories\": 270,\n    \"weight\": 500\n}",
+							"raw": "{\n    \"foodname\": \"Test Food1\",\n    \"calories\": 999,\n    \"weight\": 500\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -299,12 +355,16 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/food",
+							"raw": "{{host}}/v1/profile/{{userID}}/food/",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"food"
+								"v1",
+								"profile",
+								"{{userID}}",
+								"food",
+								""
 							]
 						}
 					},
@@ -319,6 +379,12 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Asserting that the enteties retrieved have the right user ID.",
+									"pm.test(\"Correct user ID.\", function () {",
+									"    const expectedId = pm.environment.get(\"userId\")",
+									"    pm.expect(responseBody._userid).to.eql(expectedId);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -329,12 +395,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/food",
+							"raw": "{{host}}/v1/profile/{{userID}}/food/",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"food"
+								"v1",
+								"profile",
+								"{{userID}}",
+								"food",
+								""
 							]
 						}
 					},
@@ -349,6 +419,12 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Asserting that the entity retrieved have the right user ID.",
+									"pm.test(\"Correct user ID.\", function () {",
+									"    const userId = pm.environment.get(\"userId\")",
+									"    pm.expect(responseBody._userid).to.eql(userId);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -359,11 +435,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/food/{{foodID}}",
+							"raw": "{{host}}/v1/profile/{{userID}}/food/{{foodID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"v1",
+								"profile",
+								"{{userID}}",
 								"food",
 								"{{foodID}}"
 							]
@@ -380,6 +459,12 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Asserting that the entity retrieved have the right user ID.",
+									"pm.test(\"Correct user ID.\", function () {",
+									"    const userId = pm.environment.get(\"userId\")",
+									"    pm.expect(responseBody._userid).to.eql(userId);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -399,11 +484,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/food/{{foodID}}",
+							"raw": "{{host}}/v1/profile/{{userID}}/food/{{foodID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"v1",
+								"profile",
+								"{{userID}}",
 								"food",
 								"{{foodID}}"
 							]
@@ -420,6 +508,12 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Asserting that the entity retrieved have the right user ID.",
+									"pm.test(\"Correct user ID.\", function () {",
+									"    const userId = pm.environment.get(\"userId\")",
+									"    pm.expect(responseBody._userid).to.eql(userId);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -430,11 +524,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/food/{{foodID}}",
+							"raw": "{{host}}/v1/profile/{{userID}}/food/{{foodID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"v1",
+								"profile",
+								"{{userID}}",
 								"food",
 								"{{foodID}}"
 							]
@@ -685,194 +782,6 @@
 							"path": [
 								"persons",
 								"{{personID}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "House",
-			"item": [
-				{
-					"name": "POST /house",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData._id;",
-									"pm.environment.set(\"householdID\", value);",
-									"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"pm.test(\"Response has all the necessary attributes\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    pm.expect(jsonData).to.have.property(\"streetname\");",
-									"    pm.expect(jsonData).to.have.property(\"zipcode\");",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"streetname\": \"Test Adress\",\n    \"zipcode\": 24470\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/house",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"house"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET /house",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/house",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"house"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET /house/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/house/{{householdID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"house",
-								"{{householdID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "PATCH /house/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"streetname\": \"Updated Address\",\n    \"zipcode\": 999\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/house/{{householdID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"house",
-								"{{householdID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DELETE /house/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/house/{{householdID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"house",
-								"{{householdID}}"
 							]
 						}
 					},

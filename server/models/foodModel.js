@@ -14,7 +14,7 @@ const foodSchema = new mongoose.Schema({
     type: Number,
     required : true,
   },
-  userid: {
+  _userid: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },

@@ -17,8 +17,10 @@ class LoginController {
         expiresIn: "1h",
       });
 
+      const userid= user._id;
+
       res.cookie("jwt", token, { httpOnly: true, maxAge: 36000000 });
-      res.status(200).json({ message: "Logged in", token });
+      res.status(200).json({ message: "Logged in", token , userid});
     } catch (error) {
       console.error(error);
       res.status(500).json("Internal Server error");
