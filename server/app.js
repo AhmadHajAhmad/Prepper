@@ -12,6 +12,7 @@ const houseRouter = require("./routers/houseRouter");
 const waterRouter = require("./routers/waterRouter");
 const supplyRouter = require("./routers/supplyRouter");
 const loginRouter = require("./routers/loginRouter");
+const registerRouter = require("./routers/registerRouter");
 
 const config = require("./config");
 
@@ -58,13 +59,32 @@ app.get("/api", function (req, res) {
   res.json({ message: "Welcome to your DIT342 backend ExpressJS project!" });
 });
 
-app.use("/login", loginRouter);
-app.use("/users", userRouter);
 app.use("/persons", personRouter);
 app.use("/food", foodRouter);
 app.use("/house", houseRouter);
 app.use("/water", waterRouter);
 app.use("/supplies", supplyRouter);
+
+
+app.use("/v1/register", registerRouter);
+app.use("/v1/login", loginRouter);
+app.use("/v1/profile", userRouter);
+
+/* New endpoint structure, replace old when you are making changes to your entity.
+
+// Public API
+app.use(${version}/profile/:userid/people, personRouter);
+app.use(${version}/profile/:userid/food, foodRouter);
+app.use(${version}/profile/:userid/water, waterRouter);
+app.use(${version}/profile/:userid/supplies, supplyRouter);
+
+// Developer API
+app.use(${version}/admin/users, userRouter);
+app.use(${version}/admin/people, personRouter);
+app.use(${version}/admin/food, foodRouter);
+app.use(${version}/admin/water, waterRouter);
+app.use(${version}/admin/supplies, supplyRouter);
+*/
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use("/api/*", function (req, res) {
