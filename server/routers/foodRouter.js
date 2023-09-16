@@ -1,12 +1,13 @@
 const express = require('express');
 const FoodController = require('../controllers/foodController');
+const authenticate = require("../middleware/authenticateToken");
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 const controller = new FoodController();
 
-router.get('/', controller.getAllFood);
-router.get('/:id', controller.getFoodById);
-router.post('/', controller.createFood);
-router.delete('/:id', controller.deleteFoodById);
-router.patch('/:id', controller.updateFoodByID);
+router.get('/',authenticate, controller.getAllFoodByUser);
+router.get('/:foodid',authenticate, controller.getByUserId);
+router.post('/',authenticate, controller.createFood);
+router.delete('/:foodid',authenticate, controller.deleteByUserId);
+router.patch('/:foodid',authenticate, controller.updateByUserID);
 module.exports = router;
