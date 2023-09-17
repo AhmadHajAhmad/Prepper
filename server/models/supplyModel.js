@@ -10,7 +10,7 @@ const supplySchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-  userid: {
+  _userid: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },

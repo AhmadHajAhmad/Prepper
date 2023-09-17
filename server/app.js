@@ -62,20 +62,21 @@ app.get("/api", function (req, res) {
 app.use("/persons", personRouter);
 app.use("/house", houseRouter);
 app.use("/water", waterRouter);
-app.use("/supplies", supplyRouter);
+
 
 
 app.use("/v1/register", registerRouter);
 app.use("/v1/login", loginRouter);
 app.use("/v1/profile", userRouter);
 app.use("/v1/profile/:userid/food", foodRouter);
+app.use("/v1/profile/:userid/supplies", supplyRouter);
+
 
 /* New endpoint structure, replace old when you are making changes to your entity.
 
 app.use(${version}/profile/:userid/people, personRouter);
 app.use(${version}/profile/:userid/water, waterRouter);
-app.use(${version}/profile/:userid/supplies, supplyRouter);*/
-
+*/
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use("/api/*", function (req, res) {
   res.status(404).json({ message: "Not Found" });
