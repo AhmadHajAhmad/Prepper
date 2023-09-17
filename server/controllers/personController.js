@@ -8,16 +8,16 @@ class PersonController {
       const age = req.body.age;
       const weight = req.body.weight;
       const sex = req.body.sex;
-      const userId = req.user.userid;
+      const userId = req.params.userid;
 
       // Other person-related fields from the request body
 
       const newPerson = new PersonModel({
-        name: name,
-        age: age,
-        weight: weight,
-        sex: sex,
-        _userid: userId,
+        "name": name,
+        "age": age,
+        "weight": weight,
+        "sex": sex,
+        "_userid": userId,
       });
 
       await newPerson.save();
@@ -52,7 +52,7 @@ class PersonController {
   
 // Get a person by it's id
   async getpersonById(req, res) {
-    const personid = req.params.perosnid;
+    const personid = req.params.personid;
 
     try {
       const person = await PersonModel.findById(personid);
@@ -75,7 +75,7 @@ async getByUserId(req, res) {
       if (!person) {
           return res.status(404).send('Person not found');
       }
-      res.json(person);
+      res.status(201).json(person);
   } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
@@ -86,11 +86,11 @@ async getByUserId(req, res) {
     const personid = req.params.personid;
 
     try {
-      const result = await PersonModel.findByIdAndDelete(personid);
-      if (!result) {
+      const person = await PersonModel.findByIdAndDelete(personid);
+      if (!person) {
         return res.status(404).send("Person not found");
       }
-      res.status(200).send(`Person with ID ${personid} was deleted.`);
+      res.status(200).send(person);
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
@@ -106,7 +106,7 @@ async deleteByUserId(req, res) {
       if (!person) {
           return res.status(404).send('Person not found');
       }
-      res.status(200).send(`Person with ID ${personid} was deleted.`);
+      res.status(200).send(person);
   } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
@@ -139,11 +139,11 @@ async deleteByUserId(req, res) {
     const userid = req.params.userid;
     const updateData = req.body
     try {
-        const person = await PersonModel.findOneAndUpdate({ _userid: userid, _id: personid }, updateData, {new:true});
-        if (!person) {
+        const updatedPerson = await PersonModel.findOneAndUpdate({ _userid: userid, _id: personid }, updateData, {new:true});
+        if (!updatedPerson) {
             return res.status(404).send('Person not found');
         }
-        res.status(200).send(`Person with ID ${personid} was deleted.`);
+        res.status(200).send(updatedPerson);
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');

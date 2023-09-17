@@ -59,7 +59,7 @@ app.get("/api", function (req, res) {
   res.json({ message: "Welcome to your DIT342 backend ExpressJS project!" });
 });
 
-app.use("/persons", personRouter);
+
 app.use("/house", houseRouter);
 app.use("/water", waterRouter);
 app.use("/supplies", supplyRouter);
