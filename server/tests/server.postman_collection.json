@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "797c607b-57ef-4881-8e79-4413df64928c",
+		"_postman_id": "ed41bd73-7bc5-4217-a238-86d74fbb43e9",
 		"name": "server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29427724"
+		"_exporter_id": "29410947"
 	},
 	"item": [
 		{
@@ -555,6 +555,9 @@
 									"value = bodyData.token;",
 									"pm.environment.set(\"loginToken\", value);",
 									"",
+									"bodyData = JSON.parse(responseBody);",
+									"value = bodyData.userid;",
+									"pm.environment.set(\"userID\", value);",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -565,7 +568,7 @@
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
 									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
+									"});    "
 								],
 								"type": "text/javascript"
 							}
@@ -597,7 +600,7 @@
 					"response": []
 				},
 				{
-					"name": "Post Person",
+					"name": "POST/ Person",
 					"event": [
 						{
 							"listen": "test",
@@ -617,7 +620,9 @@
 									"    pm.expect(jsonData).to.have.property(\"name\");",
 									"    pm.expect(jsonData).to.have.property(\"age\");",
 									"    pm.expect(jsonData).to.have.property(\"weight\");",
-									"    pm.expect(jsonData).to.have.property(\"sex\")",
+									"    pm.expect(jsonData).to.have.property(\"sex\");",
+									"    pm.expect(jsonData).to.have.property(\"_userid\");",
+									"",
 									"});"
 								],
 								"type": "text/javascript"
@@ -636,7 +641,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Shakhdfghfgyuf123\",\n    \"age\": 45,\n    \"weight\": 80,\n    \"sex\": \"Female\"\n}",
+							"raw": "{\n    \"name\": \"Shakira\",\n    \"age\": 45,\n    \"weight\": 80,\n    \"sex\": \"Female\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -644,19 +649,23 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/persons",
+							"raw": "{{host}}/v1/profile/{{userID}}/people/",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"persons"
+								"v1",
+								"profile",
+								"{{userID}}",
+								"people",
+								""
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get All People",
+					"name": "GET/ people",
 					"event": [
 						{
 							"listen": "test",
@@ -664,6 +673,12 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Asserting that the enteties retrieved have the right user ID.",
+									"pm.test(\"Correct user ID.\", function () {",
+									"    const expectedId = pm.environment.get(\"userId\")",
+									"    pm.expect(responseBody._userid).to.eql(expectedId);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -674,19 +689,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/persons",
+							"raw": "{{host}}/v1/profile/{{userID}}/people/",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"persons"
+								"v1",
+								"profile",
+								"{{userID}}",
+								"people",
+								""
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get Person by ID",
+					"name": "GET/ person/:id",
 					"event": [
 						{
 							"listen": "test",
@@ -694,6 +713,12 @@
 								"exec": [
 									"pm.test(\"Status code is 201\", function () {",
 									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Asserting that the enteties retrieved have the right user ID.",
+									"pm.test(\"Correct user ID.\", function () {",
+									"    const expectedId = pm.environment.get(\"userId\")",
+									"    pm.expect(responseBody._userid).to.eql(expectedId);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -704,12 +729,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/persons/{{personID}}",
+							"raw": "{{host}}/v1/profile/{{userID}}/people/{{personID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"persons",
+								"v1",
+								"profile",
+								"{{userID}}",
+								"people",
 								"{{personID}}"
 							]
 						}
@@ -717,7 +745,7 @@
 					"response": []
 				},
 				{
-					"name": "Update Person",
+					"name": "PATCH/ person/:id",
 					"event": [
 						{
 							"listen": "test",
@@ -725,6 +753,12 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Asserting that the entity retrieved have the right user ID.",
+									"pm.test(\"Correct user ID.\", function () {",
+									"    const userId = pm.environment.get(\"userId\")",
+									"    pm.expect(responseBody._userid).to.eql(userId);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -744,12 +778,15 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/persons/{{personID}}",
+							"raw": "{{host}}/v1/profile/{{userID}}/people/{{personID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"persons",
+								"v1",
+								"profile",
+								"{{userID}}",
+								"people",
 								"{{personID}}"
 							]
 						}
@@ -757,7 +794,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete Person",
+					"name": "DELETE/ person/:id",
 					"event": [
 						{
 							"listen": "test",
@@ -775,12 +812,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/persons/{{personID}}",
+							"raw": "{{host}}/v1/profile/{{userID}}/people/{{personID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"persons",
+								"v1",
+								"profile",
+								"{{userID}}",
+								"people",
 								"{{personID}}"
 							]
 						}
