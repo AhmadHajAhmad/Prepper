@@ -39,16 +39,21 @@ class PersonController {
     }
   }
 
-  // Get all people by a specific user id
+  // Get all people by a specific user id, sorted by age in ascending order
   async getAllPeopleByUser(req, res) {
-    const userid = req.params.userid;
+  const userid = req.params.userid;
+
   try {
-    const people = await PersonModel.find({_userid: userid});
+    const people = await PersonModel.find({ _userid: userid })
+      .sort({ age: 1 }) // Sort by age in ascending order
+      .exec();
+
     res.json(people);
   } catch (err) {
     res.status(500).send(err);
   }
-  }
+}
+
   
 // Get a person by it's id
   async getpersonById(req, res) {
