@@ -620,6 +620,7 @@
 									"    pm.expect(jsonData).to.have.property(\"name\");",
 									"    pm.expect(jsonData).to.have.property(\"age\");",
 									"    pm.expect(jsonData).to.have.property(\"weight\");",
+									"    pm.expect(jsonData).to.have.property(\"height\");",
 									"    pm.expect(jsonData).to.have.property(\"sex\");",
 									"    pm.expect(jsonData).to.have.property(\"_userid\");",
 									"",
@@ -641,7 +642,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Shakira\",\n    \"age\": 45,\n    \"weight\": 80,\n    \"sex\": \"Female\"\n}",
+							"raw": "{\n    \"name\": \"hij\",\n    \"age\": 60,\n    \"weight\": 80,\n    \"height\": 170,\n    \"sex\": \"Female\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -770,7 +771,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Shakira updated\",\n    \"age\": 30,\n    \"weight\": 80,\n    \"sex\": \"Female\"\n}",
+							"raw": "{\n    \"name\": \"Shakira updated\",\n    \"age\": 30,\n    \"weight\": 80,\n    \"height\": 189,\n    \"sex\": \"Female\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

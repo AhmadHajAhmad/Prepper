@@ -7,6 +7,7 @@ class PersonController {
       const name = req.body.name;
       const age = req.body.age;
       const weight = req.body.weight;
+      const height = req.body.height;
       const sex = req.body.sex;
       const userId = req.params.userid;
 
@@ -16,6 +17,7 @@ class PersonController {
         "name": name,
         "age": age,
         "weight": weight,
+        "height": height,
         "sex": sex,
         "_userid": userId,
       });
