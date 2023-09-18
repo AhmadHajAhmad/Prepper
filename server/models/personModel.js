@@ -14,11 +14,15 @@ const personSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  height: {
+    type: Number,
+    required: true,
+  },
   sex: {
     type: String,
     required: true,
   },
-  userId: {
+  _userid: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
