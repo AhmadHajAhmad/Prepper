@@ -113,7 +113,7 @@ async deleteByUserId(req, res) {
       if (!person) {
           return res.status(404).send('Person not found');
       }
-      res.status(200).send(person);
+      res.status(200).send(`Person with ID ${personid} was deleted.`);
   } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
