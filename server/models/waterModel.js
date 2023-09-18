@@ -2,20 +2,20 @@ const mongoose = require('mongoose');
 
 // Define the water schema
 const waterSchema = new mongoose.Schema({
-  waterQty: {
+
+  waterqty: {
     type: Number,
     required: true,
   
   },
-  u_id: {
+
+  _userid: {
     type: mongoose.Schema.Types.ObjectId,
-    ref : 'User'
+    ref : 'User',
   }
 });
 
 
 // Create and export the model
-const Water = mongoose.model('Water', waterSchema);
-
-module.exports = Water;
+module.exports = mongoose.model('Water', waterSchema);
 

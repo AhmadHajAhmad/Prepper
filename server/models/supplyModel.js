@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Define the house schema
+// Define the water schema
 const supplySchema = new mongoose.Schema({
   itemname: {
     type: String,
@@ -10,7 +10,7 @@ const supplySchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-  userid: {
+  _userid: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
