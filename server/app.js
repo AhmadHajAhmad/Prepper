@@ -59,7 +59,7 @@ app.get("/api", function (req, res) {
   res.json({ message: "Welcome to your DIT342 backend ExpressJS project!" });
 });
 
-app.use("/persons", personRouter);
+
 app.use("/house", houseRouter);
 app.use("/water", waterRouter);
 app.use("/supplies", supplyRouter);
@@ -69,6 +69,7 @@ app.use("/v1/register", registerRouter);
 app.use("/v1/login", loginRouter);
 app.use("/v1/profile", userRouter);
 app.use("/v1/profile/:userid/food", foodRouter);
+app.use("/v1/profile/:userid/people", personRouter);
 
 /* New endpoint structure, replace old when you are making changes to your entity.
 
