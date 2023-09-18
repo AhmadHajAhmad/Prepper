@@ -5,6 +5,7 @@ const path = require("path");
 const cors = require("cors");
 const history = require("connect-history-api-fallback");
 const cookieParser = require("cookie-parser");
+const methodOverride = require('method-override');
 const userRouter = require("./routers/userRouter");
 const personRouter = require("./routers/personRouter");
 const foodRouter = require("./routers/foodRouter");
@@ -20,20 +21,12 @@ const config = require("./config");
 const port = process.env.PORT || 3000;
 const app = express();
 
-/*mongoose.connect(config).catch(function(err) {
-    if (err) {
-        console.error(`Failed to connect to MongoDB with URI: ${mongoURI}`);
-        console.error(err.stack);
-        process.exit(1);
-    }
-    console.log(`Connected to MongoDB with URI: ${mongoURI}`);
-});
-*/
-
 // Parse requests of content-type 'application/json'
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
+
+app.use(methodOverride('X-HTTP-Method-Override'));
 // HTTP request logger
 app.use(morgan("dev"));
 // Enable cross-origin resource sharing for frontend must be registered before api
