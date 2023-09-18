@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "797c607b-57ef-4881-8e79-4413df64928c",
+		"_postman_id": "2b058d4f-cf5c-4416-b49a-2130c7cf9b6d",
 		"name": "server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29427724"
+		"_exporter_id": "29663010"
 	},
 	"item": [
 		{
@@ -793,6 +793,61 @@
 			"name": "Water",
 			"item": [
 				{
+					"name": "Log In baseCase",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"bodyData = JSON.parse(responseBody);",
+									"value = bodyData.token;",
+									"pm.environment.set(\"loginToken\", value);",
+									"",
+									"bodyData = JSON.parse(responseBody);",
+									"value = bodyData.userid;",
+									"pm.environment.set(\"userID\", value);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has all the necessary attributes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData).to.have.property(\"token\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "POST /water",
 					"event": [
 						{
@@ -810,7 +865,7 @@
 									"pm.test(\"Response has all the necessary attributes\", function () {",
 									"    var jsonData = pm.response.json();",
 									"    ",
-									"    pm.expect(jsonData).to.have.property(\"waterQty\");",
+									"    pm.expect(jsonData).to.have.property(\"waterqty\");",
 									"});",
 									""
 								],
@@ -826,7 +881,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"waterQty\": 40\n}",
+							"raw": "{\n    \"waterqty\": 400\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -834,12 +889,16 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/water",
+							"raw": "{{host}}/v1/profile/{{userID}}/water/",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"water"
+								"v1",
+								"profile",
+								"{{userID}}",
+								"water",
+								""
 							]
 						}
 					},
@@ -864,12 +923,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/water",
+							"raw": "{{host}}/v1/profile/{{userID}}/water/",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"water"
+								"v1",
+								"profile",
+								"{{userID}}",
+								"water",
+								""
 							]
 						}
 					},
@@ -894,11 +957,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/water/{{waterID}}",
+							"raw": "{{host}}/v1/profile/{{userID}}/water/{{waterID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"v1",
+								"profile",
+								"{{userID}}",
 								"water",
 								"{{waterID}}"
 							]
@@ -926,7 +992,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"waterQty\": 999\n}",
+							"raw": "{\n    \"waterqty\": 999\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -934,11 +1000,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/water/{{waterID}}",
+							"raw": "{{host}}/v1/profile/{{userID}}/water/{{waterID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"v1",
+								"profile",
+								"{{userID}}",
 								"water",
 								"{{waterID}}"
 							]
@@ -965,11 +1034,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/water/{{waterID}}",
+							"raw": "{{host}}/v1/profile/{{userID}}/water/{{waterID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"v1",
+								"profile",
+								"{{userID}}",
 								"water",
 								"{{waterID}}"
 							]
@@ -982,6 +1054,61 @@
 		{
 			"name": "Supplies",
 			"item": [
+				{
+					"name": "Log In baseCase",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"bodyData = JSON.parse(responseBody);",
+									"value = bodyData.token;",
+									"pm.environment.set(\"loginToken\", value);",
+									"",
+									"bodyData = JSON.parse(responseBody);",
+									"value = bodyData.userid;",
+									"pm.environment.set(\"userID\", value);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has all the necessary attributes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"message\");",
+									"    pm.expect(jsonData).to.have.property(\"token\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "POST /supplies",
 					"event": [
@@ -1022,11 +1149,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/supplies",
+							"raw": "{{host}}/v1/profile/{{userID}}/supplies",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"v1",
+								"profile",
+								"{{userID}}",
 								"supplies"
 							]
 						}
@@ -1052,11 +1182,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/supplies",
+							"raw": "{{host}}/v1/profile/{{userID}}/supplies",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"v1",
+								"profile",
+								"{{userID}}",
 								"supplies"
 							]
 						}
@@ -1082,11 +1215,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/supplies/{{supplyID}}",
+							"raw": "{{host}}/v1/profile/{{userID}}/supplies/{{supplyID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"v1",
+								"profile",
+								"{{userID}}",
 								"supplies",
 								"{{supplyID}}"
 							]
@@ -1122,11 +1258,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/supplies/{{supplyID}}",
+							"raw": "{{host}}/v1/profile/{{userID}}/supplies/{{supplyID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"v1",
+								"profile",
+								"{{userID}}",
 								"supplies",
 								"{{supplyID}}"
 							]
@@ -1153,11 +1292,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/supplies/{{supplyID}}",
+							"raw": "{{host}}/v1/profile/{{userID}}/supplies/{{supplyID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"v1",
+								"profile",
+								"{{userID}}",
 								"supplies",
 								"{{supplyID}}"
 							]

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Define the house schema
+// Define the water schema
 const supplySchema = new mongoose.Schema({
   itemname: {
     type: String,

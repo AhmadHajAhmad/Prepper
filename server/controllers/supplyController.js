@@ -4,6 +4,7 @@ class SupplyController {
 
 
 
+
 // 2- All supplies by userid
   async getAllSuppliesByUser(req,res){
 

@@ -1,13 +1,40 @@
 const express = require('express');
 
 const waterController = require('../controllers/waterController');
+const authentication = require('../middleware/authenticateToken');
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 router.use(express.json());
 
 const controller = new waterController();
 
 
+
+
+// 2- All water by userid
+router.get('/',authentication, controller.getAllWaterByUser); 
+
+//3-Get water doc by waterid & userid
+router.get('/:waterid',authentication, controller.getByUserId);
+
+//4- Create water
+router.post('/',authentication, controller.createWater);
+
+
+//5-Delete a water by waterid & UserId
+router.delete('/:waterid',authentication, controller.deleteByUserId);
+
+//6- Update a water doc by waterid & userid
+router.patch('/:waterid',authentication, controller.updateByUserId);
+
+
+
+
+
+
+
+
+/*
 //Method to get water list based on water id - Get Method (with User id in url)
 // router.get('/water/:waterId')
 router.get('/:id', controller.getWaterBywaterId);
@@ -48,7 +75,7 @@ router.post('/', controller.createWaterQty);
 // router.get('/water') 
 router.get('/',controller.getAllWater); 
 
-
+*/
 
 
 
