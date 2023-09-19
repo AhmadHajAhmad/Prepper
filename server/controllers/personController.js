@@ -33,7 +33,9 @@ class PersonController {
     // This function will be moved later on to the admin controller(Get all people regardless the user)
   async getAllPersons(req, res) {
     try {
-      const persons = await PersonModel.find({});
+      const persons = await PersonModel.find({})
+      .sort({ age: 1 }) // Sort by age in ascending order
+      .exec();
       res.status(200).json(persons);
     } catch (err) {
       console.error(err);
@@ -47,7 +49,7 @@ class PersonController {
 
   try {
     const people = await PersonModel.find({ _userid: userid })
-      .sort({ age: 1 }) // Sort by age in ascending order
+      .sort({ name: 1 }) // Sort by name in ascending order
       .exec();
 
     res.json(people);

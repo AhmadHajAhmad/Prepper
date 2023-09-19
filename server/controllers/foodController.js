@@ -28,7 +28,8 @@ class FoodController {
       // Get all food in the collection, regardless of user
       async getAllFood(req, res) {
       try {
-        const food = await FoodModel.find({});
+        const food = await FoodModel.find({})
+        .sort({ foodname: 1 }).exec();
         res.json(food);
       } catch (err) {
         res.status(500).send(err);
@@ -39,7 +40,8 @@ class FoodController {
     async getAllFoodByUser(req, res) {
       const userid = req.params.userid;
     try {
-      const food = await FoodModel.find({_userid: userid});
+      const food = await FoodModel.find({_userid: userid})
+      .sort({ foodname: 1 }).exec();
       res.json(food);
     } catch (err) {
       res.status(500).send(err);

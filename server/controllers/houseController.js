@@ -30,7 +30,8 @@ class HouseController {
   
     async getAllHouses(req, res) {
     try {
-      const house = await HouseModel.find({});
+      const house = await HouseModel.find({})
+      .sort({ streetname: 1 }).exec();
       res.json(house);
     } catch (err) {
       res.status(500).send(err);
