@@ -6,6 +6,8 @@ const cors = require("cors");
 const history = require("connect-history-api-fallback");
 const cookieParser = require("cookie-parser");
 const methodOverride = require('method-override');
+
+// Routers
 const userRouter = require("./routers/userRouter");
 const personRouter = require("./routers/personRouter");
 const foodRouter = require("./routers/foodRouter");
@@ -14,6 +16,7 @@ const waterRouter = require("./routers/waterRouter");
 const supplyRouter = require("./routers/supplyRouter");
 const loginRouter = require("./routers/loginRouter");
 const registerRouter = require("./routers/registerRouter");
+const calorieRouter = require("./routers/calorieRouter");
 
 const config = require("./config");
 
@@ -55,22 +58,17 @@ app.get("/api", function (req, res) {
 
 app.use("/house", houseRouter);
 
-
-
-
+// Endpoints
 app.use("/v1/register", registerRouter);
 app.use("/v1/login", loginRouter);
 app.use("/v1/profile", userRouter);
+app.use("/v1/profile/:userid/calories", calorieRouter);
 app.use("/v1/profile/:userid/food", foodRouter);
 app.use("/v1/profile/:userid/supplies", supplyRouter);
 app.use("/v1/profile/:userid/water", waterRouter);
 app.use("/v1/profile/:userid/people", personRouter);
 
-/* New endpoint structure, replace old when you are making changes to your entity.
 
-app.use(${version}/profile/:userid/people, personRouter);
-app.use(${version}/profile/:userid/water, waterRouter);
-*/
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use("/api/*", function (req, res) {
   res.status(404).json({ message: "Not Found" });
