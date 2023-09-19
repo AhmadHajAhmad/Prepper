@@ -14,7 +14,8 @@ class SupplyController {
 
     try{
       
-      const supply = await SupplyModel.find({_userid: userid});
+      const supply = await SupplyModel.find({_userid: userid})
+      .sort({ itemname: 1 }).exec();
       
       if(supply.length === 0){
         return res.status(404).json({ message: 'No supplies found: empty list'});
@@ -141,7 +142,8 @@ async updateSupplyByID(req, res){
       
       //res.json({message: 'getAllSuppies'});
       
-      const supply = await SupplyModel.find({});
+      const supply = await SupplyModel.find({})
+      .sort({ itemname: 1 }).exec();
       res.json(supply);
       
 

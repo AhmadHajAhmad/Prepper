@@ -13,7 +13,8 @@ async getAllWaterByUser(req,res){
 
   try{
     
-    const water = await waterModel.find({_userid: userid});
+    const water = await waterModel.find({_userid: userid})
+    .sort({ waterqty: 1 }).exec();
     
     if(water.length==0){
       return res.status(404).json({ message: 'No water item found: empty list'});

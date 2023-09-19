@@ -23,7 +23,8 @@ class UserController {
   
     async getAllUsers(req, res) {
     try {
-      const user = await UserModel.find({});
+      const user = await UserModel.find({})
+      .sort({ username: 1 }).exec();
       res.json(user);
     } catch (err) {
       res.status(500).send(err);
