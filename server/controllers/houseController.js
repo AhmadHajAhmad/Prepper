@@ -2,6 +2,13 @@ const HouseModel = require('../models/houseModel');
 
 class HouseController {
 
+  constructor() {
+    // Binding methods to the current instance of the controller
+    this.handleMethodOverride = this.handleMethodOverride.bind(this);
+    this.updateHouseByID = this.updateHouseByID.bind(this);
+    this.deleteHouseById = this.deleteHouseById.bind(this);
+}
+
     async createHouse(req, res) {
     
         try {
@@ -45,6 +52,24 @@ class HouseController {
     }
   }
 
+  handleMethodOverride(req, res) {
+    console.log("Handling method override");
+
+    const method = req.header("X-Custom-Action");
+
+    if (method === 'DELETE') {
+        console.log("Detected DELETE");
+        return this.deleteHouseById(req, res);
+    } else if (method === 'PATCH') {
+        console.log("Detected PATCH");
+        return this.updateHouseByID(req, res);
+    } else {
+        // Return a default response or error if the header doesn't match expected values
+        res.status(400).send("Invalid method override header");
+    }
+}
+
+
   async deleteHouseById(req, res) {
     const id = req.params.id;
 
@@ -60,7 +85,7 @@ class HouseController {
     }
 }
 
-async updateFoodByID(req, res){
+async updateHouseByID(req, res){
   const id = req.params.id;
   const updateData = req.body;
 

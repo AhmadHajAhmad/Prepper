@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "ed41bd73-7bc5-4217-a238-86d74fbb43e9",
+		"_postman_id": "f86130d2-a010-4957-abd7-d7a6b241edd5",
 		"name": "server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29410947"
+		"_exporter_id": "29427724"
 	},
 	"item": [
 		{
@@ -1343,6 +1343,269 @@
 								"{{userID}}",
 								"supplies",
 								"{{supplyID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HTTP Override",
+			"item": [
+				{
+					"name": "POST /house",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"bodyData = JSON.parse(responseBody);",
+									"value = bodyData._id;",
+									"pm.environment.set(\"householdID\", value);",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response has all the necessary attributes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"streetname\");",
+									"    pm.expect(jsonData).to.have.property(\"zipcode\");",
+									"",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"streetname\": \"Override Street\",\n    \"zipcode\": 122345\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/house/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"house",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get /user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"bodyData = JSON.parse(responseBody);",
+									"street = bodyData.streetname;",
+									"zip = bodyData.zipcode;",
+									"pm.environment.set(\"initialStreet\", street);",
+									"pm.environment.set(\"initialZip\", zip);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/house/{{householdID}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"house",
+								"{{householdID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /house/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Custom-Action",
+								"value": "PATCH",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"streetname\": \"Patch Street\",\n    \"zipcode\": 56789\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/house/{{householdID}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"house",
+								"{{householdID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get /user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"bodyData = JSON.parse(responseBody);",
+									"updatedStreet = bodyData.streetname;",
+									"updatedZip = bodyData.zipcode;",
+									"",
+									"initialStreet = pm.environment.get(\"initialStreet\");",
+									"initialZip = pm.environment.get(\"initialZip\");",
+									"",
+									"pm.test(\"Street name has been updated\", function () {",
+									"    pm.expect(updatedStreet).to.not.eql(initialStreet);",
+									"});",
+									"",
+									"pm.test(\"Zipcode has been updated\", function () {",
+									"    pm.expect(updatedZip).to.not.eql(initialZip);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/house/{{householdID}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"house",
+								"{{householdID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /house/:id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Custom-Action",
+								"value": "DELETE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"streetname\": \"THIS METHOD IS IN FACT PATCHING INSTEAD OF DELETING LIKE A GOOD BOY\",\n    \"zipcode\": 1234556\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/house/{{householdID}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"house",
+								"{{householdID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get /user Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/house/{{householdID}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"house",
+								"{{householdID}}"
 							]
 						}
 					},

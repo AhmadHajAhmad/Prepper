@@ -1,12 +1,15 @@
 const express = require('express');
 const HouseController = require('../controllers/houseController');
+const methodOverride = require('method-override');
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 const controller = new HouseController();
 
-router.get('/', controller.getAllHouses);
+router.use(methodOverride('X-HTTP-Method-Override'));
+
+router.post('/:id', controller.handleMethodOverride);
 router.get('/:id', controller.getHouseById);
+router.get('/', controller.getAllHouses);
 router.post('/', controller.createHouse);
-router.delete('/:id', controller.deleteHouseById);
-router.patch('/:id', controller.updateFoodByID);
+
 module.exports = router;
