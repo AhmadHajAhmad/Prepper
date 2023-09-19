@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
-const secretKey = "Banana";
+const secretKey = "Alpha1900";
 
-function authenticateToken(req, res, next) {
+function authenticateAdmin(req, res, next) {
   const token = req.cookies.jwt;
 
   if (!token) {
@@ -12,10 +12,10 @@ function authenticateToken(req, res, next) {
       return res.status(401).json({ message: "Unauthorized Error" });
     }
 
-    // Set the authenticated user in the request for further use
+    // Set the authenticated admin in the request for further use
     req.user = user;
     next();
   });
 }
 
-module.exports = authenticateToken;
+module.exports = authenticateAdmin;

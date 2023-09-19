@@ -5,9 +5,10 @@ const path = require("path");
 const cors = require("cors");
 const history = require("connect-history-api-fallback");
 const cookieParser = require("cookie-parser");
-const methodOverride = require('method-override');
+const methodOverride = require("method-override");
 
 // Routers
+const adminRouter = require("./routers/adminRouter");
 const userRouter = require("./routers/userRouter");
 const personRouter = require("./routers/personRouter");
 const foodRouter = require("./routers/foodRouter");
@@ -29,7 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(methodOverride('X-HTTP-Method-Override'));
+app.use(methodOverride("X-HTTP-Method-Override"));
 // HTTP request logger
 app.use(morgan("dev"));
 // Enable cross-origin resource sharing for frontend must be registered before api
@@ -55,10 +56,10 @@ app.get("/api", function (req, res) {
   res.json({ message: "Welcome to your DIT342 backend ExpressJS project!" });
 });
 
-
 app.use("/house", houseRouter);
 
 // Endpoints
+app.use("/v1/admin", adminRouter);
 app.use("/v1/register", registerRouter);
 app.use("/v1/login", loginRouter);
 app.use("/v1/profile", userRouter);
@@ -67,7 +68,6 @@ app.use("/v1/profile/:userid/food", foodRouter);
 app.use("/v1/profile/:userid/supplies", supplyRouter);
 app.use("/v1/profile/:userid/water", waterRouter);
 app.use("/v1/profile/:userid/people", personRouter);
-
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use("/api/*", function (req, res) {
