@@ -40,14 +40,19 @@ class LoginController {
       if (!user || user.password !== password) {
         return res.status(401).json({ message: "Authentication failed" });
       }
-      const token = jwt.sign({ userId: user._id }, adminSecretKey, {
-        expiresIn: "1h",
-      });
 
-      const adminid = user._id;
+      if (user.isAdmin) {
+        const token = jwt.sign({ userId: user._id }, adminSecretKey, {
+          expiresIn: "1h",
+        });
 
-      res.cookie("jwt", token, { httpOnly: true, maxAge: 36000000 });
-      res.status(200).json({ message: "Logged in", token, adminid });
+        const adminid = user._id;
+
+        res.cookie("jwt", token, { httpOnly: true, maxAge: 36000000 });
+        res.status(200).json({ message: "Logged in", token, adminid });
+      } else {
+        res.status(403).send("You do not have admin rights");
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json("Internal Server error");

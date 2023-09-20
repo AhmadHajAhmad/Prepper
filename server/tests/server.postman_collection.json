@@ -2083,6 +2083,41 @@
           "response": []
         },
         {
+          "name": "Log In Admin without admin account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Non admin user denied.\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/admin/login",
+              "host": ["{{host}}"],
+              "path": ["v1", "admin", "login"]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Log In Admin baseCase",
           "event": [
             {
