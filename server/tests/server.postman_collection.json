@@ -1,2190 +1,2654 @@
 {
-	"info": {
-		"_postman_id": "347745aa-48da-4273-b225-05d677f2f7c8",
-		"name": "server",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "29427724"
-	},
-	"item": [
-		{
-			"name": "User",
-			"item": [
-				{
-					"name": "Post User",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData._id;",
-									"pm.environment.set(\"userID\", value);",
-									"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"pm.test(\"Response has all the necessary attributes\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    pm.expect(jsonData).to.have.property(\"username\");",
-									"    pm.expect(jsonData).to.have.property(\"password\");",
-									"    pm.expect(jsonData).to.have.property(\"email\");",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {}
-					},
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"username\": \"Test User\",\n    \"password\": \"testPassword\",\n    \"email\": \"test@email.com\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/profile",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Log In baseCase",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"loginToken\", value);",
-									"",
-									"",
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Response has all the necessary attributes\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get All Users",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get User by ID",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update User",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"username\": \"something updated\",\n    \"password\": \"updatedPassword\",\n    \"email\": \"updated@email.com\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete User",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Food",
-			"item": [
-				{
-					"name": "Log In baseCase Copy",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"loginToken\", value);",
-									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
-									"",
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Response has all the necessary attributes\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "POST /food",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData._id;",
-									"pm.environment.set(\"foodID\", value);",
-									"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"pm.test(\"Response has all the necessary attributes\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    pm.expect(jsonData).to.have.property(\"foodname\");",
-									"    pm.expect(jsonData).to.have.property(\"calories\");",
-									"    pm.expect(jsonData).to.have.property(\"weight\");",
-									"    pm.expect(jsonData).to.have.property(\"_userid\");",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"foodname\": \"Test Food1\",\n    \"calories\": 999,\n    \"weight\": 500\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/food/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"food",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET /food",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"// Asserting that the enteties retrieved have the right user ID.",
-									"pm.test(\"Correct user ID.\", function () {",
-									"    const expectedId = pm.environment.get(\"userId\")",
-									"    pm.expect(responseBody._userid).to.eql(expectedId);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/food/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"food",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET /food/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"// Asserting that the entity retrieved have the right user ID.",
-									"pm.test(\"Correct user ID.\", function () {",
-									"    const userId = pm.environment.get(\"userId\")",
-									"    pm.expect(responseBody._userid).to.eql(userId);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/food/{{foodID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"food",
-								"{{foodID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "PATCH/ food/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"// Asserting that the entity retrieved have the right user ID.",
-									"pm.test(\"Correct user ID.\", function () {",
-									"    const userId = pm.environment.get(\"userId\")",
-									"    pm.expect(responseBody._userid).to.eql(userId);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"foodname\": \"Updated food\",\n    \"calories\": 999,\n    \"weight\": 999\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/food/{{foodID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"food",
-								"{{foodID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DELETE /food/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"// Asserting that the entity retrieved have the right user ID.",
-									"pm.test(\"Correct user ID.\", function () {",
-									"    const userId = pm.environment.get(\"userId\")",
-									"    pm.expect(responseBody._userid).to.eql(userId);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/food/{{foodID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"food",
-								"{{foodID}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Person",
-			"item": [
-				{
-					"name": "Log In baseCase",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"loginToken\", value);",
-									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
-									"",
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Response has all the necessary attributes\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});    "
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "POST/ Person",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData._id;",
-									"pm.environment.set(\"personID\", value);",
-									"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"pm.test(\"Response has all the necessary attributes\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    pm.expect(jsonData).to.have.property(\"name\");",
-									"    pm.expect(jsonData).to.have.property(\"age\");",
-									"    pm.expect(jsonData).to.have.property(\"weight\");",
-									"    pm.expect(jsonData).to.have.property(\"height\");",
-									"    pm.expect(jsonData).to.have.property(\"sex\");",
-									"    pm.expect(jsonData).to.have.property(\"_userid\");",
-									"",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "autherization",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"hij\",\n    \"age\": 60,\n    \"weight\": 80,\n    \"height\": 170,\n    \"sex\": \"Female\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/people/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"people",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET/ people",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"// Asserting that the enteties retrieved have the right user ID.",
-									"pm.test(\"Correct user ID.\", function () {",
-									"    const expectedId = pm.environment.get(\"userId\")",
-									"    pm.expect(responseBody._userid).to.eql(expectedId);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/people/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"people",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET/ person/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"// Asserting that the enteties retrieved have the right user ID.",
-									"pm.test(\"Correct user ID.\", function () {",
-									"    const expectedId = pm.environment.get(\"userId\")",
-									"    pm.expect(responseBody._userid).to.eql(expectedId);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/people/{{personID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"people",
-								"{{personID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "PATCH/ person/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"// Asserting that the entity retrieved have the right user ID.",
-									"pm.test(\"Correct user ID.\", function () {",
-									"    const userId = pm.environment.get(\"userId\")",
-									"    pm.expect(responseBody._userid).to.eql(userId);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Shakira updated\",\n    \"age\": 30,\n    \"weight\": 80,\n    \"height\": 189,\n    \"sex\": \"Female\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/people/{{personID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"people",
-								"{{personID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DELETE/ person/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/people/{{personID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"people",
-								"{{personID}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Water",
-			"item": [
-				{
-					"name": "Log In baseCase",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"loginToken\", value);",
-									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
-									"",
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Response has all the necessary attributes\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "POST /water",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData._id;",
-									"pm.environment.set(\"waterID\", value);",
-									"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"pm.test(\"Response has all the necessary attributes\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    pm.expect(jsonData).to.have.property(\"waterqty\");",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {}
-					},
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"waterqty\": 400\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/water/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"water",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET /water",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/water/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"water",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET /water/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/water/{{waterID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"water",
-								"{{waterID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "PATCH /water/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"waterqty\": 999\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/water/{{waterID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"water",
-								"{{waterID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DELETE /water/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/water/{{waterID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"water",
-								"{{waterID}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Supplies",
-			"item": [
-				{
-					"name": "Log In baseCase",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"loginToken\", value);",
-									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
-									"",
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Response has all the necessary attributes\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "POST /supplies",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData._id;",
-									"pm.environment.set(\"supplyID\", value);",
-									"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"pm.test(\"Response has all the necessary attributes\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    pm.expect(jsonData).to.have.property(\"itemname\");",
-									"    pm.expect(jsonData).to.have.property(\"instock\");",
-									"});",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"itemname\": \"Test Item\",\n    \"instock\": true\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/supplies",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"supplies"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET /supplies",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/supplies",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"supplies"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET /supplies/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/supplies/{{supplyID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"supplies",
-								"{{supplyID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "PATCH /supplies/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"itemname\": \"Updated Item\",\n    \"instock\": false\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/supplies/{{supplyID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"supplies",
-								"{{supplyID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DELETE /supplies/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/supplies/{{supplyID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"supplies",
-								"{{supplyID}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "HTTP Override",
-			"item": [
-				{
-					"name": "POST /house",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData._id;",
-									"pm.environment.set(\"householdID\", value);",
-									"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"pm.test(\"Response has all the necessary attributes\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    pm.expect(jsonData).to.have.property(\"streetname\");",
-									"    pm.expect(jsonData).to.have.property(\"zipcode\");",
-									"",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"streetname\": \"Override Street\",\n    \"zipcode\": 122345\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/house/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"house",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get /user",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"bodyData = JSON.parse(responseBody);",
-									"street = bodyData.streetname;",
-									"zip = bodyData.zipcode;",
-									"pm.environment.set(\"initialStreet\", street);",
-									"pm.environment.set(\"initialZip\", zip);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/house/{{householdID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"house",
-								"{{householdID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "PATCH /house/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Custom-Action",
-								"value": "PATCH",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"streetname\": \"Patch Street\",\n    \"zipcode\": 56789\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/house/{{householdID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"house",
-								"{{householdID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get /user",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"bodyData = JSON.parse(responseBody);",
-									"updatedStreet = bodyData.streetname;",
-									"updatedZip = bodyData.zipcode;",
-									"",
-									"initialStreet = pm.environment.get(\"initialStreet\");",
-									"initialZip = pm.environment.get(\"initialZip\");",
-									"",
-									"pm.test(\"Street name has been updated\", function () {",
-									"    pm.expect(updatedStreet).to.not.eql(initialStreet);",
-									"});",
-									"",
-									"pm.test(\"Zipcode has been updated\", function () {",
-									"    pm.expect(updatedZip).to.not.eql(initialZip);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/house/{{householdID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"house",
-								"{{householdID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DELETE /house/:id",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Custom-Action",
-								"value": "DELETE",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"streetname\": \"THIS METHOD IS IN FACT PATCHING INSTEAD OF DELETING LIKE A GOOD BOY\",\n    \"zipcode\": 1234556\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/house/{{householdID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"house",
-								"{{householdID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get /user Copy",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 404\", function () {",
-									"    pm.response.to.have.status(404);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/house/{{householdID}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"house",
-								"{{householdID}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Calories",
-			"item": [
-				{
-					"name": "Log In baseCase",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"loginToken\", value);",
-									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
-									"",
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Response has all the necessary attributes\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    ",
-									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});    "
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "POST /person1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData._id;",
-									"pm.environment.set(\"kcalPers1\", value);",
-									"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "autherization",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Kcal Test1\",\n    \"age\": 35,\n    \"weight\": 67,\n    \"height\": 170,\n    \"sex\": \"female\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/people/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"people",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "POST /person2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData._id;",
-									"pm.environment.set(\"kcalPers2\", value);",
-									"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "autherization",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Kcal Test 2\",\n    \"age\": 55,\n    \"weight\": 80,\n    \"height\": 190,\n    \"sex\": \"male\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/people/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"people",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "POST /food1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData._id;",
-									"pm.environment.set(\"kcalFood1\", value);",
-									"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"foodname\": \"Kcal Food1\",\n    \"calories\": 600,\n    \"weight\": 500\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/food/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"food",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "POST /food2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData._id;",
-									"pm.environment.set(\"kcalFood2\", value);",
-									"",
-									"pm.test(\"Status code is 201\", function () {",
-									"    pm.response.to.have.status(201);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"foodname\": \"Kcal Food2\",\n    \"calories\": 350,\n    \"weight\": 1500\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/food/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"food",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET /days",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/calories/days",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"calories",
-								"days"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET /stored",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/calories/stored",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"calories",
-								"stored"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GET /needs",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/calories/needs",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"calories",
-								"needs"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DELETE/ person1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/people/{{kcalPers1}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"people",
-								"{{kcalPers1}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DELETE/ person2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/people/{{kcalPers2}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"people",
-								"{{kcalPers2}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DELETE /food1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"// Asserting that the entity retrieved have the right user ID.",
-									"pm.test(\"Correct user ID.\", function () {",
-									"    const userId = pm.environment.get(\"userId\")",
-									"    pm.expect(responseBody._userid).to.eql(userId);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/food/{{kcalFood1}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"food",
-								"{{kcalFood1}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "DELETE /food2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"// Asserting that the entity retrieved have the right user ID.",
-									"pm.test(\"Correct user ID.\", function () {",
-									"    const userId = pm.environment.get(\"userId\")",
-									"    pm.expect(responseBody._userid).to.eql(userId);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profile/{{userID}}/food/{{kcalFood2}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profile",
-								"{{userID}}",
-								"food",
-								"{{kcalFood2}}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "GET /api",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{host}}/api",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api"
-					]
-				}
-			},
-			"response": []
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "host",
-			"value": "http://localhost:3000",
-			"type": "string"
-		}
-	]
+  "info": {
+    "_postman_id": "da944a48-2d5e-4240-9592-8937cc5e18d4",
+    "name": "server",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "29410947"
+  },
+  "item": [
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Post User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"username\");",
+                  "    pm.expect(jsonData).to.have.property(\"password\");",
+                  "    pm.expect(jsonData).to.have.property(\"email\");",
+                  "    pm.expect(jsonData).to.have.property(\"isAdmin\");",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"Test User\",\n    \"password\": \"testPassword\",\n    \"email\": \"test@email.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Log In baseCase",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.token;",
+                  "pm.environment.set(\"loginToken\", value);",
+                  "",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"message\");",
+                  "    pm.expect(jsonData).to.have.property(\"token\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/login",
+              "host": ["{{host}}"],
+              "path": ["v1", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"something updated\",\n    \"password\": \"updatedPassword\",\n    \"email\": \"updated@email.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Food",
+      "item": [
+        {
+          "name": "Log In baseCase Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.token;",
+                  "pm.environment.set(\"loginToken\", value);",
+                  "",
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.userid;",
+                  "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"message\");",
+                  "    pm.expect(jsonData).to.have.property(\"token\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/login",
+              "host": ["{{host}}"],
+              "path": ["v1", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /food",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"foodID\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"foodname\");",
+                  "    pm.expect(jsonData).to.have.property(\"calories\");",
+                  "    pm.expect(jsonData).to.have.property(\"weight\");",
+                  "    pm.expect(jsonData).to.have.property(\"_userid\");",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"foodname\": \"Test Food1\",\n    \"calories\": 999,\n    \"weight\": 500\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/food/",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "food", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /food",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Asserting that the enteties retrieved have the right user ID.",
+                  "pm.test(\"Correct user ID.\", function () {",
+                  "    const expectedId = pm.environment.get(\"userId\")",
+                  "    pm.expect(responseBody._userid).to.eql(expectedId);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/food/",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "food", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /food/:id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Asserting that the entity retrieved have the right user ID.",
+                  "pm.test(\"Correct user ID.\", function () {",
+                  "    const userId = pm.environment.get(\"userId\")",
+                  "    pm.expect(responseBody._userid).to.eql(userId);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/food/{{foodID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "food", "{{foodID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH/ food/:id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Asserting that the entity retrieved have the right user ID.",
+                  "pm.test(\"Correct user ID.\", function () {",
+                  "    const userId = pm.environment.get(\"userId\")",
+                  "    pm.expect(responseBody._userid).to.eql(userId);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"foodname\": \"Updated food\",\n    \"calories\": 999,\n    \"weight\": 999\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/food/{{foodID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "food", "{{foodID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /food/:id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Asserting that the entity retrieved have the right user ID.",
+                  "pm.test(\"Correct user ID.\", function () {",
+                  "    const userId = pm.environment.get(\"userId\")",
+                  "    pm.expect(responseBody._userid).to.eql(userId);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/food/{{foodID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "food", "{{foodID}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Person",
+      "item": [
+        {
+          "name": "Log In baseCase",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.token;",
+                  "pm.environment.set(\"loginToken\", value);",
+                  "",
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.userid;",
+                  "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"message\");",
+                  "    pm.expect(jsonData).to.have.property(\"token\");",
+                  "});    "
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/login",
+              "host": ["{{host}}"],
+              "path": ["v1", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST/ Person",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"personID\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"name\");",
+                  "    pm.expect(jsonData).to.have.property(\"age\");",
+                  "    pm.expect(jsonData).to.have.property(\"weight\");",
+                  "    pm.expect(jsonData).to.have.property(\"height\");",
+                  "    pm.expect(jsonData).to.have.property(\"sex\");",
+                  "    pm.expect(jsonData).to.have.property(\"_userid\");",
+                  "",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "autherization",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"hij\",\n    \"age\": 60,\n    \"weight\": 80,\n    \"height\": 170,\n    \"sex\": \"Female\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/people/",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "people", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET/ people",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Asserting that the enteties retrieved have the right user ID.",
+                  "pm.test(\"Correct user ID.\", function () {",
+                  "    const expectedId = pm.environment.get(\"userId\")",
+                  "    pm.expect(responseBody._userid).to.eql(expectedId);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/people/",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "people", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET/ person/:id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "// Asserting that the enteties retrieved have the right user ID.",
+                  "pm.test(\"Correct user ID.\", function () {",
+                  "    const expectedId = pm.environment.get(\"userId\")",
+                  "    pm.expect(responseBody._userid).to.eql(expectedId);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/people/{{personID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "people", "{{personID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH/ person/:id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Asserting that the entity retrieved have the right user ID.",
+                  "pm.test(\"Correct user ID.\", function () {",
+                  "    const userId = pm.environment.get(\"userId\")",
+                  "    pm.expect(responseBody._userid).to.eql(userId);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Shakira updated\",\n    \"age\": 30,\n    \"weight\": 80,\n    \"height\": 189,\n    \"sex\": \"Female\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/people/{{personID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "people", "{{personID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE/ person/:id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/people/{{personID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "people", "{{personID}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Water",
+      "item": [
+        {
+          "name": "Log In baseCase",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.token;",
+                  "pm.environment.set(\"loginToken\", value);",
+                  "",
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.userid;",
+                  "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"message\");",
+                  "    pm.expect(jsonData).to.have.property(\"token\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/login",
+              "host": ["{{host}}"],
+              "path": ["v1", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /water",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"waterID\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"waterqty\");",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"waterqty\": 400\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/water/",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "water", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /water",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/water/",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "water", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /water/:id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/water/{{waterID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "water", "{{waterID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /water/:id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"waterqty\": 999\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/water/{{waterID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "water", "{{waterID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /water/:id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/water/{{waterID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "water", "{{waterID}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Supplies",
+      "item": [
+        {
+          "name": "Log In baseCase",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.token;",
+                  "pm.environment.set(\"loginToken\", value);",
+                  "",
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.userid;",
+                  "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"message\");",
+                  "    pm.expect(jsonData).to.have.property(\"token\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/login",
+              "host": ["{{host}}"],
+              "path": ["v1", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /supplies",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"supplyID\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"itemname\");",
+                  "    pm.expect(jsonData).to.have.property(\"instock\");",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"itemname\": \"Test Item\",\n    \"instock\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/supplies",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "supplies"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /supplies",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/supplies",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "supplies"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /supplies/:id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/supplies/{{supplyID}}",
+              "host": ["{{host}}"],
+              "path": [
+                "v1",
+                "profile",
+                "{{userID}}",
+                "supplies",
+                "{{supplyID}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /supplies/:id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"itemname\": \"Updated Item\",\n    \"instock\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/supplies/{{supplyID}}",
+              "host": ["{{host}}"],
+              "path": [
+                "v1",
+                "profile",
+                "{{userID}}",
+                "supplies",
+                "{{supplyID}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /supplies/:id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/supplies/{{supplyID}}",
+              "host": ["{{host}}"],
+              "path": [
+                "v1",
+                "profile",
+                "{{userID}}",
+                "supplies",
+                "{{supplyID}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "HTTP Override",
+      "item": [
+        {
+          "name": "POST /house",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"householdID\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"streetname\");",
+                  "    pm.expect(jsonData).to.have.property(\"zipcode\");",
+                  "",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"streetname\": \"Override Street\",\n    \"zipcode\": 122345\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/house/",
+              "host": ["{{host}}"],
+              "path": ["house", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get /user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "bodyData = JSON.parse(responseBody);",
+                  "street = bodyData.streetname;",
+                  "zip = bodyData.zipcode;",
+                  "pm.environment.set(\"initialStreet\", street);",
+                  "pm.environment.set(\"initialZip\", zip);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/house/{{householdID}}",
+              "host": ["{{host}}"],
+              "path": ["house", "{{householdID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /house/:id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Custom-Action",
+                "value": "PATCH",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"streetname\": \"Patch Street\",\n    \"zipcode\": 56789\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/house/{{householdID}}",
+              "host": ["{{host}}"],
+              "path": ["house", "{{householdID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get /user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "bodyData = JSON.parse(responseBody);",
+                  "updatedStreet = bodyData.streetname;",
+                  "updatedZip = bodyData.zipcode;",
+                  "",
+                  "initialStreet = pm.environment.get(\"initialStreet\");",
+                  "initialZip = pm.environment.get(\"initialZip\");",
+                  "",
+                  "pm.test(\"Street name has been updated\", function () {",
+                  "    pm.expect(updatedStreet).to.not.eql(initialStreet);",
+                  "});",
+                  "",
+                  "pm.test(\"Zipcode has been updated\", function () {",
+                  "    pm.expect(updatedZip).to.not.eql(initialZip);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/house/{{householdID}}",
+              "host": ["{{host}}"],
+              "path": ["house", "{{householdID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /house/:id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Custom-Action",
+                "value": "DELETE",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"streetname\": \"THIS METHOD IS IN FACT PATCHING INSTEAD OF DELETING LIKE A GOOD BOY\",\n    \"zipcode\": 1234556\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/house/{{householdID}}",
+              "host": ["{{host}}"],
+              "path": ["house", "{{householdID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get /user Copy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/house/{{householdID}}",
+              "host": ["{{host}}"],
+              "path": ["house", "{{householdID}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Calories",
+      "item": [
+        {
+          "name": "Log In baseCase",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.token;",
+                  "pm.environment.set(\"loginToken\", value);",
+                  "",
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.userid;",
+                  "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"message\");",
+                  "    pm.expect(jsonData).to.have.property(\"token\");",
+                  "});    "
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/login",
+              "host": ["{{host}}"],
+              "path": ["v1", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /person1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"kcalPers1\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "autherization",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Kcal Test1\",\n    \"age\": 35,\n    \"weight\": 67,\n    \"height\": 170,\n    \"sex\": \"female\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/people/",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "people", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /person2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"kcalPers2\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "autherization",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Kcal Test 2\",\n    \"age\": 55,\n    \"weight\": 80,\n    \"height\": 190,\n    \"sex\": \"male\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/people/",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "people", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /food1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"kcalFood1\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"foodname\": \"Kcal Food1\",\n    \"calories\": 600,\n    \"weight\": 500\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/food/",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "food", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /food2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"kcalFood2\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"foodname\": \"Kcal Food2\",\n    \"calories\": 350,\n    \"weight\": 1500\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/food/",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "food", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /days",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/calories/days",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "calories", "days"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /stored",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/calories/stored",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "calories", "stored"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /needs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/calories/needs",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "calories", "needs"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE/ person1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/people/{{kcalPers1}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "people", "{{kcalPers1}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE/ person2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/people/{{kcalPers2}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "people", "{{kcalPers2}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /food1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Asserting that the entity retrieved have the right user ID.",
+                  "pm.test(\"Correct user ID.\", function () {",
+                  "    const userId = pm.environment.get(\"userId\")",
+                  "    pm.expect(responseBody._userid).to.eql(userId);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/food/{{kcalFood1}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "food", "{{kcalFood1}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /food2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Asserting that the entity retrieved have the right user ID.",
+                  "pm.test(\"Correct user ID.\", function () {",
+                  "    const userId = pm.environment.get(\"userId\")",
+                  "    pm.expect(responseBody._userid).to.eql(userId);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/food/{{kcalFood2}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "food", "{{kcalFood2}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Post User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"createduserID\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"username\");",
+                  "    pm.expect(jsonData).to.have.property(\"password\");",
+                  "    pm.expect(jsonData).to.have.property(\"email\");",
+                  "    pm.expect(jsonData).to.have.property(\"isAdmin\");",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"TestUser\",\n    \"password\": \"TestPassword\",\n    \"email\": \"test@email.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Log In baseCase",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.token;",
+                  "pm.environment.set(\"loginToken\", value);",
+                  "",
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.userid;",
+                  "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"message\");",
+                  "    pm.expect(jsonData).to.have.property(\"token\");",
+                  "});    "
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/login",
+              "host": ["{{host}}"],
+              "path": ["v1", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /person1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"kcalPers1\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "autherization",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"person Test1\",\n    \"age\": 35,\n    \"weight\": 67,\n    \"height\": 170,\n    \"sex\": \"female\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/people/",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "people", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /person2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"kcalPers2\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "autherization",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"person Test 2\",\n    \"age\": 55,\n    \"weight\": 80,\n    \"height\": 190,\n    \"sex\": \"male\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/people/",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "people", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /food1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"kcalFood1\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"foodname\": \"Kcal Food1\",\n    \"calories\": 600,\n    \"weight\": 500\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/food/",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "food", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /food2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"kcalFood2\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"foodname\": \"Kcal Food2\",\n    \"calories\": 350,\n    \"weight\": 1500\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/food/",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "food", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Log In Admin without admin account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Non admin user denied.\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/admin/login",
+              "host": ["{{host}}"],
+              "path": ["v1", "admin", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Log In Admin baseCase",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.token;",
+                  "pm.environment.set(\"adminToken\", value);",
+                  "",
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.admninid;",
+                  "pm.environment.set(\"adminID\", value);",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"message\");",
+                  "    pm.expect(jsonData).to.have.property(\"token\");",
+                  "    pm.expect(jsonData).to.have.property(\"adminid\");",
+                  "});   "
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\"username\": \"Baseline Admin\",\n\"password\": \"basePassword Admin\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/admin/login",
+              "host": ["{{host}}"],
+              "path": ["v1", "admin", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET ALL Users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify that the response contains three users\", function () {",
+                  "  // Parse the response JSON",
+                  "  const responseJson = pm.response.json();",
+                  "",
+                  "  // Check if the response is an array",
+                  "  pm.expect(responseJson).to.be.an(\"array\");",
+                  "",
+                  "  // Check if the array contains exactly two elements",
+                  "  pm.expect(responseJson).to.have.lengthOf(3);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/admin/{{adminID}}/users",
+              "host": ["{{host}}"],
+              "path": ["v1", "admin", "{{adminID}}", "users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET ALL Food",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify that the response contains two food\", function () {",
+                  "  // Parse the response JSON",
+                  "  const responseJson = pm.response.json();",
+                  "",
+                  "  // Check if the response is an array",
+                  "  pm.expect(responseJson).to.be.an(\"array\");",
+                  "",
+                  "  // Check if the array contains exactly two elements",
+                  "  pm.expect(responseJson).to.have.lengthOf(2);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/admin/{{adminID}}/foods",
+              "host": ["{{host}}"],
+              "path": ["v1", "admin", "{{adminID}}", "foods"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET ALL People",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify that the response contains two people\", function () {",
+                  "  // Parse the response JSON",
+                  "  const responseJson = pm.response.json();",
+                  "",
+                  "  // Check if the response is an array",
+                  "  pm.expect(responseJson).to.be.an(\"array\");",
+                  "",
+                  "  // Check if the array contains exactly two elements",
+                  "  pm.expect(responseJson).to.have.lengthOf(2);",
+                  "});",
+                  "",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/admin/{{adminID}}/people",
+              "host": ["{{host}}"],
+              "path": ["v1", "admin", "{{adminID}}", "people"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Log In baseCase",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.token;",
+                  "pm.environment.set(\"loginToken\", value);",
+                  "",
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.userid;",
+                  "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"message\");",
+                  "    pm.expect(jsonData).to.have.property(\"token\");",
+                  "});    "
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/login",
+              "host": ["{{host}}"],
+              "path": ["v1", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE/ person1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/people/{{kcalPers1}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "people", "{{kcalPers1}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE/ person2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/people/{{kcalPers2}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "people", "{{kcalPers2}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /food1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Asserting that the entity retrieved have the right user ID.",
+                  "pm.test(\"Correct user ID.\", function () {",
+                  "    const userId = pm.environment.get(\"userId\")",
+                  "    pm.expect(responseBody._userid).to.eql(userId);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/food/{{kcalFood1}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "food", "{{kcalFood1}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /food2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Asserting that the entity retrieved have the right user ID.",
+                  "pm.test(\"Correct user ID.\", function () {",
+                  "    const userId = pm.environment.get(\"userId\")",
+                  "    pm.expect(responseBody._userid).to.eql(userId);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{userID}}/food/{{kcalFood2}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{userID}}", "food", "{{kcalFood2}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/profile/{{createduserID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "profile", "{{createduserID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Post Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData._id;",
+                  "pm.environment.set(\"adminID\", value);",
+                  "",
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has all the necessary attributes\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    ",
+                  "    pm.expect(jsonData).to.have.property(\"username\");",
+                  "    pm.expect(jsonData).to.have.property(\"password\");",
+                  "    pm.expect(jsonData).to.have.property(\"email\");",
+                  "    pm.expect(jsonData).to.have.property(\"isAdmin\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"Test Admin\",\n    \"password\": \"testPassword\",\n    \"email\": \"test@email.com\",\n    \"secretKey\": \"Alpha1900\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/admin/",
+              "host": ["{{host}}"],
+              "path": ["v1", "admin", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Admin by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/admin/{{adminID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "admin", "{{adminID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"Test Admin updated\",\n    \"password\": \"testPassword updated\",\n    \"email\": \"testupdated@email.com\"\n    \n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/v1/admin/{{adminID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "admin", "{{adminID}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/v1/admin/{{adminID}}",
+              "host": ["{{host}}"],
+              "path": ["v1", "admin", "{{adminID}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "GET /api",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{host}}/api",
+          "host": ["{{host}}"],
+          "path": ["api"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
 }
