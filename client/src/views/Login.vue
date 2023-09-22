@@ -34,12 +34,13 @@ export default {
           password: this.password
         })
         console.log('Response:', response)
-        // this.$router.push('/')
+        const userid = response.data.userid
+        this.$router.push({ path: '/dashboard', query: { UserId: userid } })
 
         // Placeholder instead of rerouting.
-        alert('Logged in successfully.')
+        window.alert('Logged in successfully.')
       } catch (error) {
-      // Handle error
+        // Handle error
         if (error.response && error.response.data.message) {
           this.errorMessage = error.response.data.message
         } else {
@@ -70,8 +71,8 @@ label {
   margin-bottom: 8px;
 }
 
-input[type="text"],
-input[type="password"] {
+input[type='text'],
+input[type='password'] {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -79,7 +80,7 @@ input[type="password"] {
 }
 
 .login-btn {
-  background-color: #007BFF;
+  background-color: #007bff;
   color: #fff;
   padding: 10px 15px;
   border: none;
