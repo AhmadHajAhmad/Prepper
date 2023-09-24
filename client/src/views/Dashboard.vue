@@ -14,35 +14,43 @@
 
 <script>
 import axios from 'axios'
+// import store from '../store' // Adjust the path based on your directory structure
 
 export default {
   data() {
     return {
       fetchedData: null,
-      isLoading: true // Initially set to true while loading data
-    }
-  },
-  computed: {
-    getUserId() {
-      return this.$route.query.UserId // Correct the property name
+      isLoading: true
     }
   },
   methods: {
     async fetchData() {
-      const userid = this.getUserId
+      // Get the token and user ID from session storage
+      const token = sessionStorage.getItem('token')
+      const userid = sessionStorage.getItem('userId')
+
+      if (!token) {
+        // Handle the case where the token is not available
+        console.error('Token not available. User may not be authenticated.')
+        this.$router.push({
+          path: '/login'
+        })
+      }
+
       try {
         const response = await axios.get(
           `http://localhost:3000/v1/profile/${userid}/calories/days`,
           {
-            withCredentials: true, // Include cookies in the request
-            credentials: 'include' // Specify that credentials should be included
+            headers: {
+              usertoken: token
+            }
           }
         )
         this.fetchedData = response.data
       } catch (error) {
         console.error('Error fetching data:', error)
       } finally {
-        this.isLoading = false // Set isLoading to false after data is fetched
+        this.isLoading = false
       }
     }
   },

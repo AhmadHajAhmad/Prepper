@@ -34,8 +34,15 @@ app.use(methodOverride("X-HTTP-Method-Override"));
 // HTTP request logger
 app.use(morgan("dev"));
 // Enable cross-origin resource sharing for frontend must be registered before api
-app.options("*", cors());
-app.use(cors());
+// app.options("*", cors());
+const corsOptions = {
+  origin: "http://localhost:8080", // Specify the allowed origin (your frontend URL)
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, // Allow credentials (cookies, headers, etc.)
+  exposedHeaders: ["usertoken", "admintoken"],
+};
+
+app.use(cors(corsOptions));
 
 // Connect to database
 mongoose.connect(config.database, {

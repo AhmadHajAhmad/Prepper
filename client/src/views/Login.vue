@@ -15,8 +15,11 @@
     <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
   </div>
 </template>
+
 <script>
 import axios from 'axios'
+// import store from '../store' // Assuming "store.js" is in the "src" directory
+
 export default {
   data() {
     return {
@@ -29,17 +32,27 @@ export default {
     async login() {
       try {
         console.log('Trying to login')
+        // Perform login without dealing with headers
         const response = await axios.post('http://localhost:3000/v1/login/', {
           username: this.username,
           password: this.password
         })
-        console.log('Response:', response)
-        const userid = response.data.userid
-        this.$router.push({ path: '/dashboard', query: { UserId: userid } })
 
-        // Placeholder instead of rerouting.
-        window.alert('Logged in successfully.')
+        const userid = response.data.userid
+        const token = response.data.token
+        console.log('The user id is: ', userid)
+        console.log('The token is: ', token)
+
+        // Save the token and user ID in session storage
+        sessionStorage.setItem('token', token)
+        sessionStorage.setItem('userId', userid)
+
+        this.$router.push({
+          path: '/dashboard'
+        })
       } catch (error) {
+        console.error('Login error:', error)
+
         // Handle error
         if (error.response && error.response.data.message) {
           this.errorMessage = error.response.data.message
@@ -51,6 +64,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 .login-container {
   display: flex;
