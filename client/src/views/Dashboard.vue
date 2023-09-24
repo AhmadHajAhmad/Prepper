@@ -6,7 +6,9 @@
       <div class="centered-content">
         <!-- Render the fetched data -->
         <p>Fetched Data:</p>
-        <pre>{{ fetchedData }}</pre>
+        <pre>{{ fetchedCalories }}</pre>
+        <pre>{{ fetchedWater }}</pre>
+        <pre>{{ fetchedPeople }}</pre>
       </div>
     </div>
   </div>
@@ -19,12 +21,16 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      fetchedData: null,
-      isLoading: true
+      fetchedCalories: null,
+      fetchedWater: null,
+      fetchedPeople: null,
+      isLoading: true,
+      token: null, // Initialize token as a data property
+      userId: null // Initialize userId as a data property
     }
   },
   methods: {
-    async fetchData() {
+    async fetchCalories() {
       // Get the token and user ID from session storage
       const token = sessionStorage.getItem('token')
       const userid = sessionStorage.getItem('userId')
@@ -46,17 +52,93 @@ export default {
             }
           }
         )
-        this.fetchedData = response.data
+        this.fetchedCalories = response.data
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.error('Error fetching calories:', error)
+      } finally {
+        this.isLoading = false
+      }
+    },
+    async fetchWater() {
+      // Get the token and user ID from session storage
+      const token = sessionStorage.getItem('token')
+      const userid = sessionStorage.getItem('userId')
+
+      if (!token) {
+        // Handle the case where the token is not available
+        console.error('Token not available. User may not be authenticated.')
+        this.$router.push({
+          path: '/login'
+        })
+      }
+
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/v1/profile/${userid}/water/`,
+          {
+            headers: {
+              usertoken: token
+            }
+          }
+        )
+        console.log('Data from the water ', response.data)
+        const liter = response.data[0].waterqty
+        this.fetchedWater = `The amounter of water you have is ${liter} liter.`
+      } catch (error) {
+        console.error('Error fetching calories:', error)
+      } finally {
+        this.isLoading = false
+      }
+    },
+    async fetchPeople() {
+      // Get the token and user ID from session storage
+      const token = sessionStorage.getItem('token')
+      const userid = sessionStorage.getItem('userId')
+
+      if (!token) {
+        // Handle the case where the token is not available
+        console.error('Token not available. User may not be authenticated.')
+        this.$router.push({
+          path: '/login'
+        })
+      }
+
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/v1/profile/${userid}/people/`,
+          {
+            headers: {
+              usertoken: token
+            }
+          }
+        )
+        console.log('Data from the people ', response.data)
+        const people = response.data.length
+        this.fetchedPeople = `The number of people in your household is ${people} people.`
+      } catch (error) {
+        console.error('Error fetching calories:', error)
       } finally {
         this.isLoading = false
       }
     }
   },
   beforeRouteEnter(to, from, next) {
+    const functionsToExecute = [
+      (vm) => {
+        vm.fetchCalories()
+      },
+      (vm) => {
+        vm.fetchWater()
+      },
+      (vm) => {
+        vm.fetchPeople()
+      }
+    ]
+
     next((vm) => {
-      vm.fetchData()
+      for (const func of functionsToExecute) {
+        func(vm)
+      }
     })
   }
 }
