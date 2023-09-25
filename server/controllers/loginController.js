@@ -21,8 +21,10 @@ class LoginController {
 
       const userid = user._id;
 
-      res.cookie("jwt", token, { httpOnly: true, maxAge: 36000000 });
-      res.status(200).json({ message: "Logged in", token, userid });
+      // send the token in the Authorization header
+      // send the token in the Authorization header
+      // res.header("Authorization", `Bearer ${token}`);
+      res.status(200).json({ message: "Logged in", userid, token });
     } catch (error) {
       console.error(error);
       res.status(500).json("Internal Server error");

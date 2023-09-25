@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "da944a48-2d5e-4240-9592-8937cc5e18d4",
+    "_postman_id": "36e64281-3e9f-44cf-89ce-23986d07a2c9",
     "name": "server",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "29410947"
@@ -18,7 +18,7 @@
                 "exec": [
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData._id;",
-                  "pm.environment.set(\"userID\", value);",
+                  "pm.environment.set(\"createduserID\", value);",
                   "",
                   "pm.test(\"Status code is 201\", function () {",
                   "    pm.response.to.have.status(201);",
@@ -70,8 +70,16 @@
                 "exec": [
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.token;",
-                  "pm.environment.set(\"loginToken\", value);",
+                  "pm.environment.set(\"UserToken\", value);",
                   "",
+                  "bodyData = JSON.parse(responseBody);",
+                  "value = bodyData.userid;",
+                  "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.request.headers.add({",
+                  "    key: 'usertoken',",
+                  "    value: pm.environment.get('UserToken')",
+                  "});",
                   "",
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
@@ -153,9 +161,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{host}}/v1/profile/{{userID}}",
+              "raw": "{{host}}/v1/profile/{{createduserID}}",
               "host": ["{{host}}"],
-              "path": ["v1", "profile", "{{userID}}"]
+              "path": ["v1", "profile", "{{createduserID}}"]
             }
           },
           "response": []
@@ -188,9 +196,9 @@
               }
             },
             "url": {
-              "raw": "{{host}}/v1/profile/{{userID}}",
+              "raw": "{{host}}/v1/profile/{{createduserID}}",
               "host": ["{{host}}"],
-              "path": ["v1", "profile", "{{userID}}"]
+              "path": ["v1", "profile", "{{createduserID}}"]
             }
           },
           "response": []
@@ -214,9 +222,9 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{host}}/v1/profile/{{userID}}",
+              "raw": "{{host}}/v1/profile/{{createduserID}}",
               "host": ["{{host}}"],
-              "path": ["v1", "profile", "{{userID}}"]
+              "path": ["v1", "profile", "{{createduserID}}"]
             }
           },
           "response": []
@@ -227,7 +235,7 @@
       "name": "Food",
       "item": [
         {
-          "name": "Log In baseCase Copy",
+          "name": "Log In baseCase",
           "event": [
             {
               "listen": "test",
@@ -235,11 +243,17 @@
                 "exec": [
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.token;",
-                  "pm.environment.set(\"loginToken\", value);",
+                  "pm.environment.set(\"UserToken\", value);",
                   "",
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.userid;",
                   "pm.environment.set(\"userID\", value);",
+                  "",
+                  "",
+                  "pm.request.headers.add({",
+                  "    key: 'usertoken',",
+                  "    value: pm.environment.get('UserToken')",
+                  "});",
                   "",
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
@@ -307,7 +321,13 @@
           ],
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n    \"foodname\": \"Test Food1\",\n    \"calories\": 999,\n    \"weight\": 500\n}",
@@ -348,7 +368,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/food/",
               "host": ["{{host}}"],
@@ -380,7 +406,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/food/{{foodID}}",
               "host": ["{{host}}"],
@@ -412,7 +444,13 @@
           ],
           "request": {
             "method": "PATCH",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n    \"foodname\": \"Updated food\",\n    \"calories\": 999,\n    \"weight\": 999\n}",
@@ -453,7 +491,13 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/food/{{foodID}}",
               "host": ["{{host}}"],
@@ -476,11 +520,16 @@
                 "exec": [
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.token;",
-                  "pm.environment.set(\"loginToken\", value);",
+                  "pm.environment.set(\"UserToken\", value);",
                   "",
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.userid;",
                   "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.request.headers.add({",
+                  "    key: 'usertoken',",
+                  "    value: pm.environment.get('UserToken')",
+                  "});",
                   "",
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
@@ -491,7 +540,7 @@
                   "    ",
                   "    pm.expect(jsonData).to.have.property(\"message\");",
                   "    pm.expect(jsonData).to.have.property(\"token\");",
-                  "});    "
+                  "});"
                 ],
                 "type": "text/javascript"
               }
@@ -552,10 +601,9 @@
             "method": "POST",
             "header": [
               {
-                "key": "autherization",
-                "value": "",
-                "type": "text",
-                "disabled": true
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
               }
             ],
             "body": {
@@ -598,7 +646,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/people/",
               "host": ["{{host}}"],
@@ -630,7 +684,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/people/{{personID}}",
               "host": ["{{host}}"],
@@ -662,7 +722,13 @@
           ],
           "request": {
             "method": "PATCH",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n    \"name\": \"Shakira updated\",\n    \"age\": 30,\n    \"weight\": 80,\n    \"height\": 189,\n    \"sex\": \"Female\"\n}",
@@ -697,7 +763,13 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/people/{{personID}}",
               "host": ["{{host}}"],
@@ -720,11 +792,16 @@
                 "exec": [
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.token;",
-                  "pm.environment.set(\"loginToken\", value);",
+                  "pm.environment.set(\"UserToken\", value);",
                   "",
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.userid;",
                   "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.request.headers.add({",
+                  "    key: 'usertoken',",
+                  "    value: pm.environment.get('UserToken')",
+                  "});",
                   "",
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
@@ -792,7 +869,13 @@
           },
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n    \"waterqty\": 400\n}",
@@ -827,7 +910,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/water/",
               "host": ["{{host}}"],
@@ -853,7 +942,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/water/{{waterID}}",
               "host": ["{{host}}"],
@@ -879,7 +974,13 @@
           ],
           "request": {
             "method": "PATCH",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n    \"waterqty\": 999\n}",
@@ -914,7 +1015,13 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/water/{{waterID}}",
               "host": ["{{host}}"],
@@ -937,11 +1044,16 @@
                 "exec": [
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.token;",
-                  "pm.environment.set(\"loginToken\", value);",
+                  "pm.environment.set(\"UserToken\", value);",
                   "",
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.userid;",
                   "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.request.headers.add({",
+                  "    key: 'usertoken',",
+                  "    value: pm.environment.get('UserToken')",
+                  "});",
                   "",
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
@@ -1007,7 +1119,13 @@
           ],
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n    \"itemname\": \"Test Item\",\n    \"instock\": true\n}",
@@ -1042,7 +1160,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/supplies",
               "host": ["{{host}}"],
@@ -1068,7 +1192,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/supplies/{{supplyID}}",
               "host": ["{{host}}"],
@@ -1100,7 +1230,13 @@
           ],
           "request": {
             "method": "PATCH",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n    \"itemname\": \"Updated Item\",\n    \"instock\": false\n}",
@@ -1141,7 +1277,13 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/supplies/{{supplyID}}",
               "host": ["{{host}}"],
@@ -1403,11 +1545,17 @@
                 "exec": [
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.token;",
-                  "pm.environment.set(\"loginToken\", value);",
+                  "pm.environment.set(\"UserToken\", value);",
                   "",
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.userid;",
                   "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.request.headers.add({",
+                  "    key: 'usertoken',",
+                  "    value: pm.environment.get('UserToken')",
+                  "});",
+                  "",
                   "",
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
@@ -1467,10 +1615,9 @@
             "method": "POST",
             "header": [
               {
-                "key": "autherization",
-                "value": "",
-                "type": "text",
-                "disabled": true
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
               }
             ],
             "body": {
@@ -1513,10 +1660,9 @@
             "method": "POST",
             "header": [
               {
-                "key": "autherization",
-                "value": "",
-                "type": "text",
-                "disabled": true
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
               }
             ],
             "body": {
@@ -1557,7 +1703,13 @@
           ],
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n    \"foodname\": \"Kcal Food1\",\n    \"calories\": 600,\n    \"weight\": 500\n}",
@@ -1596,7 +1748,13 @@
           ],
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n    \"foodname\": \"Kcal Food2\",\n    \"calories\": 350,\n    \"weight\": 1500\n}",
@@ -1631,7 +1789,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/calories/days",
               "host": ["{{host}}"],
@@ -1657,7 +1821,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/calories/stored",
               "host": ["{{host}}"],
@@ -1683,7 +1853,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/calories/needs",
               "host": ["{{host}}"],
@@ -1709,7 +1885,13 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/people/{{kcalPers1}}",
               "host": ["{{host}}"],
@@ -1735,7 +1917,13 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/people/{{kcalPers2}}",
               "host": ["{{host}}"],
@@ -1767,7 +1955,13 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/food/{{kcalFood1}}",
               "host": ["{{host}}"],
@@ -1799,7 +1993,13 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/food/{{kcalFood2}}",
               "host": ["{{host}}"],
@@ -1871,11 +2071,16 @@
                 "exec": [
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.token;",
-                  "pm.environment.set(\"loginToken\", value);",
+                  "pm.environment.set(\"UserToken\", value);",
                   "",
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.userid;",
                   "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.request.headers.add({",
+                  "    key: 'usertoken',",
+                  "    value: pm.environment.get('UserToken')",
+                  "});",
                   "",
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
@@ -1886,7 +2091,7 @@
                   "    ",
                   "    pm.expect(jsonData).to.have.property(\"message\");",
                   "    pm.expect(jsonData).to.have.property(\"token\");",
-                  "});    "
+                  "});"
                 ],
                 "type": "text/javascript"
               }
@@ -1935,10 +2140,9 @@
             "method": "POST",
             "header": [
               {
-                "key": "autherization",
-                "value": "",
-                "type": "text",
-                "disabled": true
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
               }
             ],
             "body": {
@@ -1981,10 +2185,9 @@
             "method": "POST",
             "header": [
               {
-                "key": "autherization",
-                "value": "",
-                "type": "text",
-                "disabled": true
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
               }
             ],
             "body": {
@@ -2025,7 +2228,13 @@
           ],
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n    \"foodname\": \"Kcal Food1\",\n    \"calories\": 600,\n    \"weight\": 500\n}",
@@ -2064,7 +2273,13 @@
           ],
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n    \"foodname\": \"Kcal Food2\",\n    \"calories\": 350,\n    \"weight\": 1500\n}",
@@ -2126,11 +2341,16 @@
                 "exec": [
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.token;",
-                  "pm.environment.set(\"adminToken\", value);",
+                  "pm.environment.set(\"AdminToken\", value);",
                   "",
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.admninid;",
                   "pm.environment.set(\"adminID\", value);",
+                  "",
+                  "pm.request.headers.add({",
+                  "    key: 'admintoken',",
+                  "    value: pm.environment.get('AdminToken')",
+                  "});",
                   "",
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
@@ -2192,7 +2412,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "admintoken",
+                "value": "{{AdminToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/admin/{{adminID}}/users",
               "host": ["{{host}}"],
@@ -2225,7 +2451,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "admintoken",
+                "value": "{{AdminToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/admin/{{adminID}}/foods",
               "host": ["{{host}}"],
@@ -2261,7 +2493,13 @@
           ],
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "admintoken",
+                "value": "{{AdminToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/admin/{{adminID}}/people",
               "host": ["{{host}}"],
@@ -2279,11 +2517,16 @@
                 "exec": [
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.token;",
-                  "pm.environment.set(\"loginToken\", value);",
+                  "pm.environment.set(\"UserToken\", value);",
                   "",
                   "bodyData = JSON.parse(responseBody);",
                   "value = bodyData.userid;",
                   "pm.environment.set(\"userID\", value);",
+                  "",
+                  "pm.request.headers.add({",
+                  "    key: 'usertoken',",
+                  "    value: pm.environment.get('UserToken')",
+                  "});",
                   "",
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
@@ -2294,7 +2537,7 @@
                   "    ",
                   "    pm.expect(jsonData).to.have.property(\"message\");",
                   "    pm.expect(jsonData).to.have.property(\"token\");",
-                  "});    "
+                  "});  "
                 ],
                 "type": "text/javascript"
               }
@@ -2337,7 +2580,13 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/people/{{kcalPers1}}",
               "host": ["{{host}}"],
@@ -2363,7 +2612,13 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/people/{{kcalPers2}}",
               "host": ["{{host}}"],
@@ -2395,7 +2650,13 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/food/{{kcalFood1}}",
               "host": ["{{host}}"],
@@ -2427,7 +2688,13 @@
           ],
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "usertoken",
+                "value": "{{UserToken}}",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{host}}/v1/profile/{{userID}}/food/{{kcalFood2}}",
               "host": ["{{host}}"],

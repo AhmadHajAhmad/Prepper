@@ -15,8 +15,11 @@
     <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
   </div>
 </template>
+
 <script>
 import axios from 'axios'
+// import store from '../store' // Assuming "store.js" is in the "src" directory
+
 export default {
   data() {
     return {
@@ -29,17 +32,28 @@ export default {
     async login() {
       try {
         console.log('Trying to login')
+        // Perform login without dealing with headers
         const response = await axios.post('http://localhost:3000/v1/login/', {
           username: this.username,
           password: this.password
         })
-        console.log('Response:', response)
-        // this.$router.push('/')
 
-        // Placeholder instead of rerouting.
-        alert('Logged in successfully.')
+        const userid = response.data.userid
+        const token = response.data.token
+        console.log('The user id is: ', userid)
+        console.log('The token is: ', token)
+
+        // Save the token and user ID in session storage
+        sessionStorage.setItem('token', token)
+        sessionStorage.setItem('userId', userid)
+
+        this.$router.push({
+          path: '/dashboard'
+        })
       } catch (error) {
-      // Handle error
+        console.error('Login error:', error)
+
+        // Handle error
         if (error.response && error.response.data.message) {
           this.errorMessage = error.response.data.message
         } else {
@@ -50,6 +64,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
 .login-container {
   display: flex;
@@ -70,8 +85,8 @@ label {
   margin-bottom: 8px;
 }
 
-input[type="text"],
-input[type="password"] {
+input[type='text'],
+input[type='password'] {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -79,7 +94,7 @@ input[type="password"] {
 }
 
 .login-btn {
-  background-color: #007BFF;
+  background-color: #007bff;
   color: #fff;
   padding: 10px 15px;
   border: none;
