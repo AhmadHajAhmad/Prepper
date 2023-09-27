@@ -45,7 +45,7 @@ export default {
 
       try {
         const response = await axios.get(
-          `http://localhost:3000/v1/profile/${userid}/calories/days`,
+          `http://localhost:3000/v1/profiles/${userid}/calories/days`,
           {
             headers: {
               usertoken: token
@@ -74,7 +74,7 @@ export default {
 
       try {
         const response = await axios.get(
-          `http://localhost:3000/v1/profile/${userid}/water/`,
+          `http://localhost:3000/v1/profiles/${userid}/water/`,
           {
             headers: {
               usertoken: token
@@ -105,7 +105,7 @@ export default {
 
       try {
         const response = await axios.get(
-          `http://localhost:3000/v1/profile/${userid}/people/`,
+          `http://localhost:3000/v1/profiles/${userid}/people/`,
           {
             headers: {
               usertoken: token
