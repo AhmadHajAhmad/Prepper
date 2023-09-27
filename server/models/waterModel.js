@@ -18,10 +18,10 @@ const waterSchema = new mongoose.Schema({
 // Add a virtual property for HATEOAS links
 waterSchema.virtual('_links').get(function() {
   return {
-    self: { href: `/v1/profile/${this._userid}/water/${this._id}` },
-    user: { href: `/v1/profile/${this._userid}` },
-    update: { href: `/v1/profile/${this._userid}/water/${this._id}`, method: "PATCH" },
-    delete: { href: `/v1/profile/${this._userid}/water/${this._id}`, method: "DELETE" }
+    self: { href: `/v1/profiles/${this._userid}/water/${this._id}` },
+    user: { href: `/v1/profiles/${this._userid}` },
+    update: { href: `/v1/profiles/${this._userid}/water/${this._id}`, method: "PATCH" },
+    delete: { href: `/v1/profiles/${this._userid}/water/${this._id}`, method: "DELETE" }
   };
 });
 
