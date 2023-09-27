@@ -63,18 +63,18 @@ app.get("/api", function (req, res) {
   res.json({ message: "Welcome to your DIT342 backend ExpressJS project!" });
 });
 
-app.use("/house", houseRouter);
+app.use("/houses", houseRouter);
 
 // Endpoints
-app.use("/v1/admin", adminRouter);
+app.use("/v1/admins", adminRouter);
 app.use("/v1/register", registerRouter);
 app.use("/v1/login", loginRouter);
-app.use("/v1/profile", userRouter);
-app.use("/v1/profile/:userid/calories", calorieRouter);
-app.use("/v1/profile/:userid/food", foodRouter);
-app.use("/v1/profile/:userid/supplies", supplyRouter);
-app.use("/v1/profile/:userid/water", waterRouter);
-app.use("/v1/profile/:userid/people", personRouter);
+app.use("/v1/profiles", userRouter);
+app.use("/v1/profiles/:userid/calories", calorieRouter);
+app.use("/v1/profiles/:userid/food", foodRouter);
+app.use("/v1/profiles/:userid/supplies", supplyRouter);
+app.use("/v1/profiles/:userid/water", waterRouter);
+app.use("/v1/profiles/:userid/people", personRouter);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use("/api/*", function (req, res) {
