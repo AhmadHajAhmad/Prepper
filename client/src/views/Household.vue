@@ -21,6 +21,11 @@
           <td>{{ person.weight }}</td>
           <td>{{ person.height }}</td>
           <td>{{ person.sex }}</td>
+          <td>
+            <button @click.stop="editPerson(person)" class="btn btn-primary">
+              Update
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -37,7 +42,7 @@
             <div class="mb-3">
               <label for="name" class="form-label">Name</label>
               <input
-                v-model="form.name"
+                v-model="newPerson.name"
                 type="text"
                 class="form-control"
                 id="name"
@@ -46,7 +51,7 @@
             <div class="mb-3">
               <label for="age" class="form-label">Age</label>
               <input
-                v-model="form.age"
+                v-model="newPerson.age"
                 type="number"
                 class="form-control"
                 id="age"
@@ -55,7 +60,7 @@
             <div class="mb-3">
               <label for="weight" class="form-label">Weight in kg</label>
               <input
-                v-model="form.weight"
+                v-model="newPerson.weight"
                 type="number"
                 class="form-control"
                 id="weight"
@@ -64,7 +69,7 @@
             <div class="mb-3">
               <label for="height" class="form-label">Height in cm</label>
               <input
-                v-model="form.height"
+                v-model="newPerson.height"
                 type="number"
                 class="form-control"
                 id="height"
@@ -72,7 +77,7 @@
             </div>
             <div class="mb-3">
               <label for="sex" class="form-label">Sex</label>
-              <select v-model="form.sex" class="form-select" id="sex">
+              <select v-model="newPerson.sex" class="form-select" id="sex">
                 <option value="" disabled selected>Select Sex</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -93,8 +98,8 @@
 
 <script>
 import * as bootstrap from 'bootstrap'
-
 import { Modal } from 'bootstrap'
+import axios from 'axios'
 
 export default {
   data() {
@@ -103,8 +108,21 @@ export default {
       showForm: false,
       form: this.resetForm(),
       selectedPerson: null,
-      modalInstance: null
+      modalInstance: null,
+      token: sessionStorage.getItem('token'),
+      userid: sessionStorage.getItem('userId'),
+      newPerson: {
+        name: '',
+        // Initialize other properties as needed.
+        age: null,
+        weight: null,
+        height: null,
+        sex: ''
+      }
     }
+  },
+  mounted() {
+    this.loadPeople()
   },
   watch: {
     showForm() {
@@ -129,12 +147,46 @@ export default {
       console.log('From create person: ', this.showForm)
     },
     editPerson(person) {
+      console.log(person)
       this.form = { ...person }
       this.showForm = true
     },
-    save() {
-      this.showForm = false
+    async save() {
+      const token = sessionStorage.getItem('token')
+      const userid = sessionStorage.getItem('userId')
+      try {
+        await axios.post(
+          `http://localhost:3000/v1/profiles/${userid}/people`,
+          this.newPerson,
+          {
+            headers: {
+              usertoken: token
+            }
+          }
+        )
+        this.cancel()
+        this.loadPeople()
+      } catch (error) {
+        console.error('Error fetching calories:', error)
+      }
+
       // Update people array logic here...
+    },
+    async loadPeople() {
+      const token = sessionStorage.getItem('token')
+      const userid = sessionStorage.getItem('userId')
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/v1/profiles/${userid}/people`,
+
+          {
+            headers: {
+              usertoken: token
+            }
+          }
+        )
+        this.people = response.data
+      } catch {}
     },
     cancel() {
       const modalElement = this.$el.querySelector('.modal')
