@@ -11,19 +11,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="person in people"
-          :key="person.id"
-          @click="editPerson(person)"
-        >
+        <tr v-for="person in people" :key="person.id">
           <td>{{ person.name }}</td>
           <td>{{ person.age }}</td>
           <td>{{ person.weight }}</td>
           <td>{{ person.height }}</td>
           <td>{{ person.sex }}</td>
           <td>
-            <button @click.stop="editPerson(person)" class="btn btn-primary">
+            <button @click.stop="updatePerson(person)" class="btn btn-primary">
               Update
+            </button>
+            <button @click.stop="deletePerson(person)" class="btn btn-danger">
+              Delete
             </button>
           </td>
         </tr>
@@ -106,14 +105,9 @@ export default {
     return {
       people: [],
       showForm: false,
-      form: this.resetForm(),
-      selectedPerson: null,
       modalInstance: null,
-      token: sessionStorage.getItem('token'),
-      userid: sessionStorage.getItem('userId'),
       newPerson: {
         name: '',
-        // Initialize other properties as needed.
         age: null,
         weight: null,
         height: null,
@@ -146,10 +140,29 @@ export default {
       this.showForm = true
       console.log('From create person: ', this.showForm)
     },
-    editPerson(person) {
+    updatePerson(person) {
       console.log(person)
-      this.form = { ...person }
+      this.newPerson = { ...person }
       this.showForm = true
+    },
+    async deletePerson(person) {
+      const token = sessionStorage.getItem('token')
+      const userid = sessionStorage.getItem('userId')
+      try {
+        await axios.delete(
+          `http://localhost:3000/v1/profiles/${userid}/people/${person._id}`,
+
+          {
+            headers: {
+              usertoken: token
+            }
+          }
+        )
+        this.cancel()
+        this.loadPeople()
+      } catch (error) {
+        console.error('Error saving the person:', error)
+      }
     },
     async save() {
       const token = sessionStorage.getItem('token')
@@ -167,10 +180,8 @@ export default {
         this.cancel()
         this.loadPeople()
       } catch (error) {
-        console.error('Error fetching calories:', error)
+        console.error('Error saving the person:', error)
       }
-
-      // Update people array logic here...
     },
     async loadPeople() {
       const token = sessionStorage.getItem('token')
@@ -178,7 +189,6 @@ export default {
       try {
         const response = await axios.get(
           `http://localhost:3000/v1/profiles/${userid}/people`,
-
           {
             headers: {
               usertoken: token
@@ -186,7 +196,9 @@ export default {
           }
         )
         this.people = response.data
-      } catch {}
+      } catch (error) {
+        console.log('Error loading people', error)
+      }
     },
     cancel() {
       const modalElement = this.$el.querySelector('.modal')
