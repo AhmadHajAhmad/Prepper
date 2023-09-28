@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Household Members</h1>
     <table class="table">
       <thead>
         <tr>
@@ -116,6 +117,8 @@ export default {
     }
   },
   mounted() {
+    this.token = sessionStorage.getItem('token')
+    this.userid = sessionStorage.getItem('userId')
     this.loadPeople()
   },
   watch: {
@@ -136,25 +139,21 @@ export default {
   },
   methods: {
     createPerson() {
-      this.form = this.resetForm()
+      this.newPerson = this.resetForm()
       this.showForm = true
-      console.log('From create person: ', this.showForm)
     },
     updatePerson(person) {
-      console.log(person)
       this.newPerson = { ...person }
       this.showForm = true
     },
     async deletePerson(person) {
-      const token = sessionStorage.getItem('token')
-      const userid = sessionStorage.getItem('userId')
       try {
         await axios.delete(
-          `http://localhost:3000/v1/profiles/${userid}/people/${person._id}`,
+          `http://localhost:3000/v1/profiles/${this.userid}/people/${person._id}`,
 
           {
             headers: {
-              usertoken: token
+              usertoken: this.token
             }
           }
         )
@@ -165,33 +164,44 @@ export default {
       }
     },
     async save() {
-      const token = sessionStorage.getItem('token')
-      const userid = sessionStorage.getItem('userId')
       try {
-        await axios.post(
-          `http://localhost:3000/v1/profiles/${userid}/people`,
-          this.newPerson,
-          {
-            headers: {
-              usertoken: token
+        if (this.newPerson._id) {
+          // If _id exists, it's an update operation
+          await axios.patch(
+            `http://localhost:3000/v1/profiles/${this.userid}/people/${this.newPerson._id}`,
+            this.newPerson,
+            {
+              headers: {
+                usertoken: this.token
+              }
             }
-          }
-        )
-        this.cancel()
-        this.loadPeople()
+          )
+        } else {
+          // If _id doesn't exist, it's a create operation
+          await axios.post(
+            `http://localhost:3000/v1/profiles/${this.userid}/people`,
+            this.newPerson,
+            {
+              headers: {
+                usertoken: this.token
+              }
+            }
+          )
+        }
+        this.cancel() // Close the form modal
+        this.loadPeople() // Reload the list of people
       } catch (error) {
         console.error('Error saving the person:', error)
       }
     },
+
     async loadPeople() {
-      const token = sessionStorage.getItem('token')
-      const userid = sessionStorage.getItem('userId')
       try {
         const response = await axios.get(
-          `http://localhost:3000/v1/profiles/${userid}/people`,
+          `http://localhost:3000/v1/profiles/${this.userid}/people`,
           {
             headers: {
-              usertoken: token
+              usertoken: this.token
             }
           }
         )
@@ -207,6 +217,7 @@ export default {
         modalInstance.hide() // Hide the modal properly, removing the backdrop as well
       }
       this.showForm = false // Now, you can safely set showForm to false
+      this.newPerson = this.resetForm()
     },
     resetForm() {
       return {
