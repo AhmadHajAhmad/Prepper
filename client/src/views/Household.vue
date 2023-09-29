@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div id="delete-all-container">
+      <button @click="deleteAllPeople" class="btn btn-danger">
+        Delete All Members
+      </button>
+    </div>
     <h1>Household Members</h1>
     <table class="table">
       <thead>
@@ -163,6 +168,23 @@ export default {
         console.error('Error saving the person:', error)
       }
     },
+    async deleteAllPeople() {
+      try {
+        await axios.delete(
+          `http://localhost:3000/v1/profiles/${this.userid}/people/`,
+
+          {
+            headers: {
+              usertoken: this.token
+            }
+          }
+        )
+        this.cancel()
+        this.loadPeople()
+      } catch (error) {
+        console.error('Error saving the person:', error)
+      }
+    },
     async save() {
       try {
         if (this.newPerson._id) {
@@ -219,6 +241,7 @@ export default {
       this.showForm = false // Now, you can safely set showForm to false
       this.newPerson = this.resetForm()
     },
+
     resetForm() {
       return {
         name: '',
@@ -231,3 +254,11 @@ export default {
   }
 }
 </script>
+<style scoped>
+#delete-all-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 10px; /* Optional: for some space from the edges */
+}
+</style>
