@@ -1,6 +1,7 @@
 const UserModel = require("../models/userModel");
 const PersonModel = require("../models/personModel");
 const FoodModel = require("../models/foodModel");
+const SupplyModel = require("../models/supplyModel")
 const adminSecretKey = "Alpha1900";
 
 class AdminController {
@@ -81,7 +82,7 @@ class AdminController {
       const user = await UserModel.find({}).sort({ username: 1 }).exec();
       res.json(user);
     } catch (err) {
-      res.status(500).send("IT is a fucking error");
+      res.status(500).send("Internal Server Error");
     }
   }
 
@@ -100,6 +101,15 @@ class AdminController {
   async getAllFood(req, res) {
     try {
       const food = await FoodModel.find({}).sort({ foodname: 1 }).exec();
+      res.json(food);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  }
+
+  async getAllSupplies(req, res) {
+    try {
+      const food = await SupplyModel.find({}).sort({ itemname: 1 }).exec();
       res.json(food);
     } catch (err) {
       res.status(500).send(err);

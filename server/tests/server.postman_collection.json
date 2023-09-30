@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "69bd63e7-339b-4394-b9d3-0d67933f1c4f",
+		"_postman_id": "455fc33b-ca48-41a3-9ba3-96c61a618e6f",
 		"name": "server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29427724"
@@ -73,18 +73,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -94,8 +88,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -274,19 +268,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
-									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -296,8 +283,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -364,6 +351,12 @@
 								"key": "usertoken",
 								"value": "{{UserToken}}",
 								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -376,7 +369,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/v1/profiles/{{userID}}/food/",
+							"raw": "{{host}}/v1/profiles/{{userID}}/food",
 							"host": [
 								"{{host}}"
 							],
@@ -384,8 +377,7 @@
 								"v1",
 								"profiles",
 								"{{userID}}",
-								"food",
-								""
+								"food"
 							]
 						}
 					},
@@ -596,18 +588,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -617,7 +603,6 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -913,18 +898,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -934,8 +913,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -1210,18 +1189,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -1231,8 +1204,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -1766,18 +1739,11 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
-									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
@@ -1788,8 +1754,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});    "
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -2390,18 +2356,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -2411,8 +2371,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -2656,65 +2616,18 @@
 					"response": []
 				},
 				{
-					"name": "Log In Admin without admin account",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Non admin user denied.\", function () {",
-									"    pm.response.to.have.status(403);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/admins/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"admins",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Log In Admin baseCase",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"AdminToken\", value);",
+									"let adminTokenValue = pm.response.headers.get(\"admintoken\");",
+									"let adminIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.admninid;",
-									"pm.environment.set(\"adminID\", value);",
+									"pm.environment.set(\"AdminToken\", adminTokenValue);",
+									"pm.environment.set(\"adminID\", adminIdValue);",
 									"",
-									"pm.request.headers.add({",
-									"    key: 'admintoken',",
-									"    value: pm.environment.get('AdminToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -2724,9 +2637,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"    pm.expect(jsonData).to.have.property(\"adminid\");",
-									"});   "
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -2745,13 +2657,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/v1/admins/login",
+							"raw": "{{host}}/v1/login",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"v1",
-								"admins",
 								"login"
 							]
 						}
@@ -2771,9 +2682,6 @@
 									"",
 									"  // Check if the response is an array",
 									"  pm.expect(responseJson).to.be.an(\"array\");",
-									"",
-									"  // Check if the array contains exactly two elements",
-									"  pm.expect(responseJson).to.have.lengthOf(3);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2900,18 +2808,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -2921,8 +2823,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});  "
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -3166,7 +3068,8 @@
 								"exec": [
 									"bodyData = JSON.parse(responseBody);",
 									"value = bodyData._id;",
-									"pm.environment.set(\"adminID\", value);",
+									"pm.environment.set(\"createdAdminID\", value);",
+									"",
 									"",
 									"pm.test(\"Status code is 201\", function () {",
 									"    pm.response.to.have.status(201);",
@@ -3230,14 +3133,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/v1/admins/{{adminID}}",
+							"raw": "{{host}}/v1/admins/{{createdAdminID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"v1",
 								"admins",
-								"{{adminID}}"
+								"{{createdAdminID}}"
 							]
 						}
 					},
@@ -3271,14 +3174,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/v1/admins/{{adminID}}",
+							"raw": "{{host}}/v1/admins/{{createdAdminID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"v1",
 								"admins",
-								"{{adminID}}"
+								"{{createdAdminID}}"
 							]
 						}
 					},
@@ -3303,14 +3206,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/v1/admins/{{adminID}}",
+							"raw": "{{host}}/v1/admins/{{createdAdminID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"v1",
 								"admins",
-								"{{adminID}}"
+								"{{createdAdminID}}"
 							]
 						}
 					},

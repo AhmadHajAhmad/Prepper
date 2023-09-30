@@ -39,7 +39,7 @@ const corsOptions = {
   origin: "http://localhost:8080", // Specify the allowed origin (your frontend URL)
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true, // Allow credentials (cookies, headers, etc.)
-  exposedHeaders: ["usertoken", "admintoken"],
+  exposedHeaders: ["usertoken", "admintoken", "isadmin", "userid"],
 };
 
 app.use(cors(corsOptions));
