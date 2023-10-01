@@ -5,6 +5,7 @@ import Dashboard from './views/Dashboard.vue'
 import Household from './views/Household.vue'
 import Supplies from './views/Supplies.vue'
 import Food from './views/Food.vue'
+import Settings from './views/Settings.vue'
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: '/food',
     name: 'food',
     component: Food
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: Settings
   }
 ]
 
