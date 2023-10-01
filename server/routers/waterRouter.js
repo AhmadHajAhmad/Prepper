@@ -25,7 +25,7 @@ router.post('/',authentication, controller.createWater);
 router.delete('/:waterid',authentication, controller.deleteByUserId);
 
 //6- Update a water doc by waterid & userid
-router.patch('/:waterid',authentication, controller.updateByUserId);
+router.put('/:waterid',authentication, controller.updateByUserId);
 
 
 

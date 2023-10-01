@@ -163,7 +163,7 @@ export default {
 
     const updateWater = async (water, waterData) => {
       try {
-        await axios.patch(
+        await axios.put(
       `http://localhost:3000/v1/profiles/${userid.value}/water/${water._id}`,
       waterData,
       {
