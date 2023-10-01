@@ -1,6 +1,8 @@
 const UserModel = require("../models/userModel");
 const PersonModel = require("../models/personModel");
 const FoodModel = require("../models/foodModel");
+const SupplyModel = require("../models/supplyModel");
+const WaterModel = require("../models/waterModel");
 const adminSecretKey = "Alpha1900";
 
 class AdminController {
@@ -81,7 +83,7 @@ class AdminController {
       const user = await UserModel.find({}).sort({ username: 1 }).exec();
       res.json(user);
     } catch (err) {
-      res.status(500).send("IT is a fucking error");
+      res.status(500).send("Internal Server Error");
     }
   }
 
@@ -105,6 +107,75 @@ class AdminController {
       res.status(500).send(err);
     }
   }
+
+  async getAllSupplies(req, res) {
+    try {
+      const food = await SupplyModel.find({}).sort({ itemname: 1 }).exec();
+      res.json(food);
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  }
+
+  // Method to delete all food
+async deleteAllFood(req, res){
+  try {
+    const food = await FoodModel.deleteMany({});
+    if (food.deletedCount > 0) {
+      res.status(200).json({ message: `${food.deletedCount} food items deleted.` });
+    } else {
+      res.status(404).json({ message: "No food found to delete." });
+    }
+  } catch (error) {
+    console.error("Error deleting items:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+}
+
+// Method to delete all supplies
+async deleteAllSupplies(req, res){
+  try {
+    const supplies = await SupplyModel.deleteMany({});
+    if (supplies.deletedCount > 0) {
+      res.status(200).json({ message: `${supplies.deletedCount} supply items deleted.` });
+    } else {
+      res.status(404).json({ message: "No supplies found to delete." });
+    }
+  } catch (error) {
+    console.error("Error deleting items:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+}
+
+// Method to delete all water
+async deleteAllWater(req, res){
+  try {
+    const water = await WaterModel.deleteMany({});
+    if (water.deletedCount > 0) {
+      res.status(200).json({ message: `${water.deletedCount} water deleted.` });
+    } else {
+      res.status(404).json({ message: "No water found to delete." });
+    }
+  } catch (error) {
+    console.error("Error deleting items:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+}
+
+// Method to delete all persons
+async deleteAllPersons(req, res){
+  try {
+    const persons = await PersonModel.deleteMany({});
+    if (persons.deletedCount > 0) {
+      res.status(200).json({ message: `${persons.deletedCount} person items deleted.` });
+    } else {
+      res.status(404).json({ message: "No persons found to delete." });
+    }
+  } catch (error) {
+    console.error("Error deleting items:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+}
 }
 
 module.exports = AdminController;

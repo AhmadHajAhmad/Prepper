@@ -38,18 +38,30 @@ export default {
           password: this.password
         })
 
-        const userid = response.data.userid
-        const token = response.data.token
-        console.log('The user id is: ', userid)
-        console.log('The token is: ', token)
+        const userid = response.headers.get('userid')
+        const isAdmin = response.headers.get('isadmin')
 
         // Save the token and user ID in session storage
-        sessionStorage.setItem('token', token)
+        // sessionStorage.setItem('token', token)
         sessionStorage.setItem('userId', userid)
 
-        this.$router.push({
-          path: '/dashboard'
-        })
+        if (isAdmin === 'yes') {
+          const token = response.headers.get('admintoken')
+          console.log(token)
+          console.log(userid)
+          sessionStorage.setItem('token', token)
+          this.$router.push({
+            path: '/admin'
+          })
+        } else {
+          const token = response.headers.get('usertoken')
+          sessionStorage.setItem('token', token)
+          console.log(token)
+          console.log(userid)
+          this.$router.push({
+            path: '/dashboard'
+          })
+        }
       } catch (error) {
         console.error('Login error:', error)
 

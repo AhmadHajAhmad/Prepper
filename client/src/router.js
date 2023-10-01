@@ -6,6 +6,7 @@ import Household from './views/Household.vue'
 import Supplies from './views/Supplies.vue'
 import Food from './views/Food.vue'
 import Register from './views/Register.vue'
+import Admin from './views/Admin.vue'
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
     path: '/register',
     name: 'register',
     component: Register
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: Admin
   }
 ]
 
