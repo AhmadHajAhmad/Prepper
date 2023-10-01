@@ -1,6 +1,21 @@
 <template>
     <div class="container mt-5">
 
+      <!-- List of Users -->
+      <div class="row mb-5">
+        <div class="col-12">
+          <h2>Users</h2>
+          <ul class="list-group">
+            <li v-for="user in userList" :key="user._id" class="list-group-item">
+              <strong>Username: </strong>{{ user.username }}
+              <strong>Email: </strong>{{ user.email }}
+              <button class="btn btn-danger mt-3 ms-2" @click="deleteUser(user._id)"
+              v-if="!['Baseline Admin', 'Baseline User'].includes(user.username)">Delete User</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
       <!-- List of Food -->
       <div class="row mb-5">
         <div class="col-12">
@@ -12,19 +27,7 @@
               <strong>Calories: </strong>{{ food.calories }}
             </li>
           </ul>
-        </div>
-      </div>
-
-      <!-- List of Users -->
-      <div class="row mb-5">
-        <div class="col-12">
-          <h2>Users</h2>
-          <ul class="list-group">
-            <li v-for="user in userList" :key="user._id" class="list-group-item">
-              <strong>Username: </strong>{{ user.username }}
-              <strong>Email: </strong>{{ user.email }}
-            </li>
-          </ul>
+          <button class="btn btn-danger mt-3 ms-2" @click="deleteList('http://localhost:3000/v1/admins/deletefood', 'food')">Delete List</button>
         </div>
       </div>
 
@@ -41,6 +44,7 @@
               <strong>Sex: </strong>{{ person.sex }}
             </li>
           </ul>
+          <button class="btn btn-danger mt-3 ms-2" @click="deleteList('http://localhost:3000/v1/admins/deletepersons', 'people')">Delete List</button>
         </div>
       </div>
 
@@ -54,6 +58,7 @@
               <strong>In Stock: </strong>{{ item.instock }}
             </li>
           </ul>
+          <button class="btn btn-danger mt-3 ms-2" @click="deleteList('http://localhost:3000/v1/admins/deletesupplies', 'supplies')">Delete List</button>
         </div>
       </div>
 
@@ -86,6 +91,46 @@ export default {
       }
     }
 
+    const deleteList = async (url, list) => {
+      try {
+        const token = adminToken.value
+        const targetList = list
+        await axios.delete(url, {
+          headers: {
+            admintoken: token
+          }
+        })
+        if (targetList === 'food') {
+          foodList.value = null
+        } else if (targetList === 'supplies') {
+          supplyList.value = null
+        } else if (targetList === 'people') {
+          peopleList.value = null
+        }
+      } catch (error) {
+        console.error(`Error fetching data from ${url}:`, error)
+      }
+    }
+
+    const deleteUser = async (userId) => {
+      try {
+        const token = adminToken.value
+        const targetUser = userId
+        await axios.delete(`http://localhost:3000/v1/profiles/${targetUser}`, {
+          headers: {
+            admintoken: token
+          }
+        })
+
+        getEntities(`http://localhost:3000/v1/admins/${adminID.value}/foods`, foodList, adminToken.value)
+        getEntities(`http://localhost:3000/v1/admins/${adminID.value}/users`, userList, adminToken.value)
+        getEntities(`http://localhost:3000/v1/admins/${adminID.value}/people`, peopleList, adminToken.value)
+        getEntities(`http://localhost:3000/v1/admins/${adminID.value}/supplies`, supplyList, adminToken.value)
+      } catch (error) {
+        console.error('Error deleting user:', error)
+      }
+    }
+
     onMounted(() => {
       adminID.value = sessionStorage.getItem('userId')
       adminToken.value = sessionStorage.getItem('token')
@@ -101,7 +146,10 @@ export default {
       foodList,
       userList,
       peopleList,
-      supplyList
+      supplyList,
+      getEntities,
+      deleteList,
+      deleteUser
     }
   }
 }
