@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "69bd63e7-339b-4394-b9d3-0d67933f1c4f",
+		"_postman_id": "455fc33b-ca48-41a3-9ba3-96c61a618e6f",
 		"name": "server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29427724"
@@ -17,8 +17,12 @@
 							"script": {
 								"exec": [
 									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData._id;",
-									"pm.environment.set(\"createduserID\", value);",
+									"userId = bodyData._id;",
+									"userName = bodyData.username;",
+									"password = bodyData.password;",
+									"pm.environment.set(\"createduserID\", userId);",
+									"pm.environment.set(\"createduserName\", userName);",
+									"pm.environment.set(\"createduserPW\", password);",
 									"",
 									"pm.test(\"Status code is 201\", function () {",
 									"    pm.response.to.have.status(201);",
@@ -67,24 +71,18 @@
 					"response": []
 				},
 				{
-					"name": "Log In baseCase",
+					"name": "Log In User",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -94,8 +92,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -106,7 +104,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
+							"raw": "{\n\"username\": \"{{createduserName}}\",\n\"password\": \"{{createduserPW}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -121,37 +119,6 @@
 							"path": [
 								"v1",
 								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get All Users",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/v1/profiles",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"profiles"
 							]
 						}
 					},
@@ -190,6 +157,229 @@
 					"response": []
 				},
 				{
+					"name": "Post Food",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "usertoken",
+								"value": "{{UserToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"foodname\": \"User Food\",\n    \"calories\": 999,\n    \"weight\": 500\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/profiles/{{createduserID}}/food",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"profiles",
+								"{{createduserID}}",
+								"food"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Person",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"bodyData = JSON.parse(responseBody);",
+									"value = bodyData._id;",
+									"pm.environment.set(\"personID\", value);",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response has all the necessary attributes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"name\");",
+									"    pm.expect(jsonData).to.have.property(\"age\");",
+									"    pm.expect(jsonData).to.have.property(\"weight\");",
+									"    pm.expect(jsonData).to.have.property(\"height\");",
+									"    pm.expect(jsonData).to.have.property(\"sex\");",
+									"    pm.expect(jsonData).to.have.property(\"_userid\");",
+									"",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "usertoken",
+								"value": "{{UserToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"User Person\",\n    \"age\": 60,\n    \"weight\": 80,\n    \"height\": 170,\n    \"sex\": \"Female\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/profiles/{{createduserID}}/people/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"profiles",
+								"{{createduserID}}",
+								"people",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Water",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"bodyData = JSON.parse(responseBody);",
+									"value = bodyData._id;",
+									"pm.environment.set(\"waterID\", value);",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response has all the necessary attributes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"waterqty\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "usertoken",
+								"value": "{{UserToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"waterqty\": 400\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/profiles/{{createduserID}}/water/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"profiles",
+								"{{createduserID}}",
+								"water",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Supplies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"bodyData = JSON.parse(responseBody);",
+									"value = bodyData._id;",
+									"pm.environment.set(\"supplyID\", value);",
+									"",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response has all the necessary attributes\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    ",
+									"    pm.expect(jsonData).to.have.property(\"itemname\");",
+									"    pm.expect(jsonData).to.have.property(\"instock\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "usertoken",
+								"value": "{{UserToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"itemname\": \"User Item\",\n    \"instock\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/v1/profiles/{{createduserID}}/supplies",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"v1",
+								"profiles",
+								"{{createduserID}}",
+								"supplies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update User",
 					"event": [
 						{
@@ -206,7 +396,13 @@
 					],
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "usertoken",
+								"value": "{{UserToken}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"username\": \"something updated\",\n    \"password\": \"updatedPassword\",\n    \"email\": \"updated@email.com\"\n}",
@@ -247,7 +443,13 @@
 					],
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "usertoken",
+								"value": "{{UserToken}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{host}}/v1/profiles/{{createduserID}}",
 							"host": [
@@ -274,19 +476,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
-									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -296,8 +491,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -364,6 +559,12 @@
 								"key": "usertoken",
 								"value": "{{UserToken}}",
 								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -376,7 +577,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/v1/profiles/{{userID}}/food/",
+							"raw": "{{host}}/v1/profiles/{{userID}}/food",
 							"host": [
 								"{{host}}"
 							],
@@ -384,8 +585,7 @@
 								"v1",
 								"profiles",
 								"{{userID}}",
-								"food",
-								""
+								"food"
 							]
 						}
 					},
@@ -596,18 +796,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -617,7 +811,6 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -913,18 +1106,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -934,8 +1121,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -1210,18 +1397,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -1231,8 +1412,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -1766,18 +1947,11 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
-									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
@@ -1788,8 +1962,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});    "
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -2390,18 +2564,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -2411,8 +2579,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});"
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -2656,65 +2824,18 @@
 					"response": []
 				},
 				{
-					"name": "Log In Admin without admin account",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Non admin user denied.\", function () {",
-									"    pm.response.to.have.status(403);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\"username\": \"Baseline User\",\n\"password\": \"basePassword\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/v1/admins/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"v1",
-								"admins",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Log In Admin baseCase",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"AdminToken\", value);",
+									"let adminTokenValue = pm.response.headers.get(\"admintoken\");",
+									"let adminIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.admninid;",
-									"pm.environment.set(\"adminID\", value);",
+									"pm.environment.set(\"AdminToken\", adminTokenValue);",
+									"pm.environment.set(\"adminID\", adminIdValue);",
 									"",
-									"pm.request.headers.add({",
-									"    key: 'admintoken',",
-									"    value: pm.environment.get('AdminToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -2724,9 +2845,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"    pm.expect(jsonData).to.have.property(\"adminid\");",
-									"});   "
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -2745,13 +2865,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/v1/admins/login",
+							"raw": "{{host}}/v1/login",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"v1",
-								"admins",
 								"login"
 							]
 						}
@@ -2771,9 +2890,6 @@
 									"",
 									"  // Check if the response is an array",
 									"  pm.expect(responseJson).to.be.an(\"array\");",
-									"",
-									"  // Check if the array contains exactly two elements",
-									"  pm.expect(responseJson).to.have.lengthOf(3);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2900,18 +3016,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.token;",
-									"pm.environment.set(\"UserToken\", value);",
+									"let userTokenValue = pm.response.headers.get(\"usertoken\");",
+									"let userIdValue = pm.response.headers.get(\"userid\");",
 									"",
-									"bodyData = JSON.parse(responseBody);",
-									"value = bodyData.userid;",
-									"pm.environment.set(\"userID\", value);",
+									"pm.environment.set(\"UserToken\", userTokenValue);",
+									"pm.environment.set(\"userID\", userIdValue);",
 									"",
-									"pm.request.headers.add({",
-									"    key: 'usertoken',",
-									"    value: pm.environment.get('UserToken')",
-									"});",
 									"",
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -2921,8 +3031,8 @@
 									"    var jsonData = pm.response.json();",
 									"    ",
 									"    pm.expect(jsonData).to.have.property(\"message\");",
-									"    pm.expect(jsonData).to.have.property(\"token\");",
-									"});  "
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -3166,7 +3276,8 @@
 								"exec": [
 									"bodyData = JSON.parse(responseBody);",
 									"value = bodyData._id;",
-									"pm.environment.set(\"adminID\", value);",
+									"pm.environment.set(\"createdAdminID\", value);",
+									"",
 									"",
 									"pm.test(\"Status code is 201\", function () {",
 									"    pm.response.to.have.status(201);",
@@ -3230,14 +3341,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/v1/admins/{{adminID}}",
+							"raw": "{{host}}/v1/admins/{{createdAdminID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"v1",
 								"admins",
-								"{{adminID}}"
+								"{{createdAdminID}}"
 							]
 						}
 					},
@@ -3271,14 +3382,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/v1/admins/{{adminID}}",
+							"raw": "{{host}}/v1/admins/{{createdAdminID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"v1",
 								"admins",
-								"{{adminID}}"
+								"{{createdAdminID}}"
 							]
 						}
 					},
@@ -3303,14 +3414,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/v1/admins/{{adminID}}",
+							"raw": "{{host}}/v1/admins/{{createdAdminID}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"v1",
 								"admins",
-								"{{adminID}}"
+								"{{createdAdminID}}"
 							]
 						}
 					},

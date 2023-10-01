@@ -1,4 +1,8 @@
 const UserModel = require('../models/userModel');
+const FoodModel = require('../models/foodModel');
+const SupplyModel = require('../models/supplyModel');
+const PersonModel = require('../models/personModel');
+const WaterModel = require('../models/waterModel');
 
 class UserController {
 
@@ -48,8 +52,13 @@ class UserController {
 
   async deleteById(req, res) {
     const id = req.params.id;
+    
 
     try {
+      await FoodModel.deleteMany({ _userid: id });
+      await SupplyModel.deleteMany({ _userid: id });
+      await PersonModel.deleteMany({ _userid: id });
+      await WaterModel.deleteMany({ _userid: id });
         const result = await UserModel.findByIdAndDelete(id);
         if (!result) {
             return res.status(404).send('User not found');
@@ -77,7 +86,6 @@ async updateByID(req, res){
     res.status(500).send('Internal Server Error');
   }
 }
-
 };
 
 module.exports = UserController;
