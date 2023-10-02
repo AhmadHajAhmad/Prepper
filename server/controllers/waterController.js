@@ -81,6 +81,20 @@ async createWater(req, res) {
   
 }
 
+// Method for creating an initial water object upon user creation
+async createInitialWater(userid) {
+  try {  
+    const newWater = new waterModel({
+      "waterqty": 0,
+      "_userid": userid
+    })
+    await newWater.save();
+  } catch (err) {
+    res.status(500).json({err: "Internal Server Error"});
+  }
+  
+}
+
 
 
 

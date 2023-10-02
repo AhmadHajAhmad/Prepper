@@ -34,7 +34,6 @@ export default {
       // Get the token and user ID from session storage
       const token = sessionStorage.getItem('token')
       const userid = sessionStorage.getItem('userId')
-
       if (!token) {
         // Handle the case where the token is not available
         console.error('Token not available. User may not be authenticated.')
@@ -52,7 +51,13 @@ export default {
             }
           }
         )
-        this.fetchedCalories = response.data
+        const calories = response.data
+
+        if (calories < 1) {
+          this.fetchedCalories = 'You are dangerously low on calories.'
+        } else {
+          this.fetchedCalories = `You have ${calories} days of food left.`
+        }
       } catch (error) {
         console.error('Error fetching calories:', error)
       } finally {
@@ -81,9 +86,12 @@ export default {
             }
           }
         )
-        console.log('Data from the water ', response.data)
-        const liter = response.data[0].waterqty
-        this.fetchedWater = `The amounter of water you have is ${liter} liter.`
+        const liters = response.data[0].waterqty
+        if (liters < 1) {
+          this.fetchedWater = 'You are almost out of water, please replenish your water immediately.'
+        } else {
+          this.fetchedWater = `The amounter of water you have is ${liters} liters.`
+        }
       } catch (error) {
         console.error('Error fetching calories:', error)
       } finally {
@@ -112,9 +120,12 @@ export default {
             }
           }
         )
-        console.log('Data from the people ', response.data)
         const people = response.data.length
-        this.fetchedPeople = `The number of people in your household is ${people} people.`
+        if (people < 1) {
+          this.fetchedPeople = 'You have no people in your household. Go to the household page to add.'
+        } else {
+          this.fetchedPeople = `The number of people in your household is ${people} people.`
+        }
       } catch (error) {
         console.error('Error fetching calories:', error)
       } finally {

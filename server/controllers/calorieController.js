@@ -9,7 +9,7 @@ class CalorieController {
             const userid = req.params.userid;
             const days = await service.daysOfFoodByUserId(userid);
             
-            res.status(200).send(`You have ${days.toFixed(1)} days of food left.`);
+            res.status(200).json(days);
         } catch (err) {
             res.status(500).send('Internal Server Error');
         }
@@ -19,7 +19,7 @@ class CalorieController {
         try {
             const userid = req.params.userid;
             const total = await service.totalIntake(userid);
-            res.status(200).send(`You need ${total.toFixed(1)} calories per day.`);  
+            res.status(200).json(total);
         } catch (error) {
             res.status(500).send('Internal Server Error');
         }
@@ -29,7 +29,7 @@ class CalorieController {
         try {
             const userid = req.params.userid;
             const total = await service.totalKcalStored(userid);
-            res.status(200).send(`You have ${total.toFixed(1)} calories stored.`);
+            res.status(200).json(total);
         } catch (error) {
             res.status(500).send('Internal Server Error');
         }

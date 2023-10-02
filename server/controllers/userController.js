@@ -3,6 +3,8 @@ const FoodModel = require('../models/foodModel');
 const SupplyModel = require('../models/supplyModel');
 const PersonModel = require('../models/personModel');
 const WaterModel = require('../models/waterModel');
+const WaterController = require('../controllers/waterController');
+const SupplyController = require('../controllers/supplyController');
 
 class UserController {
 
@@ -18,6 +20,13 @@ class UserController {
             "email": email,
           })
           await newUser.save();
+
+          const waterController = new WaterController;
+          waterController.createInitialWater(newUser._id);
+
+          const supplyController = new SupplyController;
+          supplyController.createInitialSupplies(newUser._id);
+
           res.status(201).json(newUser);
     
         } catch (err) {
