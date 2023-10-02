@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <NavbarInternal/>
     <div class="white-template">
         <!-- Display fetched data here -->
         <div>
@@ -66,14 +68,19 @@
     <!-- Integrated Supplies Form ends here -->
   </div>
     </div>
+  </div>
   </template>
 
 <script>
 import axios from 'axios'
 import { Modal } from 'bootstrap'
 import * as bootstrap from 'bootstrap'
+import NavbarInternal from '../components/NavbarInternal.vue'
 
 export default {
+  components: {
+    NavbarInternal
+  },
   data() {
     return {
       token: null, // Initialize token as a data property

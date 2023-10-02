@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <NavbarLogin/>
   <div class="login-container">
     <h2>Login</h2>
     <form @submit.prevent="login">
@@ -14,13 +16,17 @@
     </form>
     <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
   </div>
+</div>
 </template>
 
 <script>
 import axios from 'axios'
-// import store from '../store' // Assuming "store.js" is in the "src" directory
+import NavbarLogin from '../components/NavbarLogin.vue'
 
 export default {
+  components: {
+    NavbarLogin
+  },
   data() {
     return {
       username: '',

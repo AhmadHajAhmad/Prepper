@@ -1,42 +1,46 @@
 <template>
-  <div class="container p-4">
-    <h1 class="display-4">DIT342 Frontend</h1>
-    <p class="lead">Welcome to your DIT342 Frontend Vue.js App</p>
-    <button class="btn btn-primary btn_message" @click="getMessage">Get Message from Server</button>
-    <p>Message from the server:<br/>
-    {{ message }}</p>
+  <div class="splash-container">
+    <router-link to="/login">
+      <img src="../assets/images/logo.png" alt="Prepper Logo" class="splash-logo">
+    </router-link>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import { ref } from 'vue'
-import { Api } from '@/Api'
-
 export default {
-  name: 'home',
-  setup() {
-    const message = ref('none')
-
-    const getMessage = async () => {
-      try {
-        const response = await Api.get('/')
-        message.value = response.data.message
-      } catch (error) {
-        message.value = error.message
-      }
-    }
-
-    return {
-      message,
-      getMessage
-    }
-  }
+  name: 'Home'
 }
 </script>
 
 <style scoped>
-.btn_message {
-  margin-bottom: 1em;
+.splash-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: radial-gradient(circle at center, transparent, #2c3e50 80%), url('../assets/images/splashbackground.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
+
+.splash-logo {
+  max-width: 350px;
+  max-height: 350px;
+  margin-bottom: 20px;
+  animation: flicker 1.5s infinite alternate;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+
+}
+
 </style>

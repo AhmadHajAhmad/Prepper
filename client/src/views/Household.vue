@@ -1,5 +1,6 @@
 <template>
   <div>
+    <NavbarInternal/>
     <div id="delete-all-container">
       <button @click="deleteAllPeople" class="btn btn-danger">
         Delete All Members
@@ -105,8 +106,12 @@
 import * as bootstrap from 'bootstrap'
 import { Modal } from 'bootstrap'
 import axios from 'axios'
+import NavbarInternal from '../components/NavbarInternal.vue'
 
 export default {
+  components: {
+    NavbarInternal
+  },
   data() {
     return {
       people: [],
