@@ -73,6 +73,37 @@ async createSupply(req, res) {
   
 }
 
+async createInitialSupplies(userid) {
+    
+  try {
+    
+    const batteries = new SupplyModel({
+      "itemname": "Batteries",
+      "instock": false,
+      "_userid": userid,
+    })
+    await batteries.save();
+
+    const blanket = new SupplyModel({
+      "itemname": "Blanket",
+      "instock": false,
+      "_userid": userid,
+    })
+    await blanket.save();
+
+    const backpack = new SupplyModel({
+      "itemname": "Backpack",
+      "instock": false,
+      "_userid": userid,
+    })
+    await backpack.save();
+
+  } catch (err) {
+    res.status(500).json({err: "Internal Server Error"});
+  }
+  
+}
+
 
 //5-Delete a supply by its Id & UserId
 async deleteByUserId(req, res) {

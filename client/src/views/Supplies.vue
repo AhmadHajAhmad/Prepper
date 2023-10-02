@@ -1,7 +1,5 @@
 <template>
     <div class="white-template">
-      <div v-if="isLoading" class="loading-message">Loading Supplies page...</div>
-      <div v-else>
         <!-- Display fetched data here -->
         <div>
           <h2>Supply List</h2>
@@ -29,8 +27,6 @@
         <div class="centered-content">
           <!-- Render the fetched data -->
           <p>Supplies Data Creation Form or List</p>
-        </div>
-      </div>
 
     <!-- Integrated Supplies Form -->
     <div v-if="showForm" class="modal" tabindex="-1">
@@ -69,6 +65,7 @@
     </div>
     <!-- Integrated Supplies Form ends here -->
   </div>
+    </div>
   </template>
 
 <script>

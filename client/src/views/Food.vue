@@ -52,7 +52,7 @@
       <div>
         <!-- Progress Bar -->
         <div class="progress">
-            <div class="progress-bar" role="progressbar" :style="{width: `${waterQuantity * 4}%`}" :aria-valuenow="progressValue" aria-valuemin="0" aria-valuemax="25">{{ waterQuantity }} Liters</div>
+            <div class="progress-bar" role="progressbar" :style="{width: `${waterQuantity * 4}%`}" :aria-valuenow="waterQuantity" aria-valuemin="0" aria-valuemax="25">{{ waterQuantity }} Liters</div>
         </div>
         <!-- Control Buttons -->
         <button class="btn btn-primary mt-3" @click="increaseWater">Increase</button>
@@ -182,15 +182,15 @@ export default {
     }
 
     const increaseWater = () => {
-      if (waterQuantity.value < 25) {
-        waterQuantity.value += 1
+      if (waterQuantity.value <= 24.5) {
+        waterQuantity.value += 0.5
         updateWater(waterList.value[0], { waterqty: waterQuantity.value })
       }
     }
 
     const decreaseWater = () => {
-      if (waterQuantity.value > 0) {
-        waterQuantity.value -= 1
+      if (waterQuantity.value >= 0.5) {
+        waterQuantity.value -= 0.5
         updateWater(waterList.value[0], { waterqty: waterQuantity.value })
       }
     }
