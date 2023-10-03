@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <NavbarInternal/>
   <div class="container mt-5">
     <h2>Settings</h2>
     <h3>(Logged in as: {{ usernameHeading }})</h3>
@@ -66,12 +68,17 @@
   </ul>
     </div>
   </div>
+</div>
 </template>
 
 <script>
 import axios from 'axios'
+import NavbarInternal from '../components/NavbarInternal.vue'
 
 export default {
+  components: {
+    NavbarInternal
+  },
   data() {
     return {
       username: '', // Use the username from sessionStorage

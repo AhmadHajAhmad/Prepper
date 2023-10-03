@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <NavbarInternal/>
     <div class="container mt-5">
       <h1>Current Food</h1>
       <div class="list-group" v-if="foodList && foodList.length">
@@ -59,17 +61,22 @@
         <button class="btn btn-danger mt-3 ms-2" @click="decreaseWater">Decrease</button>
     </div>
 </div>
+</div>
 </template>
 
 <script>
 import { ref, reactive, onMounted } from 'vue'
 import axios from 'axios'
+import NavbarInternal from '../components/NavbarInternal.vue'
 
 export default {
-  name: 'FoodComponent',
+  components: {
+    NavbarInternal
+  },
   setup() {
     const foodList = ref([])
     const waterList = ref([])
+    const waterLinks = ref(null)
     const error = ref(null)
     const newFood = ref({
       foodname: '',
@@ -109,6 +116,13 @@ export default {
         )
         waterList.value = response.data
         waterQuantity.value = waterList.value[0].waterqty
+
+        // Store HATEOAS links
+        if (waterList.value[0]._links) {
+          waterLinks.value = waterList.value[0]._links
+        }
+
+        console.log(waterLinks)
       } catch (err) {
         error.value = 'An error occurred while fetching the data.'
       }
@@ -161,16 +175,18 @@ export default {
       }
     }
 
-    const updateWater = async (water, waterData) => {
+    // Uses HATEOAS links to get the request
+    const updateWater = async (waterData) => {
+      const link = `http://localhost:3000${waterLinks.value.update.href}`
       try {
         await axios.put(
-      `http://localhost:3000/v1/profiles/${userid.value}/water/${water._id}`,
-      waterData,
-      {
-        headers: {
-          usertoken: token.value
-        }
-      }
+          link,
+          waterData,
+          {
+            headers: {
+              usertoken: token.value
+            }
+          }
         )
       } catch (error) {
         console.error('Error updating water:', error)
@@ -184,14 +200,14 @@ export default {
     const increaseWater = () => {
       if (waterQuantity.value <= 24.5) {
         waterQuantity.value += 0.5
-        updateWater(waterList.value[0], { waterqty: waterQuantity.value })
+        updateWater({ waterqty: waterQuantity.value })
       }
     }
 
     const decreaseWater = () => {
       if (waterQuantity.value >= 0.5) {
         waterQuantity.value -= 0.5
-        updateWater(waterList.value[0], { waterqty: waterQuantity.value })
+        updateWater({ waterqty: waterQuantity.value })
       }
     }
 
@@ -206,6 +222,7 @@ export default {
     return {
       foodList,
       waterList,
+      waterLinks,
       error,
       newFood,
       waterQuantity,

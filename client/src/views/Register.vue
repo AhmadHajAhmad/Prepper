@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <NavbarLogin/>
     <div class="login-container">
       <h2>Register</h2>
       <form @submit.prevent="register">
@@ -18,14 +20,19 @@
       </form>
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     </div>
+  </div>
 </template>
 
 <script>
 import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import NavbarLogin from '../components/NavbarLogin.vue'
 
 export default {
+  components: {
+    NavbarLogin
+  },
   setup() {
     const username = ref('')
     const password = ref('')
