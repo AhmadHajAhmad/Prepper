@@ -57,6 +57,14 @@
     <div v-if="passwordsConfirmed" class="alert alert-success" role="alert">
       Passwords changed.
     </div>
+    <div v-if="passwordsNotStrong" class="alert alert-success" role="alert" style="text-align: left;">
+      Password not strong enough to be accepted! it should meet the following criteria
+      <ul style="text-align: left;">
+    <li>Minimum characters: 8 </li>
+    <li>Atleast one capital letter</li>
+    <li>Atleast one Special character[!@#$%^&*()_+{}\\:;,.?~\\-]</li>
+  </ul>
+    </div>
   </div>
 </template>
 
@@ -74,6 +82,7 @@ export default {
       passwordsDoNotMatch: false,
       passwordsConfirmed: false,
       passwordsDoNotMatchDB: false,
+      passwordsNotStrong: false,
       modalView: null,
       usernameHeading: ''
     }
@@ -103,9 +112,18 @@ export default {
       // checks if Old Password equals to password saved to the saved password
       } else if (this.oldPassword !== this.oldPasswordDb) {
         this.passwordsDoNotMatchDB = true
+      } else if (this.newPassword.length < 8 || // Check minimum length
+      !/[A-Z]/.test(this.newPassword) || // Check for at least one capital letter
+      !/[!@#$%^&*()_+{}\\:;<>,.?~\\-]/.test(this.newPassword) // Check for at least one special character
+      ) {
+      // Password does not meet the strength criteria
+        this.passwordsDoNotMatch = false
+        this.passwordsDoNotMatchDB = false
+        this.passwordsNotStrong = true
       } else {
         this.passwordsDoNotMatch = false
         this.passwordsDoNotMatchDB = false
+        this.passwordsNotStrong = false
 
         // Send a request to update the user profile
         // You can use Axios or another HTTP library for this
@@ -135,6 +153,7 @@ export default {
       this.confirmNewPassword = ''
       this.passwordsDoNotMatch = false
       this.passwordsDoNotMatchDB = false
+      this.passwordsNotStrong = false
     }
   }
 }
