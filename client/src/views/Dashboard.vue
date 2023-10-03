@@ -1,24 +1,30 @@
 <template>
-  <div class="white-template">
-    <div v-if="isLoading" class="loading-message">Loading...</div>
-    <div v-else>
-      <!-- Display fetched data here -->
-      <div class="centered-content">
-        <!-- Render the fetched data -->
-        <p>Fetched Data:</p>
-        <pre>{{ fetchedCalories }}</pre>
-        <pre>{{ fetchedWater }}</pre>
-        <pre>{{ fetchedPeople }}</pre>
+  <div>
+    <NavbarInternal/>
+    <div class="white-template">
+      <div v-if="isLoading" class="loading-message">Loading...</div>
+      <div v-else>
+        <!-- Display fetched data here -->
+        <div class="centered-content">
+          <!-- Render the fetched data -->
+          <p>Fetched Data:</p>
+          <pre>{{ fetchedCalories }}</pre>
+          <pre>{{ fetchedWater }}</pre>
+          <pre>{{ fetchedPeople }}</pre>
+        </div>
       </div>
     </div>
-  </div>
+    </div>
 </template>
 
 <script>
 import axios from 'axios'
-// import store from '../store' // Adjust the path based on your directory structure
+import NavbarInternal from '../components/NavbarInternal.vue'
 
 export default {
+  components: {
+    NavbarInternal
+  },
   data() {
     return {
       fetchedCalories: null,

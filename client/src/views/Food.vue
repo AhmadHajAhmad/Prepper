@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <NavbarInternal/>
     <div class="container mt-5">
       <h1>Current Food</h1>
       <div class="list-group" v-if="foodList && foodList.length">
@@ -59,14 +61,18 @@
         <button class="btn btn-danger mt-3 ms-2" @click="decreaseWater">Decrease</button>
     </div>
 </div>
+</div>
 </template>
 
 <script>
 import { ref, reactive, onMounted } from 'vue'
 import axios from 'axios'
+import NavbarInternal from '../components/NavbarInternal.vue'
 
 export default {
-  name: 'FoodComponent',
+  components: {
+    NavbarInternal
+  },
   setup() {
     const foodList = ref([])
     const waterList = ref([])
