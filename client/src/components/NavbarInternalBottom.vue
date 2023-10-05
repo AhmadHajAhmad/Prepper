@@ -1,15 +1,8 @@
 <template>
-    <nav class="navbar navbar-expand-lg" style="background-color: #cfcfcf;">
-        <div class="container-fluid">
-            <a class="navbar-brand">
-                <router-link to="/"><img class="navbar-logo" src="../assets/images/logo.png"></router-link>
-            </a>
-            <button class="navbar-toggler d-none d-sm-block d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navmenu">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item" v-if="currentRoute !== '/dashboard'">
+    <div>
+        <nav class="navbar fixed-bottom d-block d-sm-none custom-navbar" style="background-color: #cfcfcf;">
+        <ul class="nav justify-content-around">
+            <li class="nav-item" v-if="currentRoute !== '/dashboard'">
                         <router-link class="nav-link" to="/dashboard">Dashboard</router-link>
                     </li>
                     <li class="nav-item" v-if="currentRoute !== '/food'">
@@ -24,18 +17,17 @@
                     <li class="nav-item" v-if="currentRoute !== '/settings'">
                         <router-link class="nav-link" to="/settings">Settings</router-link>
                     </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</template>
+        </ul>
+      </nav>
+    </div>
+  </template>
 
 <script>
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 export default {
-  name: 'NavbarInternal',
+  name: 'NavbarInternalBottom',
   setup() {
     const route = useRoute()
     const currentRoute = ref(route.path) // Get the current path
@@ -52,18 +44,8 @@ export default {
 }
 </script>
 
-<style scoped>
-.navbar-logo {
-    height: 50px;  /* adjust as per your requirement */
-    width: auto;
-    vertical-align: middle; /* to ensure it aligns well vertically */
-    animation: flicker 1.5s infinite alternate;
+  <style scoped>
+  .custom-navbar .nav-link {
+    color: rgba(255,255,255,.5);
 }
-
-@keyframes flicker {
-  0% { opacity: 0.7; }
-  50% { opacity: 1; }
-  100% { opacity: 0.7; }
-
-}
-</style>
+  </style>

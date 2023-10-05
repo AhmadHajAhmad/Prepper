@@ -1,31 +1,38 @@
 <template>
-  <div>
+  <div class="navbar-container">
     <NavbarLogin/>
-  <div class="login-container">
-    <h2>Login</h2>
-    <form @submit.prevent="login">
-      <div class="input-group">
-        <label for="username">Username:</label>
-        <input v-model="username" type="text" id="username" required />
+    <div class="main-container">
+      <div class="login-container d-flex justify-content-center align-items-start vh-100">
+        <div class="col-12 col-md-8 col-lg-6 p-5">
+          <h2>Login</h2>
+          <form @submit.prevent="login">
+            <div class="container p-3">
+              <label for="username">Username:</label>
+              <input v-model="username" type="text" id="username" required />
+            </div>
+            <div class="container p-3">
+              <label for="password">Password:</label>
+              <input v-model="password" type="password" id="password" required />
+            </div>
+            <button type="submit" class="btn btn-dark">Login</button>
+          </form>
+          <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+        </div>
       </div>
-      <div class="input-group">
-        <label for="password">Password:</label>
-        <input v-model="password" type="password" id="password" required />
-      </div>
-      <button type="submit" class="login-btn">Login</button>
-    </form>
-    <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+    </div>
+    <NavbarLoginBottom/>
   </div>
-</div>
 </template>
 
 <script>
 import axios from 'axios'
 import NavbarLogin from '../components/NavbarLogin.vue'
+import NavbarLoginBottom from '../components/NavbarLoginBottom.vue'
 
 export default {
   components: {
-    NavbarLogin
+    NavbarLogin,
+    NavbarLoginBottom
   },
   data() {
     return {
@@ -84,14 +91,6 @@ export default {
 </script>
 
 <style scoped>
-.login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  font-family: 'Arial', sans-serif;
-}
 
 .input-group {
   margin-bottom: 15px;
@@ -109,20 +108,6 @@ input[type='password'] {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-}
-
-.login-btn {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.login-btn:hover {
-  background-color: #0056b3;
 }
 
 .error-message {

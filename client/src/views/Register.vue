@@ -1,25 +1,30 @@
 <template>
-  <div>
+  <div class="navbar-container">
     <NavbarLogin/>
-    <div class="login-container">
+    <div class="main-container">
+      <div class="login-container d-flex justify-content-center align-items-start vh-100">
+        <div class="col-12 col-md-8 col-lg-6 p-5">
       <h2>Register</h2>
       <form @submit.prevent="register">
-        <div class="input-group">
+        <div class="container p-3">
           <label for="email">Email:</label>
           <input v-model="email" type="text" id="email" required />
         </div>
-        <div class="input-group">
+        <div class="container p-3">
           <label for="username">Username:</label>
           <input v-model="username" type="text" id="username" required />
         </div>
-        <div class="input-group">
+        <div class="container p-3">
           <label for="password">Password:</label>
           <input v-model="password" type="password" id="password" required />
         </div>
-        <button type="submit" class="login-btn">Register</button>
+        <button type="submit" class="btn btn-dark">Register</button>
       </form>
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     </div>
+  </div>
+</div>
+    <NavbarLoginBottom/>
   </div>
 </template>
 
@@ -28,10 +33,12 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import NavbarLogin from '../components/NavbarLogin.vue'
+import NavbarLoginBottom from '../components/NavbarLoginBottom.vue'
 
 export default {
   components: {
-    NavbarLogin
+    NavbarLogin,
+    NavbarLoginBottom
   },
   setup() {
     const username = ref('')
@@ -74,19 +81,6 @@ export default {
 </script>
 
   <style scoped>
-  .login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    font-family: 'Arial', sans-serif;
-  }
-
-  .input-group {
-    margin-bottom: 15px;
-    width: 250px;
-  }
 
   label {
     display: block;
@@ -100,21 +94,6 @@ export default {
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-
-  .login-btn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .login-btn:hover {
-    background-color: #0056b3;
-  }
-
   .error-message {
     margin-top: 15px;
     color: red;
