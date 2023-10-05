@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div class="navbar-container">
     <NavbarInternal/>
-  <div class="container mt-5">
+    <div class="main-container">
+      <div class="login-container d-flex justify-content-center align-items-start vh-100">
+      <div class="col-12 col-md-8 col-lg-6 p-5">
     <h2>Settings</h2>
     <h3>(Logged in as: {{ usernameHeading }})</h3>
     <form @submit.prevent="updateProfile">
@@ -61,15 +63,20 @@
     </div>
   </div>
 </div>
+  </div>
+  <NavbarInternalBottom/>
+</div>
 </template>
 
 <script>
 import axios from 'axios'
 import NavbarInternal from '../components/NavbarInternal.vue'
+import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
 
 export default {
   components: {
-    NavbarInternal
+    NavbarInternal,
+    NavbarInternalBottom
   },
   data() {
     return {

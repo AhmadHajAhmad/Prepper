@@ -1,12 +1,13 @@
 <template>
-  <div>
+  <div class="navbar-container">
     <NavbarInternal/>
+    <div class="main-container">
+    <h1>Household Members</h1>
     <div id="delete-all-container">
       <button @click="deleteAllPeople" class="btn btn-danger">
         Delete All Members
       </button>
     </div>
-    <h1>Household Members</h1>
     <table class="table">
       <thead>
         <tr>
@@ -99,6 +100,8 @@
         </div>
       </div>
     </div>
+    </div>
+    <NavbarInternalBottom/>
   </div>
 </template>
 
@@ -107,10 +110,12 @@ import * as bootstrap from 'bootstrap'
 import { Modal } from 'bootstrap'
 import axios from 'axios'
 import NavbarInternal from '../components/NavbarInternal.vue'
+import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
 
 export default {
   components: {
-    NavbarInternal
+    NavbarInternal,
+    NavbarInternalBottom
   },
   data() {
     return {
@@ -261,7 +266,6 @@ export default {
 </script>
 <style scoped>
 #delete-all-container {
-  position: fixed;
   top: 0;
   right: 0;
   margin: 10px; /* Optional: for some space from the edges */

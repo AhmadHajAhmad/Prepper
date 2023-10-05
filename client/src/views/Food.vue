@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div class="navbar-container">
     <NavbarInternal/>
-    <div class="container mt-5">
+    <div class="main-container">
+      <div class="login-container d-flex justify-content-center align-items-start vh-100">
+      <div class="col-12 col-md-10 col-lg-8 p-5">
       <h1>Current Food</h1>
       <div class="list-group" v-if="foodList && foodList.length">
         <div v-for="item in foodList" :key="item._id" class="list-group-item d-flex justify-content-between align-items-center">
@@ -22,14 +24,14 @@
                     <span @click="toggleEdit(item)">{{ item.calories }}<strong>kcal</strong></span>
                 </div>
                 <!-- Delete Button for each item -->
-                <button @click="deleteFood(item)" class="btn btn-danger btn-sm">Delete</button>
+                <button @click="deleteFood(item)" class="btn btn-dark">Delete</button>
             </template>
         </div>
       </div>
       <p v-if="error" class="text-danger mt-2">{{ error }}</p>
 
       <!-- Button to open the modal -->
-      <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#addFoodModal">Add Food</button>
+      <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addFoodModal">Add Food</button>
 
       <!-- Bootstrap Modal for Adding Food -->
       <div class="modal fade" id="addFoodModal" tabindex="-1" aria-labelledby="addFoodModalLabel" aria-hidden="true">
@@ -45,8 +47,8 @@
               <input v-model="newFood.calories" type="number" placeholder="Calories" class="form-control mb-2">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" @click="addFood" class="btn btn-primary" data-bs-dismiss="modal">Add Food</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                <button type="button" @click="addFood" class="btn btn-light" data-bs-dismiss="modal">Add Food</button>
             </div>
           </div>
         </div>
@@ -57,10 +59,13 @@
             <div class="progress-bar" role="progressbar" :style="{width: `${waterQuantity * 4}%`}" :aria-valuenow="waterQuantity" aria-valuemin="0" aria-valuemax="25">{{ waterQuantity }} Liters</div>
         </div>
         <!-- Control Buttons -->
-        <button class="btn btn-primary mt-3" @click="increaseWater">Increase</button>
-        <button class="btn btn-danger mt-3 ms-2" @click="decreaseWater">Decrease</button>
+        <button class="btn btn-light mt-3" @click="increaseWater">Increase</button>
+        <button class="btn btn-dark mt-3 ms-2" @click="decreaseWater">Decrease</button>
     </div>
 </div>
+</div>
+</div>
+<NavbarInternalBottom/>
 </div>
 </template>
 
@@ -68,10 +73,12 @@
 import { ref, reactive, onMounted } from 'vue'
 import axios from 'axios'
 import NavbarInternal from '../components/NavbarInternal.vue'
+import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
 
 export default {
   components: {
-    NavbarInternal
+    NavbarInternal,
+    NavbarInternalBottom
   },
   setup() {
     const foodList = ref([])

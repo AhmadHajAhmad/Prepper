@@ -1,29 +1,29 @@
 <template>
-  <div>
+  <div class="navbar-container">
     <NavbarInternal/>
-    <div class="white-template">
-      <div v-if="isLoading" class="loading-message">Loading...</div>
-      <div v-else>
-        <!-- Display fetched data here -->
-        <div class="centered-content">
-          <!-- Render the fetched data -->
-          <p>Fetched Data:</p>
-          <pre>{{ fetchedCalories }}</pre>
-          <pre>{{ fetchedWater }}</pre>
-          <pre>{{ fetchedPeople }}</pre>
-        </div>
+    <div class="main-container">
+      <!-- Display fetched data here -->
+      <div class="centered-content">
+        <!-- Render the fetched data -->
+        <p>Fetched Data:</p>
+        <pre>{{ fetchedCalories }}</pre>
+        <pre>{{ fetchedWater }}</pre>
+        <pre>{{ fetchedPeople }}</pre>
       </div>
     </div>
-    </div>
+    <NavbarInternalBottom/>
+  </div>
 </template>
 
 <script>
 import axios from 'axios'
 import NavbarInternal from '../components/NavbarInternal.vue'
+import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
 
 export default {
   components: {
-    NavbarInternal
+    NavbarInternal,
+    NavbarInternalBottom
   },
   data() {
     return {
@@ -58,6 +58,7 @@ export default {
           }
         )
         const calories = response.data
+        console.log(response.data)
 
         if (calories < 1) {
           this.fetchedCalories = 'You are dangerously low on calories.'
@@ -161,15 +162,6 @@ export default {
 }
 </script>
 <style>
-.white-template {
-  background-color: #ffffff;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 20px;
-}
 
 .loading-message {
   font-size: 18px;
