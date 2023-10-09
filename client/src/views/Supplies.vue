@@ -101,6 +101,7 @@
         <!-- Integrated Supplies Form ends here -->
       </div>
     </div>
+    <NavbarInternalBottom />
   </div>
 </template>
 
@@ -109,10 +110,12 @@ import axios from 'axios'
 import { Modal } from 'bootstrap'
 import * as bootstrap from 'bootstrap'
 import NavbarInternal from '../components/NavbarInternal.vue'
+import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
 
 export default {
   components: {
-    NavbarInternal
+    NavbarInternal,
+    NavbarInternalBottom
   },
   data() {
     return {

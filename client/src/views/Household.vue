@@ -1,107 +1,149 @@
 <template>
   <div class="navbar-container">
-    <NavbarInternal/>
+    <NavbarInternal />
     <div class="main-container">
-    <h1>Household Members</h1>
-    <div id="delete-all-container">
-      <button @click="deleteAllPeople" class="btn btn-danger">
-        Delete All Members
+      <h1>Household Members</h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Weight</th>
+            <th>Height</th>
+            <th>Sex</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="person in people" :key="person.id">
+            <td>{{ person.name }}</td>
+            <td>{{ person.age }}</td>
+            <td>{{ person.weight }}</td>
+            <td>{{ person.height }}</td>
+            <td>{{ person.sex }}</td>
+            <td>
+              <button
+                @click.stop="updatePerson(person)"
+                class="btn btn-primary"
+              >
+                Update
+              </button>
+              <button @click.stop="deletePerson(person)" class="btn btn-danger">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button @click="createPerson" class="btn btn-primary">
+        Create Person
       </button>
-    </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Weight</th>
-          <th>Height</th>
-          <th>Sex</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="person in people" :key="person.id">
-          <td>{{ person.name }}</td>
-          <td>{{ person.age }}</td>
-          <td>{{ person.weight }}</td>
-          <td>{{ person.height }}</td>
-          <td>{{ person.sex }}</td>
-          <td>
-            <button @click.stop="updatePerson(person)" class="btn btn-primary">
-              Update
-            </button>
-            <button @click.stop="deletePerson(person)" class="btn btn-danger">
-              Delete
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <button @click="createPerson" class="btn btn-primary">Create Person</button>
 
-    <!-- Integrated Person Form -->
-    <div v-if="showForm" class="modal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Person</h5>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="name" class="form-label">Name</label>
-              <input
-                v-model="newPerson.name"
-                type="text"
-                class="form-control"
-                id="name"
-              />
+      <!-- Integrated Person Form -->
+      <div v-if="showForm" class="modal" data-bs-backdrop="static" tabindex="1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">People</h5>
             </div>
-            <div class="mb-3">
-              <label for="age" class="form-label">Age</label>
-              <input
-                v-model="newPerson.age"
-                type="number"
-                class="form-control"
-                id="age"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="weight" class="form-label">Weight in kg</label>
-              <input
-                v-model="newPerson.weight"
-                type="number"
-                class="form-control"
-                id="weight"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="height" class="form-label">Height in cm</label>
-              <input
-                v-model="newPerson.height"
-                type="number"
-                class="form-control"
-                id="height"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="sex" class="form-label">Sex</label>
-              <select v-model="newPerson.sex" class="form-select" id="sex">
-                <option value="" disabled selected>Select Sex</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <!-- Add other options as needed -->
-              </select>
-            </div>
-            <!-- ...other modal structure... -->
-          </div>
-          <div class="modal-footer">
-            <button @click="save" class="btn btn-primary">Save</button>
-            <button @click="cancel" class="btn btn-secondary">Cancel</button>
+            <form
+              action=""
+              @submit.prevent="save"
+              class="was-validated form-floating"
+            >
+              <div class="modal-body form-floating">
+                <div class="mb-3 form-floating">
+                  <input
+                    v-model="newPerson.name"
+                    type="text"
+                    class="form-control form-floating"
+                    id="personName"
+                    placeholder="Person Name"
+                    required
+                    pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
+                  />
+                  <label for="name" class="form-label">Person Name</label>
+                  <div class="valid-feedback">looks good!</div>
+                  <div class="invalid-feedback">Only Characters accepted!</div>
+                </div>
+
+                <div class="mb-3 form-floating">
+                  <input
+                    v-model="newPerson.age"
+                    type="text"
+                    class="form-control form-floating"
+                    id="personAge"
+                    placeholder="Person Age"
+                    required
+                    pattern="^[1-9]\d*$"
+                  />
+                  <label for="name" class="form-label">Person Age</label>
+                  <div class="valid-feedback">looks good!</div>
+                  <div class="invalid-feedback">
+                    Only Positive Numbers accepted!
+                  </div>
+                </div>
+                <div class="mb-3 form-floating">
+                  <input
+                    v-model="newPerson.weight"
+                    type="text"
+                    class="form-control form-floating"
+                    id="personWeight"
+                    placeholder="Person Weight"
+                    required
+                    pattern="^[1-9]\d*$"
+                  />
+                  <label for="name" class="form-label">Person Weight</label>
+                  <div class="valid-feedback">looks good!</div>
+                  <div class="invalid-feedback">
+                    Only Positive Numbers accepted!
+                  </div>
+                </div>
+                <div class="mb-3 form-floating">
+                  <input
+                    v-model="newPerson.height"
+                    type="text"
+                    class="form-control form-floating"
+                    id="personHeight"
+                    placeholder="Person Height"
+                    required
+                    pattern="^[1-9]\d*$"
+                  />
+                  <label for="name" class="form-label">Person Height</label>
+                  <div class="valid-feedback">looks good!</div>
+                  <div class="invalid-feedback">
+                    Only Positive Numbers accepted!
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="sex" class="form-label">Sex</label>
+                  <select
+                    v-model="newPerson.sex"
+                    class="form-select"
+                    id="sex"
+                    placeholder="Person Sex"
+                    pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
+                    required
+                  >
+                    <option value="" disabled selected></option>
+                    <option value="Male">male</option>
+                    <option value="Female">female</option>
+                    <!-- Add other options as needed -->
+                  </select>
+                </div>
+                <!-- ...other modal structure... -->
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary">Save</button>
+                <button @click="cancel" class="btn btn-secondary">
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
-    </div>
-    <NavbarInternalBottom/>
+    <NavbarInternalBottom />
   </div>
 </template>
 
@@ -165,23 +207,6 @@ export default {
       try {
         await axios.delete(
           `http://localhost:3000/v1/profiles/${this.userid}/people/${person._id}`,
-
-          {
-            headers: {
-              usertoken: this.token
-            }
-          }
-        )
-        this.cancel()
-        this.loadPeople()
-      } catch (error) {
-        console.error('Error saving the person:', error)
-      }
-    },
-    async deleteAllPeople() {
-      try {
-        await axios.delete(
-          `http://localhost:3000/v1/profiles/${this.userid}/people/`,
 
           {
             headers: {
