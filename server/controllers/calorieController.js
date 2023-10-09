@@ -34,6 +34,16 @@ class CalorieController {
             res.status(500).send('Internal Server Error');
         }
     };
+
+    async getTotalWater(req,res){
+        try {
+            const userid = req.params.userid;
+            const total = await service.daysOfWater(userid);
+            res.status(200).json(total);
+        } catch (error) {
+            res.status(500).send('Internal Server Error');
+        }
+    };
 };
 
 module.exports = CalorieController;
