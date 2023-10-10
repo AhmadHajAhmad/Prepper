@@ -16,6 +16,8 @@ body {
 .main-container {
     flex-grow: 1;
     overflow: auto; /* To allow scrolling if the content is more than the available space */
+    padding-bottom: 60px; /* Added padding to create the space at the bottom */
+    box-sizing: border-box; /* Ensure padding is included in the height */
 }
 
 /* Base Button Styles */

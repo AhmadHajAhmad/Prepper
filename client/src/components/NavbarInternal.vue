@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg" style="background-color: #cfcfcf;">
         <div class="container-fluid">
             <a class="navbar-brand">
-                <router-link to="/"><img class="navbar-logo" src="../assets/images/logo.png"></router-link>
+                <router-link to="/dashboard"><img class="navbar-logo" src="../assets/images/logo.png"></router-link>
             </a>
             <button class="navbar-toggler d-none d-sm-block d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
                 <span class="navbar-toggler-icon"></span>
