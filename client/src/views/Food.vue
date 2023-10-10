@@ -15,22 +15,56 @@
             >
               <!-- If edit mode is on, display input fields for updating -->
               <template v-if="editMode[item._id]">
-                <input
-                  v-model="item.foodname"
-                  @blur="updateFood(item)"
-                  class="form-control mb-2"
-                />
-                <input
-                  v-model="item.weight"
-                  @blur="updateFood(item)"
-                  class="form-control mb-2"
-                />
-                <input
-                  v-model="item.calories"
-                  @blur="updateFood(item)"
-                  class="form-control mb-2"
-                />
+                <!-- For foodname -->
+                <div class="mb-3 form-floating was-validated">
+                  <input
+                    v-model="item.foodname"
+                    @blur="checkValidity(item)"
+                    type="text"
+                    placeholder="Name"
+                    class="form-control"
+                    required
+                    pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
+                  />
+                  <div class="valid-feedback">looks good!</div>
+                  <div class="invalid-feedback">Only Characters accepted!</div>
+                </div>
+
+                <!-- For weight -->
+                <div class="mb-3 form-floating was-validated">
+                  <input
+                    v-model="item.weight"
+                    @blur="checkValidity(item)"
+                    type="text"
+                    placeholder="Weight"
+                    class="form-control"
+                    required
+                    pattern="^[1-9]\d*$"
+                  />
+                  <div class="valid-feedback">looks good!</div>
+                  <div class="invalid-feedback">
+                    Only Positive Numbers accepted!
+                  </div>
+                </div>
+
+                <!-- For calories -->
+                <div class="mb-3 form-floating was-validated">
+                  <input
+                    v-model="item.calories"
+                    @blur="checkValidity(item)"
+                    type="text"
+                    placeholder="Calories"
+                    class="form-control"
+                    required
+                    pattern="^[1-9]\d*$"
+                  />
+                  <div class="valid-feedback">looks good!</div>
+                  <div class="invalid-feedback">
+                    Only Positive Numbers accepted!
+                  </div>
+                </div>
               </template>
+
               <!-- If edit mode is off, display text with ability to click into edit mode -->
               <template v-else>
                 <div>
@@ -99,7 +133,7 @@
                     <div class="mb-3">
                       <input
                         v-model="newFood.weight"
-                        type="number"
+                        type="text"
                         placeholder="Weight"
                         class="form-control"
                         required
@@ -113,7 +147,7 @@
                     <div class="mb-3">
                       <input
                         v-model="newFood.calories"
-                        type="number"
+                        type="text"
                         placeholder="Calories"
                         class="form-control"
                         required
@@ -208,6 +242,21 @@ export default {
         })
       }
     })
+    const checkValidity = (item) => {
+      item.foodnameValid = /^[A-Za-z]+(\s[A-Za-z]+)*$/.test(item.foodname)
+      item.weightValid = /^[1-9]\d*$/.test(item.weight)
+      item.caloriesValid = /^[1-9]\d*$/.test(item.calories)
+
+      console.log(item.foodnameValid, item.weightValid, item.caloriesValid)
+
+      if (item.foodnameValid & item.weightValid & item.caloriesValid) {
+        updateFood(item) // Call the update method after the check
+        // item.foodnameValid = null
+        // item.weightValid = null
+        // item.caloriesValid = null
+        //
+      }
+    }
     const createFood = () => {
       newFood.value = resetForm()
       showForm.value = true
@@ -381,7 +430,8 @@ export default {
       decreaseWater,
       showForm,
       cancel,
-      createFood
+      createFood,
+      checkValidity
     }
   }
 }
