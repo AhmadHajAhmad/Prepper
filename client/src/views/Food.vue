@@ -7,108 +7,47 @@
       >
         <div class="col-12 col-md-10 col-lg-8 p-5">
           <h1>Current Food</h1>
-          <div class="list-group" v-if="foodList && foodList.length">
-            <div
-              v-for="item in foodList"
-              :key="item._id"
-              class="list-group-item d-flex justify-content-between align-items-center"
-            >
-              <!-- If edit mode is on, display input fields for updating -->
-              <template v-if="editMode[item._id]">
-                <!-- For foodname -->
-                <div class="mb-3 form-floating was-validated">
-                  <input
-                    v-model="item.foodname"
-                    @blur="checkValidity(item)"
-                    type="text"
-                    placeholder="Name"
-                    class="form-control"
-                    required
-                    pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
-                  />
-                  <div class="valid-feedback">looks good!</div>
-                  <div class="invalid-feedback">Only Characters accepted!</div>
-                </div>
-
-                <!-- For weight -->
-                <div class="mb-3 form-floating was-validated">
-                  <input
-                    v-model="item.weight"
-                    @blur="checkValidity(item)"
-                    type="text"
-                    placeholder="Weight"
-                    class="form-control"
-                    required
-                    pattern="^[1-9]\d*$"
-                  />
-                  <div class="valid-feedback">looks good!</div>
-                  <div class="invalid-feedback">
-                    Only Positive Numbers accepted!
-                  </div>
-                </div>
-
-                <!-- For calories -->
-                <div class="mb-3 form-floating was-validated">
-                  <input
-                    v-model="item.calories"
-                    @blur="checkValidity(item)"
-                    type="text"
-                    placeholder="Calories"
-                    class="form-control"
-                    required
-                    pattern="^[1-9]\d*$"
-                  />
-                  <div class="valid-feedback">looks good!</div>
-                  <div class="invalid-feedback">
-                    Only Positive Numbers accepted!
-                  </div>
-                </div>
-              </template>
-
-              <!-- If edit mode is off, display text with ability to click into edit mode -->
-              <template v-else>
-                <div>
-                  <strong>Name: </strong>
-                  <span class="me-3" @click="toggleEdit(item)">{{
-                    item.foodname
-                  }}</span>
-                  <strong>Weight: </strong>
-                  <span class="me-3" @click="toggleEdit(item)"
-                    >{{ item.weight }}<strong>g</strong></span
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Calories</th>
+                <th>Weight</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="food in foodList" :key="food.id">
+                <td>{{ food.foodname }}</td>
+                <td>{{ food.calories }}</td>
+                <td>{{ food.weight }}</td>
+                <td>
+                  <button
+                    @click.stop="updateFood(food)"
+                    class="btn btn-primary"
                   >
-                  <strong>Calories: </strong>
-                  <span @click="toggleEdit(item)"
-                    >{{ item.calories }}<strong>kcal</strong></span
-                  >
-                </div>
-                <!-- Delete Button for each item -->
-                <button @click="deleteFood(item)" class="btn btn-dark">
-                  Delete
-                </button>
-              </template>
-            </div>
-          </div>
+                    Update
+                  </button>
+                  <button @click.stop="deleteFood(food)" class="btn btn-danger">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button @click="createFood" class="btn btn-primary">Add Food</button>
           <p v-if="error" class="text-danger mt-2">{{ error }}</p>
-
-          <!-- Button to open the modal -->
-          <button @click="createFood" class="btn btn-light">Add Food</button>
 
           <!-- Bootstrap Modal for Adding Food -->
           <div
             v-if="showForm"
             class="modal"
-            id="addFoodModal"
-            tabindex="1"
-            aria-labelledby="addFoodModalLabel"
-            aria-hidden="true"
             data-bs-backdrop="static"
+            tabindex="1"
           >
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="addFoodModalLabel">
-                    Add New Food
-                  </h5>
+                  <h5 class="modal-title">Add New Food</h5>
                 </div>
                 <form
                   action=""
@@ -120,39 +59,45 @@
                       <input
                         v-model="newFood.foodname"
                         type="text"
-                        placeholder="Name"
-                        class="form-control"
+                        class="form-control form-floating"
+                        id="foodName"
+                        placeholder="Food Name"
                         required
                         pattern="^[A-Za-z]+(\s[A-Za-z]+)*$"
                       />
+                      <label for="name" class="form-label">Food Name</label>
                       <div class="valid-feedback">looks good!</div>
                       <div class="invalid-feedback">
                         Only Characters accepted!
                       </div>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 form-floating">
                       <input
                         v-model="newFood.weight"
                         type="text"
+                        class="form-control form-floating"
+                        id="foodWeight"
                         placeholder="Weight"
-                        class="form-control"
                         required
                         pattern="^[1-9]\d*$"
                       />
+                      <label for="name" class="form-label">Food Weight</label>
                       <div class="valid-feedback">looks good!</div>
                       <div class="invalid-feedback">
                         Only Positive Numbers accepted!
                       </div>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 form floating">
                       <input
                         v-model="newFood.calories"
                         type="text"
                         placeholder="Calories"
-                        class="form-control"
+                        class="form-control form-floating"
+                        id="foodWeight"
                         required
                         pattern="^[1-9]\d*$"
                       />
+                      <label for="name" class="form-label">Food Calories</label>
                       <div class="valid-feedback">looks good!</div>
                       <div class="invalid-feedback">
                         Only Positive Numbers accepted!
@@ -200,7 +145,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 import * as bootstrap from 'bootstrap'
 import { Modal } from 'bootstrap'
 import axios from 'axios'
@@ -224,7 +169,6 @@ export default {
     })
     const showForm = ref(false)
     const waterQuantity = ref(0)
-    const editMode = reactive({})
     const userid = ref(sessionStorage.getItem('userId'))
     const token = ref(sessionStorage.getItem('token'))
 
@@ -242,23 +186,13 @@ export default {
         })
       }
     })
-    const checkValidity = (item) => {
-      item.foodnameValid = /^[A-Za-z]+(\s[A-Za-z]+)*$/.test(item.foodname)
-      item.weightValid = /^[1-9]\d*$/.test(item.weight)
-      item.caloriesValid = /^[1-9]\d*$/.test(item.calories)
-
-      console.log(item.foodnameValid, item.weightValid, item.caloriesValid)
-
-      if (item.foodnameValid & item.weightValid & item.caloriesValid) {
-        updateFood(item) // Call the update method after the check
-        // item.foodnameValid = null
-        // item.weightValid = null
-        // item.caloriesValid = null
-        //
-      }
-    }
     const createFood = () => {
       newFood.value = resetForm()
+      showForm.value = true
+      console.log(showForm.value)
+    }
+    const updateFood = (food) => {
+      newFood.value = { ...food }
       showForm.value = true
     }
 
@@ -304,15 +238,28 @@ export default {
 
     const addFood = async () => {
       try {
-        await axios.post(
-          `http://localhost:3000/v1/profiles/${userid.value}/food`,
-          newFood.value,
-          {
-            headers: {
-              usertoken: token.value
+        if (newFood.value._id) {
+          // If _id exists, it's an update operation
+          await axios.patch(
+            `http://localhost:3000/v1/profiles/${userid.value}/food/${newFood.value._id}`,
+            newFood.value,
+            {
+              headers: {
+                usertoken: token.value
+              }
             }
-          }
-        )
+          )
+        } else {
+          await axios.post(
+            `http://localhost:3000/v1/profiles/${userid.value}/food`,
+            newFood.value,
+            {
+              headers: {
+                usertoken: token.value
+              }
+            }
+          )
+        }
         cancel()
         getFood()
       } catch (error) {
@@ -320,10 +267,10 @@ export default {
       }
     }
 
-    const deleteFood = async (foodItem) => {
+    const deleteFood = async (food) => {
       try {
         await axios.delete(
-          `http://localhost:3000/v1/profiles/${userid.value}/food/${foodItem._id}`,
+          `http://localhost:3000/v1/profiles/${userid.value}/food/${food._id}`,
           {
             headers: {
               usertoken: token.value
@@ -335,24 +282,6 @@ export default {
         console.error('Error deleting food:', error)
       }
     }
-
-    const updateFood = async (foodItem) => {
-      try {
-        await axios.patch(
-          `http://localhost:3000/v1/profiles/${userid.value}/food/${foodItem._id}`,
-          foodItem,
-          {
-            headers: {
-              usertoken: token.value
-            }
-          }
-        )
-        editMode[foodItem._id] = false
-      } catch (error) {
-        console.error('Error updating food:', error)
-      }
-    }
-
     // Uses HATEOAS links to get the request
     const updateWater = async (waterData) => {
       const link = `http://localhost:3000${waterLinks.value.update.href}`
@@ -366,11 +295,6 @@ export default {
         console.error('Error updating water:', error)
       }
     }
-
-    const toggleEdit = (item) => {
-      editMode[item._id] = true
-    }
-
     const increaseWater = () => {
       if (waterQuantity.value <= 24.5) {
         waterQuantity.value += 0.5
@@ -387,9 +311,6 @@ export default {
 
     onMounted(() => {
       getFood()
-      foodList.value.forEach((item) => {
-        editMode[item._id] = false
-      })
       getWater()
     })
     const cancel = () => {
@@ -416,22 +337,19 @@ export default {
       error,
       newFood,
       waterQuantity,
-      editMode,
       userid,
       token,
       getFood,
       getWater,
       addFood,
       deleteFood,
-      updateFood,
       updateWater,
-      toggleEdit,
       increaseWater,
       decreaseWater,
       showForm,
       cancel,
       createFood,
-      checkValidity
+      updateFood
     }
   }
 }
