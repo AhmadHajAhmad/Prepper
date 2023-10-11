@@ -17,7 +17,9 @@
         <div class="container p-3">
           <label for="password">Password:</label>
           <input v-model="password" type="password" id="password" required />
+          <PasswordChecker :mypassword="password"></PasswordChecker>
         </div>
+
         <button type="submit" class="btn btn-dark">Register</button>
       </form>
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
@@ -34,11 +36,13 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 import NavbarLogin from '../components/NavbarLogin.vue'
 import NavbarLoginBottom from '../components/NavbarLoginBottom.vue'
+import PasswordChecker from '../components/PasswordChecker.vue'
 
 export default {
   components: {
     NavbarLogin,
-    NavbarLoginBottom
+    NavbarLoginBottom,
+    PasswordChecker
   },
   setup() {
     const username = ref('')
