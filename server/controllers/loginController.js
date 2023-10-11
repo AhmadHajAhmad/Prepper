@@ -11,34 +11,36 @@ class LoginController {
 
       const user = await UserModel.findOne({ username });
 
-      if (!user || user.password !== password) {
-        return res.status(401).json({ message: "Authentication failed" });
+      if (!user) {
+        return res.status(401).json({ message: "User does not exist" });
+      } else if (user.password !== password) {
+        return res.status(401).json({ message: "Incorrect password" });
       }
 
       let token;
       let isAdmin;
       if (user.isAdmin) {
-        token = jwt.sign({ userId: user._id }, adminSecretKey, { expiresIn: "1h" });
-        isAdmin = "yes"
-        res.setHeader('admintoken', token);
-        res.setHeader('isadmin', isAdmin);
-        res.setHeader('userid', user._id);
+        token = jwt.sign({ userId: user._id }, adminSecretKey, {
+          expiresIn: "1h",
+        });
+        isAdmin = "yes";
+        res.setHeader("admintoken", token);
+        res.setHeader("isadmin", isAdmin);
+        res.setHeader("userid", user._id);
       } else {
         token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: "1h" });
-        isAdmin = "no"
-        res.setHeader('usertoken', token);
-        res.setHeader('isadmin', isAdmin);
-        res.setHeader('userid', user._id);
+        isAdmin = "no";
+        res.setHeader("usertoken", token);
+        res.setHeader("isadmin", isAdmin);
+        res.setHeader("userid", user._id);
       }
 
-      res.status(200).json({ message: "Logged in"});
-
+      res.status(200).json({ message: "Logged in" });
     } catch (error) {
       console.error(error);
       res.status(500).json("Internal Server error");
     }
   }
 }
-
 
 module.exports = LoginController;
