@@ -36,6 +36,9 @@
           v-model="newPassword"
           placeholder="Enter new password"
         />
+        <div class="progress">
+          <div class="bar"></div>
+        </div>
       </div>
       <div class="mb-3">
         <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
@@ -60,6 +63,14 @@
     </div>
     <div v-if="passwordsConfirmed" class="alert alert-success" role="alert">
       Passwords changed.
+    </div>
+    <div v-if="passwordsNotStrong" class="alert alert-success" role="alert" style="text-align: left;">
+      Password not strong enough to be accepted! it should meet the following criteria
+      <ul style="text-align: left;">
+    <li>Minimum characters: 8 </li>
+    <li>Atleast one capital letter</li>
+    <li>Atleast one Special character[!@#$%^&*()_+{}\\:;,.?~\\-]</li>
+  </ul>
     </div>
   </div>
 </div>
@@ -88,12 +99,14 @@ export default {
       passwordsDoNotMatch: false,
       passwordsConfirmed: false,
       passwordsDoNotMatchDB: false,
+      passwordsNotStrong: false,
       modalView: null,
       usernameHeading: ''
     }
   },
   mounted() {
     this.getUserName()
+    this.passwordchecker()
   },
   methods: {
     getUserName() {
@@ -103,8 +116,8 @@ export default {
         this.username = response.data.username
         this.oldPasswordDb = response.data.password
         this.usernameHeading = this.username
-        console.log(this.username)
-        console.log(this.oldPasswordDb)
+        // console.log(this.username)
+        // console.log(this.oldPasswordDb)
       })
         .catch(error => {
           console.error('Error updating the password:', error)
@@ -117,9 +130,18 @@ export default {
       // checks if Old Password equals to password saved to the saved password
       } else if (this.oldPassword !== this.oldPasswordDb) {
         this.passwordsDoNotMatchDB = true
+      } else if (this.newPassword.length < 8 || // Check minimum length
+      !/[A-Z]/.test(this.newPassword) || // Check for at least one capital letter
+      !/[!@#$%^&*()_+{}\\:;<>,.?~\\-]/.test(this.newPassword) // Check for at least one special character
+      ) {
+      // Password does not meet the strength criteria
+        this.passwordsDoNotMatch = false
+        this.passwordsDoNotMatchDB = false
+        this.passwordsNotStrong = true
       } else {
         this.passwordsDoNotMatch = false
         this.passwordsDoNotMatchDB = false
+        this.passwordsNotStrong = false
 
         // Send a request to update the user profile
         // You can use Axios or another HTTP library for this
@@ -149,6 +171,40 @@ export default {
       this.confirmNewPassword = ''
       this.passwordsDoNotMatch = false
       this.passwordsDoNotMatchDB = false
+      this.passwordsNotStrong = false
+    },
+    passwordchecker() {
+      const passwordText = document.querySelector('#newPassword')
+      const progressBar = document.querySelector('.bar')
+      passwordText.onkeyup = () => {
+        this.checkPasswordStrength(passwordText.value, progressBar)
+      }
+    },
+    checkPasswordStrength(passwordText, progressBar) {
+      let strength = 0
+      if (passwordText.length === 0) { progressBar.style.cssText = 'width: 0%' }
+      if (/[0-9>]/.test(passwordText)) { strength++ }
+      if (/[a-z>]/.test(passwordText)) { strength++ }
+      if (passwordText.length > 8) { strength++ }
+      if (/[A-Z]/.test(passwordText)) { strength++ }
+      if (/[!@#$%^&*()_+{}\\:;<>,.?~\\-]/.test(this.newPassword)) { strength++ }
+      switch (strength) {
+        case 1:
+          progressBar.style.cssText = `width: ${strength / 5 * 100}%; background-color: red`
+          break
+        case 2:
+          progressBar.style.cssText = `width: ${strength / 5 * 100}%; background-color: orangered`
+          break
+        case 3:
+          progressBar.style.cssText = `width: ${strength / 5 * 100}%; background-color: gold`
+          break
+        case 4:
+          progressBar.style.cssText = `width: ${strength / 5 * 100}%; background-color: deepskyblue`
+          break
+        case 5:
+          progressBar.style.cssText = `width: ${strength / 5 * 100}%; background-color: green`
+          break
+      }
     }
   }
 }
@@ -156,4 +212,22 @@ export default {
 
 <style scoped>
 /* Add styling if needed */
+#newPasswordText{
+  color: red;
+  position: absolute;
+  left: 0px;
+}
+.progress{
+  height: 0.4rem;
+  width: 100%;
+  background-color: #f5f5f5;
+  border-radius: 4rem;
+}
+.bar{
+  width: 0%;
+  height: 100%;
+  background-color: red;
+  border-radius: inherit;
+  transition: .4% ease-in-out;
+}
 </style>
