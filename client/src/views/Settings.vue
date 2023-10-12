@@ -2,10 +2,8 @@
   <div class="navbar-container">
     <NavbarInternal/>
     <div class="main-container">
-      <div class="login-container d-flex justify-content-center align-items-start vh-100">
       <div class="col-12 col-md-8 col-lg-6 p-5">
-    <h2>Settings</h2>
-    <h3>(Logged in as: {{ usernameHeading }})</h3>
+    <h1>Settings</h1>
     <form @submit.prevent="updateProfile">
       <div class="mb-3">
         <label for="username" class="form-label">User Name</label>
@@ -24,7 +22,6 @@
           class="form-control"
           id="oldPassword"
           v-model="oldPassword"
-          placeholder="Enter old password"
         />
       </div>
       <div class="mb-3">
@@ -34,7 +31,6 @@
           class="form-control"
           id="newPassword"
           v-model="newPassword"
-          placeholder="Enter new password"
         />
         <div class="progress">
           <div class="bar"></div>
@@ -47,7 +43,6 @@
           class="form-control"
           id="confirmNewPassword"
           v-model="confirmNewPassword"
-          placeholder="Repeat newly entered password"
         />
       </div>
       <div class="mb-3">
@@ -74,15 +69,15 @@
     </div>
   </div>
 </div>
-  </div>
   <NavbarInternalBottom/>
 </div>
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import NavbarInternal from '../components/NavbarInternal.vue'
 import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
+import Api from '../Api'
 
 export default {
   components: {
@@ -112,7 +107,7 @@ export default {
     getUserName() {
       const userid = sessionStorage.getItem('userId')
       const updateUrl = `http://localhost:3000/v1/profiles/${userid}`
-      axios.get(updateUrl).then(response => {
+      Api.get(updateUrl).then(response => {
         this.username = response.data.username
         this.oldPasswordDb = response.data.password
         this.usernameHeading = this.username
@@ -151,7 +146,7 @@ export default {
           password: this.newPassword
         }
         // Example using Axios:
-        axios.patch(updateUrl, requestData)
+        Api.patch(updateUrl, requestData)
           .then(response => {
           // Handle success
             this.passwordsConfirmed = true

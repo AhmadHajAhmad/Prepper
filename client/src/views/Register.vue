@@ -2,9 +2,8 @@
   <div class="navbar-container">
     <NavbarLogin/>
     <div class="main-container">
-      <div class="login-container d-flex justify-content-center align-items-start vh-100">
         <div class="col-12 col-md-8 col-lg-6 p-5">
-      <h2>Register</h2>
+      <h1>Register</h1>
       <form @submit.prevent="register">
         <div class="container p-3">
           <label for="email">Email:</label>
@@ -25,18 +24,18 @@
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     </div>
   </div>
-</div>
     <NavbarLoginBottom/>
   </div>
 </template>
 
 <script>
 import { ref } from 'vue'
-import axios from 'axios'
+// import axios from 'axios'
 import { useRouter } from 'vue-router'
 import NavbarLogin from '../components/NavbarLogin.vue'
 import NavbarLoginBottom from '../components/NavbarLoginBottom.vue'
 import PasswordChecker from '../components/PasswordChecker.vue'
+import Api from '../Api'
 
 export default {
   components: {
@@ -54,7 +53,7 @@ export default {
     const register = async () => {
       try {
         console.log('Trying to register')
-        await axios.post('http://localhost:3000/v1/register/', {
+        await Api.post('http://localhost:3000/v1/register/', {
           username: username.value,
           password: password.value,
           email: email.value

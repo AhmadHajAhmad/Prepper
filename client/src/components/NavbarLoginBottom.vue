@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar fixed-bottom d-block d-sm-none custom-navbar" style="background-color: #cfcfcf;">
+        <nav class="navbar fixed-bottom d-block d-sm-none custom-navbar">
         <ul class="nav justify-content-around">
             <li class="nav-item">
                 <router-link class="nav-link" to="/login">Login</router-link>
@@ -18,9 +18,3 @@ export default {
   name: 'NavbarLoginBottom'
 }
 </script>
-
-  <style scoped>
-  .custom-navbar .nav-link {
-    color: rgba(40, 40, 40, 0.5);
-}
-  </style>

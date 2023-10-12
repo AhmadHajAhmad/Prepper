@@ -1,24 +1,27 @@
 import axios from 'axios'
-import { ref } from 'vue'
+import router from './router.js'
 
 export const Api = axios.create({
-  baseURL: process.env.VUE_APP_API_ENDPOINT || 'http://localhost:3000/api'
+  baseURL: process.env.VUE_APP_API_ENDPOINT || 'http://localhost:3000/api/v1',
+  timeout: 3000
 })
 
-export const useApi = () => {
-  const error = ref(null)
-
-  const get = async (endpoint) => {
-    try {
-      const response = await Api.get(endpoint)
-      return response.data
-    } catch (e) {
-      error.value = e
-      throw e
+Api.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  (error) => {
+    if (error.response && error.response.status === 500) {
+      router.push({ path: '/offline' })
+    } else if (!error.response || error.code === 'ECONNABORTED' || error.code === 'ERR_NETWORK') {
+      console.log(error.code)
+      if (router.currentRoute.path !== '/offline') {
+        router.push({ path: '/offline' })
+      }
+    } else {
+      return Promise.reject(error)
     }
   }
+)
 
-  // You can add more methods like post, put, delete, etc.
-
-  return { error, get }
-}
+export default Api

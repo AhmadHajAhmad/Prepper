@@ -1,40 +1,23 @@
 <template>
-  <div>
+  <div class="navbar-container">
     <NavbarInternal />
-    <div class="container-fluid">
+    <div class="main-container">
       <!-- Display fetched data here -->
-      <div>
-        <h2>Supplies List</h2>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Item Name</th>
-              <th>In-Stock</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="supply in supplies" :key="supply._id">
-              <td>{{ supply.itemname }}</td>
-              <td>{{ supply.instock }}</td>
-              <td>
-                <button
-                  @click.stop="updateSupplies(supply)"
-                  class="btn btn-primary"
-                >
-                  Update
-                </button>
-                <button
-                  @click.stop="deleteSupplies(supply)"
-                  class="btn btn-danger"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <button @click="createSupplies" class="btn btn-primary">
+      <div class="col-12 col-md- col-lg-10 p-5">
+        <h1>Supplies List</h1>
+        <ul class="list-group">
+          <li v-for="supply in supplies" :key="supply._id" class="list-group-item d-flex justify-content-between align-content-center">
+            <div class="item-info"> <!-- Using food-info for consistency, consider renaming to item-info for clarity -->
+            <span class="item-detail"><strong>Item Name:</strong> {{ supply.itemname }}</span>
+            <span class="item-detail"><strong>In-Stock:</strong> {{ supply.instock }}</span>
+        </div>
+        <div class="btn-container">
+            <button @click.stop="updateSupplies(supply)" class="btn">Update</button>
+            <button @click.stop="deleteSupplies(supply)" class="btn btn-alert">Delete</button>
+        </div>
+      </li>
+    </ul>
+    <button @click="createSupplies" class="btn">
           Create Supplies
         </button>
       </div>
@@ -106,11 +89,12 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import { Modal } from 'bootstrap'
 import * as bootstrap from 'bootstrap'
 import NavbarInternal from '../components/NavbarInternal.vue'
 import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
+import Api from '../Api'
 
 export default {
   components: {
@@ -153,7 +137,7 @@ export default {
   methods: {
     async getSupplies() {
       try {
-        const response = await axios.get(
+        const response = await Api.get(
           `http://localhost:3000/v1/profiles/${this.userid}/supplies`,
           {
             headers: {
@@ -170,7 +154,6 @@ export default {
         // console.error('Error fetching calories:', error)
         if (error.response && error.response.status === 404) {
           this.supplies = []
-          // console.log('No supplies found:error 1')
         } else {
           console.log('Eror fetching supplies')
         }
@@ -185,7 +168,7 @@ export default {
     async save() {
       try {
         if (this.newSupplies._id) {
-          await axios.patch(
+          await Api.patch(
             `http://localhost:3000/v1/profiles/${this.userid}/supplies/${this.newSupplies._id}`,
             this.newSupplies,
             {
@@ -197,7 +180,7 @@ export default {
           this.cancel()
           this.getSupplies()
         } else {
-          await axios.post(
+          await Api.post(
             `http://localhost:3000/v1/profiles/${this.userid}/supplies`,
             this.newSupplies,
             {
@@ -219,7 +202,7 @@ export default {
     },
     async deleteSupplies(supply) {
       try {
-        await axios.delete(
+        await Api.delete(
           `http://localhost:3000/v1/profiles/${this.userid}/supplies/${supply._id}`,
           {
             headers: {
