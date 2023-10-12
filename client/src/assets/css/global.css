@@ -1,83 +1,104 @@
 /* Global Styles */
 body {
-    font-family: 'Arial', sans-serif; /* Change this to your preferred font */
-    background-color: #e1e1e1; /* Light Color */
-    color: rgba(40, 40, 40, 0.5); /* Dark Color */
-    text-align: center;
+  font-family: 'Arial', sans-serif; /* Change this to your preferred font */
+  background-color: #e1e1e1; /* Light Color */
+  color: rgba(40, 40, 40, 0.5); /* Dark Color */
+  text-align: center;
 }
 
 /* Container used for the outmost division */
 .navbar-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .main-container {
-    flex-grow: 1;
-    overflow: auto; /* To allow scrolling if the content is more than the available space */
-    padding-bottom: 60px; /* Added padding to create the space at the bottom */
-    box-sizing: border-box; /* Ensure padding is included in the height */
+  flex-grow: 1;
+  overflow: auto; /* To allow scrolling if the content is more than the available space */
+  padding-bottom: 60px; /* Added padding to create the space at the bottom */
+  box-sizing: border-box; /* Ensure padding is included in the height */
 }
 
 /* Base Button Styles */
 .btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;  /* Increased font size for modern look */
-    letter-spacing: 1px;  /* Added letter spacing */
-    font-weight: 500;  /* Adjusted font weight */
-    transition: all 0.3s, transform 0.2s;  /* Added transform to transition */
-    cursor: pointer;
-    outline: none;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* Base shadow */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px; /* Increased font size for modern look */
+  letter-spacing: 1px; /* Added letter spacing */
+  font-weight: 500; /* Adjusted font weight */
+  transition: all 0.3s, transform 0.2s; /* Added transform to transition */
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Base shadow */
 }
 
 .btn:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);  /* Shadow on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Shadow on hover */
 }
 
 .btn:active {
-    transform: scale(0.98);  /* Press effect */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Reduced shadow when pressed */
+  transform: scale(0.98); /* Press effect */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduced shadow when pressed */
 }
 
 /* Dark Button */
 .btn-dark {
-    background: linear-gradient(135deg, #2c3e50, #34495e);  /* Gradient background */
-    color: #C3D7E4;
+  background: linear-gradient(
+    135deg,
+    #2c3e50,
+    #34495e
+  ); /* Gradient background */
+  color: #c3d7e4;
 }
 
 .btn-dark:hover {
-    background: linear-gradient(135deg, #34495e, #2c3e50);  /* Switched gradient direction on hover */
+  background: linear-gradient(
+    135deg,
+    #34495e,
+    #2c3e50
+  ); /* Switched gradient direction on hover */
 }
 
 /* Light Button */
 .btn-light {
-    background-color: #C3D7E4;
-    color: #2c3e50;
+  background-color: #c3d7e4;
+  color: #2c3e50;
 }
 
 .btn-light:hover {
-    background-color: #a9bfc9;
+  background-color: #a9bfc9;
 }
 
 /* Accent Button */
 .btn-accent {
-    background-color: #48B2A6;
-    color: #2c3e50;
+  background-color: #48b2a6;
+  color: #2c3e50;
 }
 
 .btn-accent:hover {
-    background-color: #369587;
+  background-color: #369587;
 }
 
 /* Utilities for centering content */
 .center-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.status-container {
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
 
+.centered-content p {
+  margin-bottom: 0;
+}
+
+.centered-content .status-message {
+  margin-bottom: 20px;
+}
