@@ -25,9 +25,10 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import NavbarLogin from '../components/NavbarLogin.vue'
 import NavbarLoginBottom from '../components/NavbarLoginBottom.vue'
+import Api from '../Api'
 
 export default {
   components: {
@@ -46,7 +47,7 @@ export default {
       try {
         console.log('Trying to login')
         // Perform login without dealing with headers
-        const response = await axios.post('http://localhost:3000/v1/login/', {
+        const response = await Api.post('http://localhost:3000/v1/login/', {
           username: this.username,
           password: this.password
         })

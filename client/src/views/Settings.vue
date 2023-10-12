@@ -80,9 +80,10 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import NavbarInternal from '../components/NavbarInternal.vue'
 import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
+import Api from '../Api'
 
 export default {
   components: {
@@ -112,7 +113,7 @@ export default {
     getUserName() {
       const userid = sessionStorage.getItem('userId')
       const updateUrl = `http://localhost:3000/v1/profiles/${userid}`
-      axios.get(updateUrl).then(response => {
+      Api.get(updateUrl).then(response => {
         this.username = response.data.username
         this.oldPasswordDb = response.data.password
         this.usernameHeading = this.username
@@ -151,7 +152,7 @@ export default {
           password: this.newPassword
         }
         // Example using Axios:
-        axios.patch(updateUrl, requestData)
+        Api.patch(updateUrl, requestData)
           .then(response => {
           // Handle success
             this.passwordsConfirmed = true

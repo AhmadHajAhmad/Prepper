@@ -150,9 +150,10 @@
 <script>
 import * as bootstrap from 'bootstrap'
 import { Modal } from 'bootstrap'
-import axios from 'axios'
+// import axios from 'axios'
 import NavbarInternal from '../components/NavbarInternal.vue'
 import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
+import Api from '../Api.js'
 
 export default {
   components: {
@@ -205,7 +206,7 @@ export default {
     },
     async deletePerson(person) {
       try {
-        await axios.delete(
+        await Api.delete(
           `http://localhost:3000/v1/profiles/${this.userid}/people/${person._id}`,
 
           {
@@ -224,7 +225,7 @@ export default {
       try {
         if (this.newPerson._id) {
           // If _id exists, it's an update operation
-          await axios.patch(
+          await Api.patch(
             `http://localhost:3000/v1/profiles/${this.userid}/people/${this.newPerson._id}`,
             this.newPerson,
             {
@@ -235,7 +236,7 @@ export default {
           )
         } else {
           // If _id doesn't exist, it's a create operation
-          await axios.post(
+          await Api.post(
             `http://localhost:3000/v1/profiles/${this.userid}/people`,
             this.newPerson,
             {
@@ -248,13 +249,17 @@ export default {
         this.cancel() // Close the form modal
         this.loadPeople() // Reload the list of people
       } catch (error) {
+        this.cancel()
+        this.$router.push({
+          path: '/offline'
+        })
         console.error('Error saving the person:', error)
       }
     },
 
     async loadPeople() {
       try {
-        const response = await axios.get(
+        const response = await Api.get(
           `http://localhost:3000/v1/profiles/${this.userid}/people`,
           {
             headers: {

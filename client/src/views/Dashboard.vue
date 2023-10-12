@@ -52,10 +52,11 @@
 
 <script>
 import { ref, onBeforeMount } from 'vue'
-import axios from 'axios'
+// import axios from 'axios'
 import { useRouter } from 'vue-router'
 import NavbarInternal from '../components/NavbarInternal.vue'
 import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
+import Api from '../Api'
 
 export default {
   components: {
@@ -84,7 +85,7 @@ export default {
 
     async function getCalories() {
       try {
-        const response = await axios.get(`http://localhost:3000/v1/profiles/${userId.value}/calories/days`, {
+        const response = await Api.get(`http://localhost:3000/v1/profiles/${userId.value}/calories/days`, {
           headers: { usertoken: token.value }
         })
         calories.value = response.data.toFixed(2)
@@ -95,7 +96,7 @@ export default {
 
     async function getWater() {
       try {
-        const response = await axios.get(`http://localhost:3000/v1/profiles/${userId.value}/calories/water`, {
+        const response = await Api.get(`http://localhost:3000/v1/profiles/${userId.value}/calories/water`, {
           headers: { usertoken: token.value }
         })
         water.value = response.data.toFixed(2)
@@ -106,7 +107,7 @@ export default {
 
     async function getPeople() {
       try {
-        const response = await axios.get(`http://localhost:3000/v1/profiles/${userId.value}/people`, {
+        const response = await Api.get(`http://localhost:3000/v1/profiles/${userId.value}/people`, {
           headers: { usertoken: token.value }
         })
         people.value = response.data.length

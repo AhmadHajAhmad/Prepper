@@ -148,9 +148,10 @@
 import { ref, onMounted, watch, nextTick } from 'vue'
 import * as bootstrap from 'bootstrap'
 import { Modal } from 'bootstrap'
-import axios from 'axios'
+// import axios from 'axios'
 import NavbarInternal from '../components/NavbarInternal.vue'
 import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
+import Api from '../Api'
 
 export default {
   components: {
@@ -189,7 +190,6 @@ export default {
     const createFood = () => {
       newFood.value = resetForm()
       showForm.value = true
-      console.log(showForm.value)
     }
     const updateFood = (food) => {
       newFood.value = { ...food }
@@ -198,7 +198,7 @@ export default {
 
     const getFood = async () => {
       try {
-        const response = await axios.get(
+        const response = await Api.get(
           `http://localhost:3000/v1/profiles/${userid.value}/food`,
           {
             headers: {
@@ -214,7 +214,7 @@ export default {
 
     const getWater = async () => {
       try {
-        const response = await axios.get(
+        const response = await Api.get(
           `http://localhost:3000/v1/profiles/${userid.value}/water`,
           {
             headers: {
@@ -229,8 +229,6 @@ export default {
         if (waterList.value[0]._links) {
           waterLinks.value = waterList.value[0]._links
         }
-
-        console.log(waterLinks)
       } catch (err) {
         error.value = 'An error occurred while fetching the data.'
       }
@@ -240,7 +238,7 @@ export default {
       try {
         if (newFood.value._id) {
           // If _id exists, it's an update operation
-          await axios.patch(
+          await Api.patch(
             `http://localhost:3000/v1/profiles/${userid.value}/food/${newFood.value._id}`,
             newFood.value,
             {
@@ -250,7 +248,7 @@ export default {
             }
           )
         } else {
-          await axios.post(
+          await Api.post(
             `http://localhost:3000/v1/profiles/${userid.value}/food`,
             newFood.value,
             {
@@ -269,7 +267,7 @@ export default {
 
     const deleteFood = async (food) => {
       try {
-        await axios.delete(
+        await Api.delete(
           `http://localhost:3000/v1/profiles/${userid.value}/food/${food._id}`,
           {
             headers: {
@@ -286,7 +284,7 @@ export default {
     const updateWater = async (waterData) => {
       const link = `http://localhost:3000${waterLinks.value.update.href}`
       try {
-        await axios.put(link, waterData, {
+        await Api.put(link, waterData, {
           headers: {
             usertoken: token.value
           }
