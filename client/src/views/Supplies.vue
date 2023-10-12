@@ -89,11 +89,12 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import { Modal } from 'bootstrap'
 import * as bootstrap from 'bootstrap'
 import NavbarInternal from '../components/NavbarInternal.vue'
 import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
+import Api from '../Api'
 
 export default {
   components: {
@@ -136,7 +137,7 @@ export default {
   methods: {
     async getSupplies() {
       try {
-        const response = await axios.get(
+        const response = await Api.get(
           `http://localhost:3000/v1/profiles/${this.userid}/supplies`,
           {
             headers: {
@@ -167,7 +168,7 @@ export default {
     async save() {
       try {
         if (this.newSupplies._id) {
-          await axios.patch(
+          await Api.patch(
             `http://localhost:3000/v1/profiles/${this.userid}/supplies/${this.newSupplies._id}`,
             this.newSupplies,
             {
@@ -179,7 +180,7 @@ export default {
           this.cancel()
           this.getSupplies()
         } else {
-          await axios.post(
+          await Api.post(
             `http://localhost:3000/v1/profiles/${this.userid}/supplies`,
             this.newSupplies,
             {
@@ -201,7 +202,7 @@ export default {
     },
     async deleteSupplies(supply) {
       try {
-        await axios.delete(
+        await Api.delete(
           `http://localhost:3000/v1/profiles/${this.userid}/supplies/${supply._id}`,
           {
             headers: {

@@ -67,7 +67,8 @@
 
 <script>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+// import axios from 'axios'
+import Api from '../Api'
 
 export default {
   setup() {
@@ -80,7 +81,7 @@ export default {
 
     const getEntities = async (url, targetList, token) => {
       try {
-        const response = await axios.get(url, {
+        const response = await Api.get(url, {
           headers: {
             admintoken: token
           }
@@ -95,7 +96,7 @@ export default {
       try {
         const token = adminToken.value
         const targetList = list
-        await axios.delete(url, {
+        await Api.delete(url, {
           headers: {
             admintoken: token
           }
@@ -116,7 +117,7 @@ export default {
       try {
         const token = adminToken.value
         const targetUser = userId
-        await axios.delete(`http://localhost:3000/v1/profiles/${targetUser}`, {
+        await Api.delete(`http://localhost:3000/v1/profiles/${targetUser}`, {
           headers: {
             admintoken: token
           }

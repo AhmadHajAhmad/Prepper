@@ -30,11 +30,12 @@
 
 <script>
 import { ref } from 'vue'
-import axios from 'axios'
+// import axios from 'axios'
 import { useRouter } from 'vue-router'
 import NavbarLogin from '../components/NavbarLogin.vue'
 import NavbarLoginBottom from '../components/NavbarLoginBottom.vue'
 import PasswordChecker from '../components/PasswordChecker.vue'
+import Api from '../Api'
 
 export default {
   components: {
@@ -52,7 +53,7 @@ export default {
     const register = async () => {
       try {
         console.log('Trying to register')
-        await axios.post('http://localhost:3000/v1/register/', {
+        await Api.post('http://localhost:3000/v1/register/', {
           username: username.value,
           password: password.value,
           email: email.value
