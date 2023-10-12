@@ -1,9 +1,42 @@
 /* Global Styles */
 body {
-    font-family: 'Arial', sans-serif; /* Change this to your preferred font */
-    background-color: #e1e1e1; /* Light Color */
-    color: rgba(40, 40, 40, 0.5); /* Dark Color */
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-color);
+    color: var(--font-color);
     text-align: center;
+}
+
+/* Default Styles (Light Mode) */
+:root {
+    --background-color: #c5c3b3;
+    --background-alternate: #cdcdcd;
+    --font-color: rgba(95, 95, 95, 0.9);
+    --header-color: #333;
+    --header-border: #eee;
+    --btn-bg: #ada97e;
+    --btn-text: #f8f8f8;
+    --btn-bg-hover: #86835e;
+    --btn-alert-bg: rgb(222, 72, 72);
+    --btn-alert-text: white;
+    --btn-alert-bg-hover: rgb(120, 63, 63);
+    --btn-alert-text-hover: lightgray;
+    --navbar-bg-color: #ada97e;
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] {
+    --background-color: #353535;
+    --background-alternate: #424242;
+    --font-color: #dfdfdf;
+    --header-color: #dddddd;
+    --header-border: #626262;
+    --btn-bg: #2a2a2a;
+    --btn-bg-hover: #4e4e4e;
+    --btn-alert-bg: darkred;
+    --btn-alert-text: lightgray;
+    --btn-alert-bg-hover: rgb(127, 2, 2);
+    --btn-alert-text-hover: white;
+    --navbar-bg-color: #2a2a2a;
 }
 
 /* Container used for the outmost division */
@@ -14,64 +47,125 @@ body {
 }
 
 .main-container {
+    display: flex;          /* Enables flexbox */
+    flex-direction: column; /* Children are stacked vertically */
+    align-items: center;    /* Center children horizontally */
+    height: 100%;           /* Take full height of parent or viewport */
+    
     flex-grow: 1;
-    overflow: auto; /* To allow scrolling if the content is more than the available space */
-    padding-bottom: 60px; /* Added padding to create the space at the bottom */
-    box-sizing: border-box; /* Ensure padding is included in the height */
+    overflow: auto;
+    padding-bottom: 60px;
+    box-sizing: border-box;
+    background: var(--main-container-bg);
 }
 
-/* Base Button Styles */
+
+.navbar {
+    background-color: var(--navbar-bg-color);
+    color: var(--font-color);
+}
+
+.nav-link {
+    color: var(--font-color);
+}
+
 .btn {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    font-size: 18px;  /* Increased font size for modern look */
-    letter-spacing: 1px;  /* Added letter spacing */
-    font-weight: 500;  /* Adjusted font weight */
-    transition: all 0.3s, transform 0.2s;  /* Added transform to transition */
+    font-size: 18px;
+    letter-spacing: 1px;
+    font-weight: 500;
+    transition: all 0.3s, transform 0.2s;
     cursor: pointer;
     outline: none;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* Base shadow */
+    box-shadow: var(--btn-shadow);
+    background-color: var(--btn-bg);
+    color: var(--font-color);
 }
 
 .btn:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);  /* Shadow on hover */
+    box-shadow: var(--btn-shadow-hover);
+    color: var(--btn-alert-text-hover);
+    background-color: var(--btn-bg-hover);
 }
 
 .btn:active {
-    transform: scale(0.98);  /* Press effect */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Reduced shadow when pressed */
+    transform: scale(0.98);
+    box-shadow: var(--btn-shadow-active);
 }
 
-/* Dark Button */
-.btn-dark {
-    background: linear-gradient(135deg, #2c3e50, #34495e);  /* Gradient background */
-    color: #C3D7E4;
+.btn-alert {
+    background-color: var(--btn-alert-bg);
+    color: var(--font-color);
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.btn-dark:hover {
-    background: linear-gradient(135deg, #34495e, #2c3e50);  /* Switched gradient direction on hover */
+.btn-alert:hover {
+    background-color: var(--btn-alert-bg-hover);
+    color: var(--btn-alert-text-hover);
 }
 
-/* Light Button */
-.btn-light {
-    background-color: #C3D7E4;
-    color: #2c3e50;
+.btn-container {
+    align-items: end;
 }
 
-.btn-light:hover {
-    background-color: #a9bfc9;
+.item-detail {
+    display: block; /* makes each span stack */
+    margin-left: 0; /* ensures no margin on the left */
+    padding-left: 0; /* ensures no padding on the left */
 }
 
-/* Accent Button */
-.btn-accent {
-    background-color: #48B2A6;
-    color: #2c3e50;
+.item-info {
+    padding-left: 0; /* Remove padding from the containing div as well to ensure uniformity */
+    text-align: left;
 }
 
-.btn-accent:hover {
-    background-color: #369587;
+/* Pill Toggle Styles */
+
+.theme-switch {
+    position: relative;
+    width: 60px;
+    height: 30px;
 }
+
+.theme-switch input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: #808080; /* Medium gray */
+    transition: 0.3s;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #808080; /* Slightly yellow */
+    transition: 0.3s;
+    box-shadow: inset 12px -2px 0px 0px #FFD700; /* Gray shadow on the right side for crescent effect */
+}
+
+.theme-switch input:checked + .slider::before {
+    transform: translateX(32px);
+    background-color: #FFD700; /* Slightly yellow when checked */
+    box-shadow: none; /* Removing the shadow for a complete circle when checked */
+}
+
 
 /* Utilities for centering content */
 .center-content {
@@ -79,5 +173,13 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+}
+
+/* Enhanced form header appearance */
+h2 {
+    margin-bottom: 20px;
+    color: var(--header-color);
+    border-bottom: 2px solid var(--header-border);
+    padding-bottom: 10px;
 }
 

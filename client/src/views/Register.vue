@@ -2,9 +2,8 @@
   <div class="navbar-container">
     <NavbarLogin/>
     <div class="main-container">
-      <div class="login-container d-flex justify-content-center align-items-start vh-100">
         <div class="col-12 col-md-8 col-lg-6 p-5">
-      <h2>Register</h2>
+      <h1>Register</h1>
       <form @submit.prevent="register">
         <div class="container p-3">
           <label for="email">Email:</label>
@@ -25,7 +24,6 @@
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     </div>
   </div>
-</div>
     <NavbarLoginBottom/>
   </div>
 </template>

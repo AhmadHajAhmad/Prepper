@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg" style="background-color: #cfcfcf;">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand">
                 <router-link to="/dashboard"><img class="navbar-logo" src="../assets/images/logo.png"></router-link>
@@ -25,13 +25,18 @@
                         <router-link class="nav-link" to="/settings">Settings</router-link>
                     </li>
                 </ul>
+                <!-- Dark/Light toggle -->
+                <label class="theme-switch">
+                    <input type="checkbox" @change="toggleTheme" :checked="isDarkTheme">
+                    <span class="slider round"></span>
+                </label>
             </div>
         </div>
     </nav>
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 export default {
@@ -40,13 +45,44 @@ export default {
     const route = useRoute()
     const currentRoute = ref(route.path) // Get the current path
 
+    // For theme toggle
+    const currentTheme = ref(localStorage.getItem('theme') || 'light')
+    document.documentElement.setAttribute('data-theme', currentTheme.value)
+
+    const isDarkTheme = ref(currentTheme.value === 'dark')
+
+    const toggleTheme = () => {
+      if (isDarkTheme.value) {
+        currentTheme.value = 'light'
+      } else {
+        currentTheme.value = 'dark'
+      }
+
+      // Save the preference to localStorage
+      localStorage.setItem('theme', currentTheme.value)
+
+      // Set the new theme
+      document.documentElement.setAttribute('data-theme', currentTheme.value)
+      isDarkTheme.value = !isDarkTheme.value // Toggle the boolean value
+    }
+
     // Watch for changes in the route and update the currentRoute ref
     watch(() => route.path, (newPath) => {
       currentRoute.value = newPath
     })
 
+    onMounted(() => {
+      const savedTheme = localStorage.getItem('theme') || 'light'
+      currentTheme.value = savedTheme
+      document.documentElement.setAttribute('data-theme', currentTheme.value)
+      isDarkTheme.value = savedTheme === 'dark'
+    })
+
     return {
-      currentRoute
+      currentRoute,
+      currentTheme,
+      isDarkTheme,
+      toggleTheme
     }
   }
 }
