@@ -2,9 +2,8 @@
   <div class="navbar-container">
     <NavbarLogin/>
     <div class="main-container">
-      <div class="login-container d-flex justify-content-center align-items-start vh-100">
-        <div class="col-12 col-md-8 col-lg-6 p-5">
-          <h2>Login</h2>
+        <div class="col-12 col-md-8 col-lg-8 p-5">
+          <h1>Login</h1>
           <form @submit.prevent="login">
             <div class="container p-3">
               <label for="username">Username:</label>
@@ -14,12 +13,11 @@
               <label for="password">Password:</label>
               <input v-model="password" type="password" id="password" required />
             </div>
-            <button type="submit" class="btn btn-dark">Login</button>
+            <button type="submit" class="btn">Login</button>
           </form>
           <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
         </div>
       </div>
-    </div>
     <NavbarLoginBottom/>
   </div>
 </template>
@@ -60,8 +58,6 @@ export default {
 
         if (isAdmin === 'yes') {
           const token = response.headers.get('admintoken')
-          console.log(token)
-          console.log(userid)
           sessionStorage.setItem('token', token)
           this.$router.push({
             path: '/admin'
@@ -69,8 +65,6 @@ export default {
         } else {
           const token = response.headers.get('usertoken')
           sessionStorage.setItem('token', token)
-          console.log(token)
-          console.log(userid)
           this.$router.push({
             path: '/dashboard'
           })

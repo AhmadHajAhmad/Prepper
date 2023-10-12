@@ -2,39 +2,23 @@
   <div class="navbar-container">
     <NavbarInternal />
     <div class="main-container">
-      <div
-        class="login-container d-flex justify-content-center align-items-start vh-100"
-      >
-        <div class="col-12 col-md-10 col-lg-8 p-5">
+        <div class="col-12 col-md-10 col-lg-10 p-5">
           <h1>Current Food</h1>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Calories</th>
-                <th>Weight</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="food in foodList" :key="food.id">
-                <td>{{ food.foodname }}</td>
-                <td>{{ food.calories }}</td>
-                <td>{{ food.weight }}</td>
-                <td>
-                  <button
-                    @click.stop="updateFood(food)"
-                    class="btn btn-primary"
-                  >
-                    Update
-                  </button>
-                  <button @click.stop="deleteFood(food)" class="btn btn-danger">
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <button @click="createFood" class="btn btn-primary">Add Food</button>
+          <ul class="list-group">
+    <li v-for="food in foodList" :key="food.id" class="list-group-item d-flex justify-content-between align-content-center">
+        <div class="item-info">
+            <span class="item-detail"><strong>Food Name:</strong> {{ food.foodname }}</span>
+            <span class="item-detail"><strong>Calories:</strong> {{ food.calories }}g</span>
+            <span class="item-detail"><strong>Weight:</strong> {{ food.weight }}kcal</span>
+        </div>
+        <div class="btn-container">
+            <button @click.stop="updateFood(food)" class="btn">Update</button>
+            <button @click.stop="deleteFood(food)" class="btn btn-alert">Delete</button>
+        </div>
+    </li>
+</ul>
+
+          <button @click="createFood" class="btn">Add Food</button>
           <p v-if="error" class="text-danger mt-2">{{ error }}</p>
 
           <!-- Bootstrap Modal for Adding Food -->
@@ -119,27 +103,26 @@
             <!-- Progress Bar -->
             <div class="progress">
               <div
-                class="progress-bar"
+                id="water-bar"
                 role="progressbar"
                 :style="{ width: `${waterQuantity * 4}%` }"
                 :aria-valuenow="waterQuantity"
                 aria-valuemin="0"
                 aria-valuemax="25"
               >
-                {{ waterQuantity }} Liters
+                <p id="water-text">{{ waterQuantity }} Liters</p>
               </div>
             </div>
             <!-- Control Buttons -->
-            <button class="btn btn-light mt-3" @click="increaseWater">
+            <button class="btn mt-3" @click="increaseWater">
               Increase
             </button>
-            <button class="btn btn-dark mt-3 ms-2" @click="decreaseWater">
+            <button class="btn mt-3 ms-2" @click="decreaseWater">
               Decrease
             </button>
           </div>
         </div>
       </div>
-    </div>
     <NavbarInternalBottom />
   </div>
 </template>
@@ -189,7 +172,6 @@ export default {
     const createFood = () => {
       newFood.value = resetForm()
       showForm.value = true
-      console.log(showForm.value)
     }
     const updateFood = (food) => {
       newFood.value = { ...food }
@@ -229,8 +211,6 @@ export default {
         if (waterList.value[0]._links) {
           waterLinks.value = waterList.value[0]._links
         }
-
-        console.log(waterLinks)
       } catch (err) {
         error.value = 'An error occurred while fetching the data.'
       }
@@ -355,6 +335,7 @@ export default {
 }
 </script>
 <style scoped>
+
 @keyframes waterEffect {
   0% {
     background-position-x: 0;
@@ -364,7 +345,8 @@ export default {
   }
 }
 
-.progress-bar {
+#water-bar {
+  background-color: rgb(0, 64, 116);
   background-image: linear-gradient(
     45deg,
     #3498db 25%,
@@ -377,5 +359,9 @@ export default {
   );
   background-size: 50px 50px;
   animation: waterEffect 1s linear infinite;
+}
+
+#water-text {
+  color: aliceblue;
 }
 </style>

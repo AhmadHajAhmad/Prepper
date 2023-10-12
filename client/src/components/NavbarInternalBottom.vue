@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar fixed-bottom d-block d-sm-none custom-navbar" style="background-color: #cfcfcf;">
+        <nav class="navbar fixed-bottom d-block d-sm-none custom-navbar">
         <ul class="nav justify-content-around">
             <li class="nav-item" v-if="currentRoute !== '/dashboard'">
                         <router-link class="nav-link" to="/dashboard">Dashboard</router-link>
