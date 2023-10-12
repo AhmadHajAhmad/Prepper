@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg" style="background-color: #cfcfcf;">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand">
                 <router-link to="/"><img class="navbar-logo" src="../assets/images/logo.png"></router-link>
@@ -16,6 +16,11 @@
                         <router-link class="nav-link" to="/register">Register</router-link>
                     </li>
                 </ul>
+                <!-- Dark/Light toggle -->
+                <label class="theme-switch">
+                    <input type="checkbox" @change="toggleTheme" :checked="isDarkTheme">
+                    <span class="slider round"></span>
+                </label>
             </div>
         </div>
     </nav>
@@ -23,7 +28,33 @@
 
 <script>
 export default {
-  name: 'NavbarLogin'
+  name: 'NavbarLogin',
+  data() {
+    return {
+      currentTheme: 'light' // default value
+    }
+  },
+  computed: {
+    isDarkTheme() {
+      return this.currentTheme === 'dark'
+    }
+  },
+  methods: {
+    toggleTheme() {
+      this.currentTheme = this.isDarkTheme ? 'light' : 'dark'
+
+      // Save the preference to localStorage
+      localStorage.setItem('theme', this.currentTheme)
+
+      // Set the new theme
+      document.documentElement.setAttribute('data-theme', this.currentTheme)
+    }
+  },
+  mounted() {
+    const savedTheme = localStorage.getItem('theme') || 'light'
+    this.currentTheme = savedTheme
+    document.documentElement.setAttribute('data-theme', this.currentTheme)
+  }
 }
 </script>
 

@@ -2,39 +2,25 @@
   <div class="navbar-container">
     <NavbarInternal />
     <div class="main-container">
+      <div class="col-12 col-md-10 col-lg-10 p-5">
       <h1>Household Members</h1>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Weight</th>
-            <th>Height</th>
-            <th>Sex</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="person in people" :key="person.id">
-            <td>{{ person.name }}</td>
-            <td>{{ person.age }}</td>
-            <td>{{ person.weight }}</td>
-            <td>{{ person.height }}</td>
-            <td>{{ person.sex }}</td>
-            <td>
-              <button
-                @click.stop="updatePerson(person)"
-                class="btn btn-primary"
-              >
-                Update
-              </button>
-              <button @click.stop="deletePerson(person)" class="btn btn-danger">
-                Delete
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <button @click="createPerson" class="btn btn-primary">
+      <ul class="list-group">
+    <li v-for="person in people" :key="person.id" class="list-group-item d-flex justify-content-between align-content-center">
+        <div class="item-info">
+            <span class="item-detail"><strong>Name:</strong> {{ person.name }}</span>
+            <span class="item-detail"><strong>Age:</strong> {{ person.age }}</span>
+            <span class="item-detail"><strong>Weight:</strong> {{ person.weight }}</span>
+            <span class="item-detail"><strong>Height:</strong> {{ person.height }}</span>
+            <span class="item-detail"><strong>Sex:</strong> {{ person.sex }}</span>
+        </div>
+        <div class="btn-container">
+            <button @click.stop="updatePerson(person)" class="btn">Update</button>
+            <button @click.stop="deletePerson(person)" class="btn btn-alert">Delete</button>
+        </div>
+    </li>
+</ul>
+
+      <button @click="createPerson" class="btn">
         Create Person
       </button>
 
@@ -141,6 +127,7 @@
             </form>
           </div>
         </div>
+      </div>
       </div>
     </div>
     <NavbarInternalBottom />

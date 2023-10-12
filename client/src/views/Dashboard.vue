@@ -10,10 +10,9 @@
         <div class="col-lg-4 col-md-4 col-sm-12 p-3 centered-content">
           <p>Food:</p>
           <ve-progress
-          :progress="calories * 10"
+          :progress="(calories * 10)"
           :legend="calories"
           thickness="7%"
-          animation="duration 1500"
           color="#982560">
             <template #legend-caption>
               <p>Days Stored</p>
@@ -25,10 +24,9 @@
         <div class="col-lg-4 col-md-4 col-sm-12 p-3 centered-content">
           <p>Water:</p>
           <ve-progress
-          :progress="water * 10"
+          :progress="(water * 10)"
           :legend="water"
-          thickness="7%"
-          animation="duration 1500">
+          thickness="7%">
             <template #legend-caption>
               <p>Days Stored</p>
             </template>
@@ -88,7 +86,11 @@ export default {
         const response = await Api.get(`http://localhost:3000/v1/profiles/${userId.value}/calories/days`, {
           headers: { usertoken: token.value }
         })
-        calories.value = response.data.toFixed(2)
+        if (response.data < 0.1 || !response.data) {
+          calories.value = 0.1
+        } else {
+          calories.value = parseFloat(response.data).toFixed(2)
+        }
       } catch (error) {
         console.log(error)
       }
@@ -99,7 +101,11 @@ export default {
         const response = await Api.get(`http://localhost:3000/v1/profiles/${userId.value}/calories/water`, {
           headers: { usertoken: token.value }
         })
-        water.value = response.data.toFixed(2)
+        if (response.data < 0.1 || !response.data) {
+          water.value = 0.1
+        } else {
+          water.value = parseFloat(response.data).toFixed(2)
+        }
       } catch (error) {
         console.log(error)
       }
