@@ -10,7 +10,6 @@
         <input
           type="text"
           class="form-control"
-          id="username"
           v-model="username"
           disabled
         />
@@ -62,10 +61,12 @@
     <div v-if="passwordsNotStrong" class="alert alert-success" role="alert" style="text-align: left;">
       Password not strong enough to be accepted! it should meet the following criteria
       <ul style="text-align: left;">
-    <li>Minimum characters: 8 </li>
-    <li>Atleast one capital letter</li>
-    <li>Atleast one Special character[!@#$%^&*()_+{}\\:;,.?~\\-]</li>
-  </ul>
+        <li>Minimum characters: 8 </li>
+        <li>Atleast one capital letter</li>
+        <li>Atleast one small letter</li>
+        <li>Atleast one numeric value</li>
+        <li>Atleast one Special character from [!@#$%^&*()_+{}\\:;,.?~\\-]</li>
+      </ul>
     </div>
   </div>
 </div>
@@ -96,7 +97,7 @@ export default {
       passwordsDoNotMatchDB: false,
       passwordsNotStrong: false,
       modalView: null,
-      usernameHeading: ''
+      progressBar: null
     }
   },
   mounted() {
@@ -110,9 +111,6 @@ export default {
       Api.get(updateUrl).then(response => {
         this.username = response.data.username
         this.oldPasswordDb = response.data.password
-        this.usernameHeading = this.username
-        // console.log(this.username)
-        // console.log(this.oldPasswordDb)
       })
         .catch(error => {
           console.error('Error updating the password:', error)
@@ -125,10 +123,12 @@ export default {
       // checks if Old Password equals to password saved to the saved password
       } else if (this.oldPassword !== this.oldPasswordDb) {
         this.passwordsDoNotMatchDB = true
-      } else if (this.newPassword.length < 8 || // Check minimum length
-      !/[A-Z]/.test(this.newPassword) || // Check for at least one capital letter
-      !/[!@#$%^&*()_+{}\\:;<>,.?~\\-]/.test(this.newPassword) // Check for at least one special character
-      ) {
+      } else if (!this.newPassword.length > 7 || // Criteria 1: new password has length 8
+      !/[0-9>]/.test(this.newPassword) || // Criteria 2: new password has atleast one numeric
+      !/[a-z>]/.test(this.newPassword) || // Criteria 3: new password has atleast one small letter
+      !/[A-Z]/.test(this.newPassword) || // Criteria 4: new password has atleaset one Capital letter
+      !/[!@#$%^&*()_+{}\\:;<>,.?~\\-]/.test(this.newPassword)) { // Criteria 5: new password has atleast
+      // one special charater in the password
       // Password does not meet the strength criteria
         this.passwordsDoNotMatch = false
         this.passwordsDoNotMatchDB = false
@@ -167,12 +167,13 @@ export default {
       this.passwordsDoNotMatch = false
       this.passwordsDoNotMatchDB = false
       this.passwordsNotStrong = false
+      this.progressBar.style.cssText = 'width: unset'
     },
     passwordchecker() {
       const passwordText = document.querySelector('#newPassword')
-      const progressBar = document.querySelector('.bar')
+      this.progressBar = document.querySelector('.bar')
       passwordText.onkeyup = () => {
-        this.checkPasswordStrength(passwordText.value, progressBar)
+        this.checkPasswordStrength(passwordText.value, this.progressBar)
       }
     },
     checkPasswordStrength(passwordText, progressBar) {
@@ -180,7 +181,7 @@ export default {
       if (passwordText.length === 0) { progressBar.style.cssText = 'width: 0%' }
       if (/[0-9>]/.test(passwordText)) { strength++ }
       if (/[a-z>]/.test(passwordText)) { strength++ }
-      if (passwordText.length > 8) { strength++ }
+      if (passwordText.length > 7) { strength++ }
       if (/[A-Z]/.test(passwordText)) { strength++ }
       if (/[!@#$%^&*()_+{}\\:;<>,.?~\\-]/.test(this.newPassword)) { strength++ }
       switch (strength) {
