@@ -24,6 +24,9 @@
                     <li class="nav-item" v-if="currentRoute !== '/settings'">
                         <router-link class="nav-link" to="/settings">Settings</router-link>
                     </li>
+                    <li class="nav-item">
+                      <router-link class="nav-link" @click="logOut" to="/login">Log out</router-link>
+                    </li>
                 </ul>
                 <!-- Dark/Light toggle -->
                 <label class="theme-switch">
@@ -36,7 +39,7 @@
 </template>
 
 <script>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 export default {
@@ -50,6 +53,24 @@ export default {
     document.documentElement.setAttribute('data-theme', currentTheme.value)
 
     const isDarkTheme = ref(currentTheme.value === 'dark')
+    const windowWidth = ref(window.innerWidth)
+    const lastWidth = ref(window.innerWidth)
+
+    const handleResize = () => {
+      windowWidth.value = window.innerWidth
+
+      const navmenu = document.getElementById('navmenu')
+      if (!navmenu) return
+
+      if ((windowWidth.value < 576 && lastWidth.value >= 576) ||
+          (windowWidth.value >= 992 && lastWidth.value < 992)) {
+        if (navmenu.classList.contains('show')) {
+          navmenu.classList.remove('show')
+        }
+      }
+
+      lastWidth.value = windowWidth.value
+    }
 
     const toggleTheme = () => {
       if (isDarkTheme.value) {
@@ -66,6 +87,11 @@ export default {
       isDarkTheme.value = !isDarkTheme.value // Toggle the boolean value
     }
 
+    const logOut = () => {
+      sessionStorage.removeItem('token')
+      sessionStorage.removeItem('userid')
+    }
+
     // Watch for changes in the route and update the currentRoute ref
     watch(() => route.path, (newPath) => {
       currentRoute.value = newPath
@@ -76,13 +102,22 @@ export default {
       currentTheme.value = savedTheme
       document.documentElement.setAttribute('data-theme', currentTheme.value)
       isDarkTheme.value = savedTheme === 'dark'
+      window.addEventListener('resize', handleResize)
+    })
+
+    onUnmounted(() => {
+      window.removeEventListener('resize', handleResize)
     })
 
     return {
       currentRoute,
       currentTheme,
       isDarkTheme,
-      toggleTheme
+      toggleTheme,
+      logOut,
+      windowWidth,
+      lastWidth,
+      handleResize
     }
   }
 }

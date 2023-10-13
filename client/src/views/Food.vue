@@ -128,13 +128,14 @@
 </template>
 
 <script>
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onBeforeMount, watch, nextTick } from 'vue'
 import * as bootstrap from 'bootstrap'
 import { Modal } from 'bootstrap'
 // import axios from 'axios'
 import NavbarInternal from '../components/NavbarInternal.vue'
 import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
 import Api from '../Api'
+import { useRouter } from 'vue-router'
 
 export default {
   components: {
@@ -142,6 +143,7 @@ export default {
     NavbarInternalBottom
   },
   setup() {
+    const router = useRouter()
     const foodList = ref([])
     const waterList = ref([])
     const waterLinks = ref(null)
@@ -290,7 +292,12 @@ export default {
       }
     }
 
-    onMounted(() => {
+    onBeforeMount(() => {
+      if (!token.value) {
+        console.error('Token not available. User may not be authenticated.')
+        router.push({ path: '/login' })
+        return
+      }
       getFood()
       getWater()
     })
@@ -312,6 +319,7 @@ export default {
     }
 
     return {
+      router,
       foodList,
       waterList,
       waterLinks,
