@@ -6,16 +6,18 @@
     <div class="main-container col-lg-8 col-md-10 col-sm-10 col-12 mx-auto">
       <div class="row">
         <!-- First Column -->
-        <div class="col-lg-4 col-md-4 col-sm-12 p-3 centered-content">
+        <div class="col-lg-6 col-md-6 col-sm-12 p-3">
           <p>Food:</p>
           <ve-progress
             HEAD
-            :progress="calories * 10"
-            :legend="calories"
-            thickness="7%"
-            animation="duration 1500"
+            :progress="cappedCalories * 7.2"
+            :legend="cappedCalories"
+            size="300"
+            thickness="6%"
             color="#982560"
           >
+            <span v-if="calories &gt; 14">More than</span>
+            <span>{{ cappedCalories }}</span>
             <template #legend-caption>
               <p>Days Stored</p>
             </template>
@@ -23,15 +25,17 @@
         </div>
 
         <!-- Second Column -->
-        <div class="col-lg-4 col-md-4 col-sm-12 p-3 centered-content">
+        <div class="col-lg-6 col-md-6 col-sm-12 p-3">
           <p>Water:</p>
           <ve-progress
             HEAD
-            :progress="water * 10"
-            :legend="water"
-            thickness="7%"
-            animation="duration 1500"
+            :progress="cappedWater * 7.2"
+            :legend="cappedWater"
+            size="300"
+            thickness="6%"
           >
+            <span v-if="water &gt; 14">More than</span>
+            <span>{{ cappedWater }}</span>
             <template #legend-caption>
               <p>Days Stored</p>
             </template>
@@ -39,15 +43,10 @@
         </div>
 
         <!-- Third Column -->
-        <div class="col-lg-4 col-md-4 col-sm-12 p-3 centered-content">
-          <p>Food Status:</p>
+        <div class="col-lg-12 col-md-12 col-sm-12 p-3">
+          <p>Status:</p>
           <div class="status-message">
-            {{ foodStatusMessage }}
-          </div>
-
-          <p>Water Status:</p>
-          <div class="status-message">
-            {{ waterStatusMessage }}
+            {{ statusMessage }}
           </div>
         </div>
       </div>
@@ -58,10 +57,10 @@
 </template>
 
 <script>
-import { ref, onBeforeMount, computed } from 'vue'
+import { ref, onBeforeMount, computed, watchEffect } from 'vue'
 import NavbarInternal from '../components/NavbarInternal.vue'
 import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
-import { getFoodStatusMessage, getWaterStatusMessage } from '../statusMessages'
+import { getStatusMessage } from '../statusMessages'
 import { useRouter } from 'vue-router'
 import Api from '../Api'
 
@@ -72,11 +71,11 @@ export default {
   },
   setup() {
     const router = useRouter()
-    const calories = ref(null)
-    const water = ref(null)
-    const people = ref(null)
+    const calories = ref(0)
+    const water = ref(0)
     const token = ref(sessionStorage.getItem('token'))
     const userId = ref(sessionStorage.getItem('userId'))
+    const delayedStatusMessage = ref('')
 
     onBeforeMount(() => {
       if (!token.value) {
@@ -84,10 +83,21 @@ export default {
         router.push({ path: '/login' })
         return
       }
-
       getCalories()
       getWater()
-      getPeople()
+    })
+    watchEffect(() => {
+      setTimeout(() => {
+        if (water.value <= 0.1 && calories.value <= 0.1) {
+          delayedStatusMessage.value =
+            'Please add food, water and people. You can do so by visiting the Food and Household pages on the top right corner 😊'
+        } else {
+          delayedStatusMessage.value = getStatusMessage(
+            cappedCalories.value,
+            cappedWater.value
+          )
+        }
+      }, 400)
     })
 
     async function getCalories() {
@@ -125,40 +135,26 @@ export default {
         console.log(error)
       }
     }
-    const foodStatusMessage = computed(() => {
-      if (calories.value === null) return 'You have zero food' // Optional loading message
-      return getFoodStatusMessage(calories.value)
+
+    const cappedCalories = computed(() => {
+      return Math.min(calories.value, 14)
     })
 
-    const waterStatusMessage = computed(() => {
-      if (water.value === null) return 'You have Zero water' // Optional loading message
-      return getWaterStatusMessage(water.value)
+    const cappedWater = computed(() => {
+      return Math.min(water.value, 14)
     })
 
-    async function getPeople() {
-      try {
-        const response = await Api.get(
-          `http://localhost:3000/v1/profiles/${userId.value}/people`,
-          {
-            headers: { usertoken: token.value }
-          }
-        )
-        people.value = response.data.length
-      } catch (error) {
-        console.log(error)
-      }
-    }
+    const statusMessage = computed(() => delayedStatusMessage.value)
 
     return {
       router,
       calories,
       water,
-      people,
       getCalories,
       getWater,
-      getPeople,
-      foodStatusMessage,
-      waterStatusMessage
+      statusMessage,
+      cappedCalories,
+      cappedWater
     }
   }
 }
