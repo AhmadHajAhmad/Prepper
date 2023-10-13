@@ -8,11 +8,8 @@ import Food from './views/Food.vue'
 import Register from './views/Register.vue'
 import Admin from './views/Admin.vue'
 import Settings from './views/Settings.vue'
-
 import ServerOffline from './views/ServerOffline'
-/*
-import isServerOnline from './serverAvailabilityService'
-*/
+
 const routes = [
   {
     path: '/',
@@ -63,6 +60,10 @@ const routes = [
     path: '/offline',
     name: 'offline',
     component: ServerOffline
+  },
+  {
+    path: '/:catchAll(.*)',
+    redirect: { name: 'home' }
   }
 ]
 
@@ -70,19 +71,5 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
-/*
 
-// Global route guard to check server availability
-router.beforeEach(async (to, from, next) => {
-  // Check server availability
-  const serverOnline = await isServerOnline()
-  console.log(serverOnline)
-
-  if (!serverOnline && to.name !== 'offline') {
-    next({ name: 'offline' }) // Redirect to the offline page
-  } else {
-    next()
-  }
-})
-*/
 export default router
