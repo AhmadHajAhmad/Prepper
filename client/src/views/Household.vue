@@ -162,6 +162,10 @@ export default {
     }
   },
   mounted() {
+    if (!sessionStorage.getItem('token')) {
+      console.log('Token not found. Redirecting to login.')
+      this.$router.push({ name: 'login' })
+    }
     this.token = sessionStorage.getItem('token')
     this.userid = sessionStorage.getItem('userId')
     this.loadPeople()

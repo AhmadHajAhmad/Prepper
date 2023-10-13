@@ -31,7 +31,9 @@ export default {
   name: 'NavbarLogin',
   data() {
     return {
-      currentTheme: 'light' // default value
+      currentTheme: 'light', // default value
+      windowWidth: window.innerWidth,
+      lastWidth: window.innerWidth // Add this line
     }
   },
   computed: {
@@ -40,6 +42,23 @@ export default {
     }
   },
   methods: {
+    handleResize() {
+      this.windowWidth = window.innerWidth
+
+      const navmenu = document.getElementById('navmenu')
+      if (!navmenu) return
+
+      // Close the menu when crossing the xs/sm and md/lg breakpoints
+      if ((this.windowWidth < 576 && this.lastWidth >= 576) ||
+          (this.windowWidth >= 992 && this.lastWidth < 992)) {
+        if (navmenu.classList.contains('show')) {
+          navmenu.classList.remove('show')
+        }
+      }
+
+      // Store the last width for comparison on the next resize
+      this.lastWidth = this.windowWidth
+    },
     toggleTheme() {
       this.currentTheme = this.isDarkTheme ? 'light' : 'dark'
 
@@ -54,6 +73,7 @@ export default {
     const savedTheme = localStorage.getItem('theme') || 'light'
     this.currentTheme = savedTheme
     document.documentElement.setAttribute('data-theme', this.currentTheme)
+    window.addEventListener('resize', this.handleResize)
   }
 }
 </script>
