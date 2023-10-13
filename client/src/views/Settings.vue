@@ -101,6 +101,10 @@ export default {
     }
   },
   mounted() {
+    if (!sessionStorage.getItem('token')) {
+      console.log('Token not found. Redirecting to login.')
+      this.$router.push({ name: 'login' })
+    }
     this.getUserName()
     this.passwordchecker()
   },

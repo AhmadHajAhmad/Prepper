@@ -1,22 +1,25 @@
 <template>
     <div>
-        <nav class="navbar fixed-bottom d-block d-sm-none custom-navbar">
+      <nav class="navbar fixed-bottom d-block d-sm-none custom-navbar">
         <ul class="nav justify-content-around">
-            <li class="nav-item" v-if="currentRoute !== '/dashboard'">
-                        <router-link class="nav-link" to="/dashboard">Dashboard</router-link>
-                    </li>
-                    <li class="nav-item" v-if="currentRoute !== '/food'">
-                        <router-link class="nav-link" to="/food">Food</router-link>
-                    </li>
-                    <li class="nav-item" v-if="currentRoute !== '/supplies'">
-                        <router-link class="nav-link" to="/supplies">Supplies</router-link>
-                    </li>
-                    <li class="nav-item" v-if="currentRoute !== '/household'">
-                        <router-link class="nav-link" to="/household">Household</router-link>
-                    </li>
-                    <li class="nav-item" v-if="currentRoute !== '/settings'">
-                        <router-link class="nav-link" to="/settings">Settings</router-link>
-                    </li>
+          <li class="nav-item" v-if="currentRoute !== '/dashboard'">
+            <router-link class="nav-link" to="/dashboard">Dashboard</router-link>
+          </li>
+          <li class="nav-item" v-if="currentRoute !== '/food'">
+            <router-link class="nav-link" to="/food">Food</router-link>
+          </li>
+          <li class="nav-item" v-if="currentRoute !== '/supplies'">
+            <router-link class="nav-link" to="/supplies">Supplies</router-link>
+          </li>
+          <li class="nav-item" v-if="currentRoute !== '/household'">
+            <router-link class="nav-link" to="/household">Household</router-link>
+          </li>
+          <li class="nav-item" v-if="currentRoute !== '/settings'">
+            <router-link class="nav-link" to="/settings">Settings</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" @click="logOut" to="/login">Log out</router-link>
+          </li>
         </ul>
       </nav>
     </div>
@@ -36,9 +39,14 @@ export default {
     watch(() => route.path, (newPath) => {
       currentRoute.value = newPath
     })
+    const logOut = () => {
+      sessionStorage.removeItem('token')
+      sessionStorage.removeItem('userid')
+    }
 
     return {
-      currentRoute
+      currentRoute,
+      logOut
     }
   }
 }
