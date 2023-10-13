@@ -44,6 +44,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  overflow-x: hidden;
 }
 
 .main-container {
@@ -51,9 +52,9 @@ body {
   flex-direction: column; /* Children are stacked vertically */
   align-items: center; /* Center children horizontally */
   height: 100%; /* Take full height of parent or viewport */
-
   flex-grow: 1;
   overflow: auto;
+  overflow-x: hidden;
   padding-bottom: 60px;
   box-sizing: border-box;
   background: var(--main-container-bg);
@@ -186,6 +187,12 @@ body {
 .centered-content .status-message {
   margin-bottom: 20px;
 }
+
+#sadSvg path,
+#sadSvg circle {
+  fill: var(--font-color);
+}
+
 /* Enhanced form header appearance */
 h2 {
   margin-bottom: 20px;
