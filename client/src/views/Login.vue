@@ -39,6 +39,11 @@ export default {
       errorMessage: ''
     }
   },
+  mounted() {
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('userId')
+    sessionStorage.removeItem('admintoken')
+  },
   methods: {
     async login() {
       try {

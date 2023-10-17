@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import NavbarLogin from '../components/NavbarLogin.vue'
 import NavbarLoginBottom from '../components/NavbarLoginBottom.vue'
@@ -72,6 +72,11 @@ export default {
       password.value = ''
       email.value = ''
     }
+    onBeforeMount(() => {
+      sessionStorage.removeItem('token')
+      sessionStorage.removeItem('userId')
+      sessionStorage.removeItem('admintoken')
+    })
 
     return {
       username,
