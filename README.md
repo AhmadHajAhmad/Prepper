@@ -63,27 +63,33 @@ Open the `server` and `client` in separate VSCode workspaces or open the combine
 
 ### Purpose
 
-Our system intends to help the user keep any nessecary supplies at home in case of an emergency. The application will track how much food and water the user currently has, and make sure to give advice on other emergency supplies that should always be stockpiled at home. The information shall be displayed in a convenient way so that the user can get a good overview of their current situation.
+Our system serves as a valuable tool for ensuring the availability of essential supplies within your household for potential emergencies. It effectively monitors your food and water inventory while allowing you to involve household members in your readiness plan. This data is presented in a structured and comprehensible manner, providing a precise overview of your readiness status.
 
 ### Pages
 
 1. Login Page<br>
 This page prompts the user to enter their credentials to log in or create a new account if they do not have one already.
 
-2. Account Creation Page<br>
+2. Register Page<br>
 This page prompts the user to type in a username, email, password and characteristics.
 
-3. Household Page<br>
-This page allows the user to enter their location and add and remove people to their household.
+3. Main Page<br>
+This page will display overviews of the users food and water. It will be structured as a dashboard so that the user can easily glance over their current preparedness. The page will also display a quote based on what the current status of preparedness is.
 
-4. Main Page<br>
-This page will display overviews of the users food, water and emergency supplies. It will be structured as a dashboard so that the user can easily glance over their current preparedness. The page will also display a quote based on what the current status of preparedness is.
+4. Household Members Page<br>
+This page allows the user with the to manage their household members' information. You can add, update, or remove household members as needed, ensuring that your readiness plan always reflects your current family composition.
 
 5. Food Page<br>
-This page will allow the user to see what food they currently have in stock and allow the user to enter new food items. The page will also give the user hints about good practices when it comes to storing food and what types are preferred.
+This page allows the user to curate personalized food inventory, enabling them to add, update, or remove food items they currently have in stock. 
 
 6. Emergency Supplies Page<br>
-This page will be a static list of items that the user should have at home in case of emergency. The list will have check marks so that the user can indicate if they have the item at home or not. The page will also give the user hints about good practices when it comes to lifetimes of batteries etc.
+This page allows the user to create personalized emergency supply list. While it provides a default set of items as a starting point, you have the freedom to add or remove supplies according to your specific needs. Each item comes with a toggle option, allowing you to easily mark whether you have it in stock at home or not.
+
+7. Settings Page<br>
+This page allows the user to change their password.
+
+8. Admin page<br>
+This page grants administrative access to view a comprehensive list of all entities within the system. Admins can delete specific entitities and users. When a user is deleted, the associated food items, household members, and supplies are also removed from the system.
 
 
 ### Entity-Relationship (ER) Diagram
