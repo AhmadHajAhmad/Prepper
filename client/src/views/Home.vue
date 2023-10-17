@@ -7,8 +7,18 @@
 </template>
 
 <script>
+import { onBeforeMount } from 'vue'
+
 export default {
-  name: 'Home'
+  name: 'Home',
+
+  setup() {
+    onBeforeMount(() => {
+      sessionStorage.removeItem('token')
+      sessionStorage.removeItem('userId')
+      sessionStorage.removeItem('admintoken')
+    })
+  }
 }
 </script>
 
