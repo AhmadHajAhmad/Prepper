@@ -23,7 +23,6 @@
 </template>
 
 <script>
-// import axios from 'axios'
 import NavbarLogin from '../components/NavbarLogin.vue'
 import NavbarLoginBottom from '../components/NavbarLoginBottom.vue'
 import Api from '../Api'
@@ -43,7 +42,6 @@ export default {
   methods: {
     async login() {
       try {
-        console.log('Trying to login')
         // Perform login without dealing with headers
         const response = await Api.post('http://localhost:3000/v1/login/', {
           username: this.username,
@@ -52,14 +50,11 @@ export default {
 
         const userid = response.headers.get('userid')
         const isAdmin = response.headers.get('isadmin')
-
-        // Save the token and user ID in session storage
-        // sessionStorage.setItem('token', token)
         sessionStorage.setItem('userId', userid)
 
         if (isAdmin === 'yes') {
           const token = response.headers.get('admintoken')
-          sessionStorage.setItem('token', token)
+          sessionStorage.setItem('admintoken', token)
           this.$router.push({
             path: '/admin'
           })
@@ -71,9 +66,8 @@ export default {
           })
         }
       } catch (error) {
-        console.error('Login error:', error)
+        console.error('Login error')
 
-        // Handle error
         if (error.response && error.response.data.message) {
           this.errorMessage = error.response.data.message
         } else {
@@ -86,12 +80,6 @@ export default {
 </script>
 
 <style scoped>
-
-.input-group {
-  margin-bottom: 15px;
-  width: 250px;
-}
-
 label {
   display: block;
   margin-bottom: 8px;

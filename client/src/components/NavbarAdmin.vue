@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand">
-                <router-link to="/"><img class="navbar-logo" src="../assets/images/logo.png"></router-link>
+                <router-link to="/admin"><img class="navbar-logo" src="../assets/images/logo.png"></router-link>
             </a>
             <button class="navbar-toggler d-none d-sm-block d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
                 <span class="navbar-toggler-icon"></span>
@@ -10,10 +10,7 @@
             <div class="collapse navbar-collapse " id="navmenu">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/login">Login</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/register">Register</router-link>
+                        <router-link class="nav-link" @click="logOut" to="/login">Log Out</router-link>
                     </li>
                 </ul>
                 <!-- Dark/Light toggle -->
@@ -28,7 +25,7 @@
 
 <script>
 export default {
-  name: 'NavbarLogin',
+  name: 'NavbarAdmin',
   data() {
     return {
       currentTheme: 'light',
@@ -65,6 +62,10 @@ export default {
 
       // Set the new theme
       document.documentElement.setAttribute('data-theme', this.currentTheme)
+    },
+    logOut() {
+      sessionStorage.removeItem('admintoken')
+      sessionStorage.removeItem('userId')
     }
   },
   mounted() {

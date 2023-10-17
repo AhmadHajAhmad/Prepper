@@ -7,9 +7,6 @@ class SupplyController {
 
 // 2- All supplies by userid
   async getAllSuppliesByUser(req,res){
-
-    //await res.send(`getAllSuppliesByUser: ${req.params.userid}`);
-    
       const userid = req.params.userid;
 
     try{
@@ -51,9 +48,6 @@ async getByUserId(req, res) {
 
 //4-Create Supply
 async createSupply(req, res) {
-
-  //await res.send(`getAllSuppliesByUser: ${req.params.userid}`);
-    
   try {
     const itemname = req.body.itemname;
     const instock = req.body.instock;
@@ -73,26 +67,27 @@ async createSupply(req, res) {
   
 }
 
+// initial supplies created when user is created.
 async createInitialSupplies(userid) {
     
   try {
     
     const batteries = new SupplyModel({
-      "itemname": "Batteries",
+      "itemname": "Batteries Default Item",
       "instock": false,
       "_userid": userid,
     })
     await batteries.save();
 
     const blanket = new SupplyModel({
-      "itemname": "Blanket",
+      "itemname": "Blanket Default Item",
       "instock": false,
       "_userid": userid,
     })
     await blanket.save();
 
     const backpack = new SupplyModel({
-      "itemname": "Backpack",
+      "itemname": "Backpack Default Item",
       "instock": false,
       "_userid": userid,
     })
@@ -131,96 +126,20 @@ async updateByUserId(req, res) {
 
   try {
       const updatedSupply = await SupplyModel.findOneAndUpdate(
-        { _id: supplyid, _userid: userid },  // Filter by both user & supply id
-        updateData,  // Data to update
-        { new: true }  // Option to return the new version of the document
+        { _id: supplyid, _userid: userid },
+        updateData,
+        { new: true }
       );
 
       if (!updatedSupply) {
         return res.status(404).send('Supply item not found');
       }
-      res.status(200).json(updatedSupply); // Send the updated supply as a response
+      res.status(200).json(updatedSupply);
   } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
   }
 }
-
-/*
-//Update a supply doc by it's supplyid
-async updateSupplyByID(req, res){
-  const supplyid = req.params.supplyid;
-  const updateData = req.body;
-
-  try {
-    const supply = await SupplyModel.findById(supplyid);
-    if (!supply) {
-        return res.status(404).send('Item not found');
-    }
-    const updatedSupply = await SupplyModel.findByIdAndUpdate(supplyid, updateData, { new: true });  // { new: true }
-    res.status(200).json(updatedSupply);
-} catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
-}
-*/
-
-/*
-//not applicable - All supplies without userid
-  async getAllSupplies(req, res) {
-    try {
-      
-      //res.json({message: 'getAllSuppies'});
-      
-      const supply = await SupplyModel.find({})
-      .sort({ itemname: 1 }).exec();
-      res.json(supply);
-      
-
-    } catch (err) {
-      res.status(500).json({message: "Internal Server Error - method-1!"});
-    }
-  }
-*/
-
-
-/*
-//implement 
-// create supply by userid - router.post('/users/:userid', controller.createSupplyByUserId);
-async createSupplyByUserId(req, res) {
-      
-      const userid = req.params.userid;
-
-  try {
-      //res.json({message: `createSupplyByUserid: ${userid}`});
-      
-      const newSupply = new SupplyModel({
-        "itemname": "test item 1",
-        "instock": true,
-        "userid": "64ff1022b6b6bf787d9b138c"
-     }
-     )
-
-
-
-
-      const supply = await SupplyModel.findById(supplyid);
-      if (!supply) {
-          return res.status(404).send('Item not found');
-      }
-      res.json(supply);
-      
-  } catch (error) {
-      console.error(error);
-      res.status(500).send('Internal Server Error');
-  }
-  
-}
-*/
-
-
-
 };
 
 module.exports = SupplyController;

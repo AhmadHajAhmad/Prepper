@@ -70,7 +70,7 @@ class AdminController {
       }
       const updatedUser = await UserModel.findByIdAndUpdate(id, updateData, {
         new: true,
-      }); // { new: true }
+      });
       res.status(200).json(updatedUser);
     } catch (error) {
       console.error(error);

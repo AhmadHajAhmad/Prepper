@@ -63,7 +63,16 @@ const routes = [
   },
   {
     path: '/:catchAll(.*)',
-    redirect: { name: 'home' }
+    name: 'dashboard',
+    component: Dashboard,
+    beforeEnter: (to, from, next) => {
+      // If it's not the dashboard route, redirect to the dashboard route
+      if (to.path !== '/dashboard') {
+        next({ path: '/dashboard', replace: true })
+      } else {
+        next() // Continue with the original route
+      }
+    }
   }
 ]
 

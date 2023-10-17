@@ -18,10 +18,10 @@
           <input v-model="password" type="password" id="password" required />
           <PasswordChecker :mypassword="password"></PasswordChecker>
         </div>
-
         <button type="submit" class="btn btn-dark">Register</button>
       </form>
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+      <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
     </div>
   </div>
     <NavbarLoginBottom/>
@@ -30,7 +30,6 @@
 
 <script>
 import { ref } from 'vue'
-// import axios from 'axios'
 import { useRouter } from 'vue-router'
 import NavbarLogin from '../components/NavbarLogin.vue'
 import NavbarLoginBottom from '../components/NavbarLoginBottom.vue'
@@ -48,27 +47,30 @@ export default {
     const password = ref('')
     const email = ref('')
     const errorMessage = ref('')
+    const successMessage = ref('')
     const router = useRouter()
+    const userCreated = ref(false)
 
     const register = async () => {
       try {
-        console.log('Trying to register')
         await Api.post('http://localhost:3000/v1/register/', {
           username: username.value,
           password: password.value,
           email: email.value
         })
-        router.push('/login')
+        errorMessage.value = null
+        successMessage.value = 'User created!'
+        emptyFields()
       } catch (error) {
-        console.error('Registration error:', error)
-
-        // Handle error
-        if (error.response && error.response.data.message) {
-          errorMessage.value = error.response.data.message
-        } else {
-          errorMessage.value = 'An error occurred during registration.'
-        }
+        console.error('Registration Error')
+        successMessage.value = null
+        errorMessage.value = error.response.data
       }
+    }
+    const emptyFields = () => {
+      username.value = ''
+      password.value = ''
+      email.value = ''
     }
 
     return {
@@ -76,7 +78,10 @@ export default {
       password,
       email,
       errorMessage,
+      successMessage,
       router,
+      userCreated,
+      emptyFields,
       register
     }
   }
@@ -100,5 +105,10 @@ export default {
   .error-message {
     margin-top: 15px;
     color: red;
+  }
+
+  .success-message{
+    margin-top: 15px;
+    color: green;
   }
   </style>

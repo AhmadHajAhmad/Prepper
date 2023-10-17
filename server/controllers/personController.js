@@ -3,15 +3,12 @@ const PersonModel = require("../models/personModel");
 class PersonController {
   async createPerson(req, res) {
     try {
-      //const userId = req.user.id; // Assuming the user ID is available after authentication
       const name = req.body.name;
       const age = req.body.age;
       const weight = req.body.weight;
       const height = req.body.height;
       const sex = req.body.sex;
       const userId = req.params.userid;
-
-      // Other person-related fields from the request body
 
       const newPerson = new PersonModel({
         name: name,
@@ -30,11 +27,10 @@ class PersonController {
     }
   }
 
-  // This function will be moved later on to the admin controller(Get all people regardless the user)
   async getAllPersons(req, res) {
     try {
       const persons = await PersonModel.find({})
-        .sort({ age: 1 }) // Sort by age in ascending order
+        .sort({ age: 1 })
         .exec();
       res.status(200).json(persons);
     } catch (err) {
@@ -49,7 +45,7 @@ class PersonController {
 
     try {
       const people = await PersonModel.find({ _userid: userid })
-        .sort({ name: 1 }) // Sort by name in ascending order
+        .sort({ name: 1 })
         .exec();
 
       res.json(people);

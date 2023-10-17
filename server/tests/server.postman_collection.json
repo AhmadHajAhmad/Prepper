@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "85464611-2915-4b59-9aed-537b075c5c8e",
+		"_postman_id": "ea0246e0-2562-4db8-80ab-7dbef4ad1017",
 		"name": "server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "29427724"
@@ -10,7 +10,7 @@
 			"name": "User",
 			"item": [
 				{
-					"name": "Post User",
+					"name": "User Test: Post User",
 					"event": [
 						{
 							"listen": "test",
@@ -71,7 +71,7 @@
 					"response": []
 				},
 				{
-					"name": "Log In User",
+					"name": "User Test: Log In User",
 					"event": [
 						{
 							"listen": "test",
@@ -125,7 +125,7 @@
 					"response": []
 				},
 				{
-					"name": "Get User by ID",
+					"name": "User Test: Get User by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -157,7 +157,7 @@
 					"response": []
 				},
 				{
-					"name": "Post Food",
+					"name": "User Test: Post Food",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -192,7 +192,7 @@
 					"response": []
 				},
 				{
-					"name": "Post Person",
+					"name": "User Test: Post Person",
 					"event": [
 						{
 							"listen": "test",
@@ -257,7 +257,7 @@
 					"response": []
 				},
 				{
-					"name": "Post Water",
+					"name": "User Test: Post Water",
 					"event": [
 						{
 							"listen": "test",
@@ -320,7 +320,7 @@
 					"response": []
 				},
 				{
-					"name": "Post Supplies",
+					"name": "User Test: Post Supplies",
 					"event": [
 						{
 							"listen": "test",
@@ -380,7 +380,7 @@
 					"response": []
 				},
 				{
-					"name": "Update User",
+					"name": "User Test: Update User",
 					"event": [
 						{
 							"listen": "test",
@@ -427,7 +427,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete User",
+					"name": "User Test: Delete User",
 					"event": [
 						{
 							"listen": "test",
@@ -470,7 +470,7 @@
 			"name": "Food",
 			"item": [
 				{
-					"name": "Log In baseCase",
+					"name": "Food Test: Log In baseCase",
 					"event": [
 						{
 							"listen": "test",
@@ -524,7 +524,7 @@
 					"response": []
 				},
 				{
-					"name": "POST /food",
+					"name": "Food Test: Post Food",
 					"event": [
 						{
 							"listen": "test",
@@ -592,7 +592,7 @@
 					"response": []
 				},
 				{
-					"name": "GET /food",
+					"name": "Food Test: Get Food",
 					"event": [
 						{
 							"listen": "test",
@@ -638,7 +638,7 @@
 					"response": []
 				},
 				{
-					"name": "GET /food/:id",
+					"name": "Food Test: Get Food by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -684,7 +684,7 @@
 					"response": []
 				},
 				{
-					"name": "PATCH/ food/:id",
+					"name": "Food Test:  Patch Food by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -739,7 +739,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE /food/:id",
+					"name": "Food Test: Delete Food by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -790,7 +790,7 @@
 			"name": "Person",
 			"item": [
 				{
-					"name": "Log In baseCase",
+					"name": "Person Test: Log In baseCase",
 					"event": [
 						{
 							"listen": "test",
@@ -843,7 +843,7 @@
 					"response": []
 				},
 				{
-					"name": "POST/ Person",
+					"name": "Person Test:  Post Person",
 					"event": [
 						{
 							"listen": "test",
@@ -908,7 +908,7 @@
 					"response": []
 				},
 				{
-					"name": "GET/ people",
+					"name": "Person Test: Get People",
 					"event": [
 						{
 							"listen": "test",
@@ -954,7 +954,7 @@
 					"response": []
 				},
 				{
-					"name": "GET/ person/:id",
+					"name": "Person Test:  Get Person by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -1000,7 +1000,7 @@
 					"response": []
 				},
 				{
-					"name": "PATCH/ person/:id",
+					"name": "Person Test: Patch Person by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -1055,7 +1055,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE/ person/:id",
+					"name": "Person Test:  Delete Person by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -1100,7 +1100,7 @@
 			"name": "Water",
 			"item": [
 				{
-					"name": "Log In baseCase",
+					"name": "Water Test: Log In baseCase",
 					"event": [
 						{
 							"listen": "test",
@@ -1154,7 +1154,7 @@
 					"response": []
 				},
 				{
-					"name": "POST /water",
+					"name": "Water Test: Post Water",
 					"event": [
 						{
 							"listen": "test",
@@ -1217,7 +1217,7 @@
 					"response": []
 				},
 				{
-					"name": "GET /water",
+					"name": "Water Test: Get Water",
 					"event": [
 						{
 							"listen": "test",
@@ -1257,7 +1257,7 @@
 					"response": []
 				},
 				{
-					"name": "GET /water/:id",
+					"name": "Water Test:  Get Water by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -1297,7 +1297,7 @@
 					"response": []
 				},
 				{
-					"name": "PUT /water/:id",
+					"name": "Water Test:  Put Water by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -1346,7 +1346,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE /water/:id",
+					"name": "Water Test: Delete Water by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -1391,7 +1391,7 @@
 			"name": "Supplies",
 			"item": [
 				{
-					"name": "Log In baseCase",
+					"name": "Supply Test: Log In baseCase",
 					"event": [
 						{
 							"listen": "test",
@@ -1445,7 +1445,7 @@
 					"response": []
 				},
 				{
-					"name": "POST /supplies",
+					"name": "Supply Test: Post Supply",
 					"event": [
 						{
 							"listen": "test",
@@ -1505,7 +1505,7 @@
 					"response": []
 				},
 				{
-					"name": "GET /supplies",
+					"name": "Supply Test: Get Supplies",
 					"event": [
 						{
 							"listen": "test",
@@ -1544,7 +1544,7 @@
 					"response": []
 				},
 				{
-					"name": "GET /supplies/:id",
+					"name": "Supply Test: Get Supply by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -1584,7 +1584,7 @@
 					"response": []
 				},
 				{
-					"name": "PATCH /supplies/:id",
+					"name": "Supply Test:  Patch Supply by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -1633,7 +1633,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE /supplies/:id",
+					"name": "Supply Test: Delete Supply by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -1678,7 +1678,7 @@
 			"name": "HTTP Override",
 			"item": [
 				{
-					"name": "POST /house",
+					"name": "HTTP Override Test: Post House",
 					"event": [
 						{
 							"listen": "test",
@@ -1730,7 +1730,7 @@
 					"response": []
 				},
 				{
-					"name": "Get /user",
+					"name": "HTTP Override Test: Get User",
 					"event": [
 						{
 							"listen": "test",
@@ -1767,7 +1767,7 @@
 					"response": []
 				},
 				{
-					"name": "PATCH /house/:id",
+					"name": "HTTP Override Test: Patch House by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -1813,7 +1813,7 @@
 					"response": []
 				},
 				{
-					"name": "Get /user",
+					"name": "HTTP Override Test:  Get User",
 					"event": [
 						{
 							"listen": "test",
@@ -1859,7 +1859,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE /house/:id",
+					"name": "HTTP Override Test:  Delete User by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -1905,7 +1905,7 @@
 					"response": []
 				},
 				{
-					"name": "Get /user Copy",
+					"name": "HTTP Override Test: Get User",
 					"event": [
 						{
 							"listen": "test",
@@ -1941,7 +1941,7 @@
 			"name": "Calories",
 			"item": [
 				{
-					"name": "Log In baseCase",
+					"name": "Calorie Service Test: Log In baseCase",
 					"event": [
 						{
 							"listen": "test",
@@ -1995,7 +1995,7 @@
 					"response": []
 				},
 				{
-					"name": "POST /person1",
+					"name": "Calorie Service Test: Post Person 1",
 					"event": [
 						{
 							"listen": "test",
@@ -2048,7 +2048,7 @@
 					"response": []
 				},
 				{
-					"name": "POST /person2",
+					"name": "Calorie Service Test: Post Person 2",
 					"event": [
 						{
 							"listen": "test",
@@ -2101,7 +2101,7 @@
 					"response": []
 				},
 				{
-					"name": "POST /food1",
+					"name": "Calorie Service Test:  Post Food 1",
 					"event": [
 						{
 							"listen": "test",
@@ -2154,7 +2154,7 @@
 					"response": []
 				},
 				{
-					"name": "POST /food2",
+					"name": "Calorie Service Test: Post Food 2",
 					"event": [
 						{
 							"listen": "test",
@@ -2207,7 +2207,7 @@
 					"response": []
 				},
 				{
-					"name": "GET /days",
+					"name": "Calorie Service Test: Get Days",
 					"event": [
 						{
 							"listen": "test",
@@ -2247,7 +2247,7 @@
 					"response": []
 				},
 				{
-					"name": "GET /stored",
+					"name": "Calorie Service Test: Get Stored",
 					"event": [
 						{
 							"listen": "test",
@@ -2287,7 +2287,7 @@
 					"response": []
 				},
 				{
-					"name": "GET /needs",
+					"name": "Calorie Service Test: Get Needs",
 					"event": [
 						{
 							"listen": "test",
@@ -2327,7 +2327,7 @@
 					"response": []
 				},
 				{
-					"name": "GET /needs Copy",
+					"name": "Calorie Service Test: Get Water",
 					"event": [
 						{
 							"listen": "test",
@@ -2367,7 +2367,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE/ person1",
+					"name": "Calorie Service Test: Delete Person 1",
 					"event": [
 						{
 							"listen": "test",
@@ -2407,7 +2407,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE/ person2",
+					"name": "Calorie Service Test: Delete Person 2",
 					"event": [
 						{
 							"listen": "test",
@@ -2447,7 +2447,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE /food1",
+					"name": "Calorie Service Test: Delete Food 1",
 					"event": [
 						{
 							"listen": "test",
@@ -2493,7 +2493,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE /food2",
+					"name": "Calorie Service Test: Delete Food 2",
 					"event": [
 						{
 							"listen": "test",
@@ -2544,7 +2544,7 @@
 			"name": "Admin",
 			"item": [
 				{
-					"name": "Post User",
+					"name": "Admin Test: Post User",
 					"event": [
 						{
 							"listen": "test",
@@ -2598,7 +2598,7 @@
 					"response": []
 				},
 				{
-					"name": "Log In baseCase",
+					"name": "Admin Test: Log In baseCase",
 					"event": [
 						{
 							"listen": "test",
@@ -2652,7 +2652,7 @@
 					"response": []
 				},
 				{
-					"name": "POST /person1",
+					"name": "Admin Test: Post Person 1",
 					"event": [
 						{
 							"listen": "test",
@@ -2705,7 +2705,7 @@
 					"response": []
 				},
 				{
-					"name": "POST /person2",
+					"name": "Admin Test: Post Person 2",
 					"event": [
 						{
 							"listen": "test",
@@ -2758,7 +2758,7 @@
 					"response": []
 				},
 				{
-					"name": "POST /food1",
+					"name": "Admin Test: Post Food 1",
 					"event": [
 						{
 							"listen": "test",
@@ -2811,7 +2811,7 @@
 					"response": []
 				},
 				{
-					"name": "POST /food2",
+					"name": "Admin Test: Post Food 2",
 					"event": [
 						{
 							"listen": "test",
@@ -2864,7 +2864,7 @@
 					"response": []
 				},
 				{
-					"name": "Log In Admin baseCase",
+					"name": "Admin Test: Log In Admin baseCase",
 					"event": [
 						{
 							"listen": "test",
@@ -2918,7 +2918,7 @@
 					"response": []
 				},
 				{
-					"name": "GET ALL Users",
+					"name": "Admin Test: GET ALL Users",
 					"event": [
 						{
 							"listen": "test",
@@ -2961,7 +2961,7 @@
 					"response": []
 				},
 				{
-					"name": "GET ALL Food",
+					"name": "Admin Test: GET ALL Food",
 					"event": [
 						{
 							"listen": "test",
@@ -3004,7 +3004,7 @@
 					"response": []
 				},
 				{
-					"name": "GET ALL People",
+					"name": "Admin Test: GET ALL People",
 					"event": [
 						{
 							"listen": "test",
@@ -3050,7 +3050,7 @@
 					"response": []
 				},
 				{
-					"name": "Log In baseCase",
+					"name": "Admin Test: Log In baseCase",
 					"event": [
 						{
 							"listen": "test",
@@ -3104,7 +3104,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE/ person1",
+					"name": "Admin Test: Delete Person 1",
 					"event": [
 						{
 							"listen": "test",
@@ -3144,7 +3144,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE/ person2",
+					"name": "Admin Test: Delete Person 2",
 					"event": [
 						{
 							"listen": "test",
@@ -3184,7 +3184,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE /food1",
+					"name": "Admin Test: Delete Food 1",
 					"event": [
 						{
 							"listen": "test",
@@ -3230,7 +3230,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE /food2",
+					"name": "Admin Test: Delete Food 2",
 					"event": [
 						{
 							"listen": "test",
@@ -3276,7 +3276,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete User",
+					"name": "Admin Test: Delete User",
 					"event": [
 						{
 							"listen": "test",
@@ -3308,7 +3308,7 @@
 					"response": []
 				},
 				{
-					"name": "Post Admin",
+					"name": "Admin Test: Post Admin",
 					"event": [
 						{
 							"listen": "test",
@@ -3363,7 +3363,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Admin by ID",
+					"name": "Admin Test: Get Admin by ID",
 					"event": [
 						{
 							"listen": "test",
@@ -3395,7 +3395,7 @@
 					"response": []
 				},
 				{
-					"name": "Update Admin",
+					"name": "Admin Test: Update Admin",
 					"event": [
 						{
 							"listen": "test",
@@ -3436,7 +3436,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete Admin",
+					"name": "Admin Test: Delete Admin",
 					"event": [
 						{
 							"listen": "test",

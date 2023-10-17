@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { onMounted } from 'vue'
 import NavbarLogin from '../components/NavbarLogin.vue'
 import NavbarLoginBottom from '../components/NavbarLoginBottom.vue'
 
@@ -28,8 +29,12 @@ export default {
     NavbarLogin,
     NavbarLoginBottom
   },
-  data() {
-
+  setup() {
+    onMounted(() => {
+      sessionStorage.removeItem('token')
+      sessionStorage.removeItem('userId')
+      sessionStorage.removeItem('admintoken')
+    })
   }
 }
 </script>
@@ -40,7 +45,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 1; /* This will make the main-container fill up the available space */
+    flex: 1;
 }
 
 #offline-page .content-center {
@@ -48,11 +53,6 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-#offline-page .centered-image {
-    max-width: 100%; /* To ensure the image doesn't overflow the container */
-    margin-top: 20px; /* Optional: Provides some spacing between the text and the image */
 }
 
 </style>

@@ -1,8 +1,6 @@
 <template>
   <div class="navbar-container">
     <NavbarInternal />
-
-    <!-- Bootstrap container for a responsive layout -->
     <div class="main-container col-lg-8 col-md-10 col-sm-10 col-12 mx-auto">
       <div class="row">
         <!-- First Column -->
@@ -10,9 +8,9 @@
           <p>Food:</p>
           <ve-progress
             HEAD
-            :progress="cappedCalories * 7.2"
+            :progress="cappedCalories * 7.1"
             :legend="cappedCalories"
-            size="300"
+            :size = "300"
             thickness="6%"
             color="#982560"
           >
@@ -29,9 +27,9 @@
           <p>Water:</p>
           <ve-progress
             HEAD
-            :progress="cappedWater * 7.2"
+            :progress="cappedWater * 7.1"
             :legend="cappedWater"
-            size="300"
+            :size = "300"
             thickness="6%"
           >
             <span v-if="water &gt; 14">More than</span>
@@ -43,15 +41,13 @@
         </div>
 
         <!-- Third Column -->
-        <div class="col-lg-12 col-md-12 col-sm-12 p-3">
+        <div class="col-lg-12 col-md-10 col-sm-8 col-8 mx-auto p-3 text-center">
           <p>Status:</p>
-          <div class="status-message">
-            {{ statusMessage }}
+          <div class="status-message">{{ statusMessage }}
           </div>
         </div>
       </div>
     </div>
-
     <NavbarInternalBottom />
   </div>
 </template>
@@ -74,13 +70,18 @@ export default {
     const calories = ref(0)
     const water = ref(0)
     const token = ref(sessionStorage.getItem('token'))
+    const adminToken = ref(sessionStorage.getItem('admintoken'))
     const userId = ref(sessionStorage.getItem('userId'))
     const delayedStatusMessage = ref('')
+    const circleSize = 300
 
     onBeforeMount(() => {
-      if (!token.value) {
+      if (!token.value && !adminToken.value) {
         console.error('Token not available. User may not be authenticated.')
         router.push({ path: '/login' })
+        return
+      } else if (adminToken.value) {
+        router.push({ path: '/admin' })
         return
       }
       getCalories()
@@ -90,7 +91,7 @@ export default {
       setTimeout(() => {
         if (water.value <= 0.1 && calories.value <= 0.1) {
           delayedStatusMessage.value =
-            'Please add food, water and people. You can do so by visiting the Food and Household pages on the top right corner 😊'
+            'Please add food, water and people. You can do so by visiting the Food and Household pages on the top right corner.'
         } else {
           delayedStatusMessage.value = getStatusMessage(
             cappedCalories.value,
@@ -109,12 +110,12 @@ export default {
           }
         )
         if (response.data < 0.1 || !response.data) {
-          calories.value = 0.1
+          calories.value = 0
         } else {
           calories.value = parseFloat(response.data).toFixed(2)
         }
       } catch (error) {
-        console.log(error)
+        console.log('Cannot retrieve calories')
       }
     }
 
@@ -127,12 +128,12 @@ export default {
           }
         )
         if (response.data < 0.1 || !response.data) {
-          water.value = 0.1
+          water.value = 0
         } else {
           water.value = parseFloat(response.data).toFixed(2)
         }
       } catch (error) {
-        console.log(error)
+        console.log('Cannot retrieve water')
       }
     }
 
@@ -147,6 +148,7 @@ export default {
     const statusMessage = computed(() => delayedStatusMessage.value)
 
     return {
+      circleSize,
       router,
       calories,
       water,
@@ -159,14 +161,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.loading-message {
-  font-size: 18px;
-  color: #333;
-}
-.centered-content {
-  text-align: center;
-  padding: 20px;
-}
-</style>

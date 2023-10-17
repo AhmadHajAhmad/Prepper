@@ -45,18 +45,21 @@
         />
       </div>
       <div class="mb-3">
-        <button type="submit" class="btn btn-primary" @click="updateProfile">Update</button>
-        <button type="button" class="btn btn-secondary" @click="cancel">Cancel</button>
+        <button type="submit" class="btn ms-2" @click="updateProfile">Update</button>
+        <button type="button" class="btn ms-2" @click="cancel">Cancel</button>
       </div>
     </form>
+    <div v-if="emptyFields" class="alert alert-danger" role="alert">
+      Please fill in all fields
+    </div>
     <div v-if="passwordsDoNotMatch" class="alert alert-danger" role="alert">
-      New Password does not match with reapeated password
+      New password does not match with reapeated password
     </div>
     <div v-if="passwordsDoNotMatchDB" class="alert alert-danger" role="alert">
-      Old Password does not match with stored password
+      Old password does not match with stored password
     </div>
     <div v-if="passwordsConfirmed" class="alert alert-success" role="alert">
-      Passwords changed.
+      Password changed
     </div>
     <div v-if="passwordsNotStrong" class="alert alert-success" role="alert" style="text-align: left;">
       Password not strong enough to be accepted! it should meet the following criteria
@@ -65,7 +68,7 @@
         <li>Atleast one capital letter</li>
         <li>Atleast one small letter</li>
         <li>Atleast one numeric value</li>
-        <li>Atleast one Special character from [!@#$%^&*()_+{}\\:;,.?~\\-]</li>
+        <li>Atleast one Special character</li>
       </ul>
     </div>
   </div>
@@ -87,11 +90,12 @@ export default {
   },
   data() {
     return {
-      username: '', // Use the username from sessionStorage
+      username: '',
       oldPassword: '',
       oldPasswordDb: '',
       newPassword: '',
       confirmNewPassword: '',
+      emptyFields: false,
       passwordsDoNotMatch: false,
       passwordsConfirmed: false,
       passwordsDoNotMatchDB: false,
@@ -101,9 +105,14 @@ export default {
     }
   },
   mounted() {
-    if (!sessionStorage.getItem('token')) {
+    if (!sessionStorage.getItem('token') && !sessionStorage.getItem('admintoken')) {
       console.log('Token not found. Redirecting to login.')
       this.$router.push({ name: 'login' })
+      return
+    } else if (sessionStorage.getItem('admintoken')) {
+      console.log('Token not found. Redirecting to login.')
+      this.$router.push({ name: 'admin' })
+      return
     }
     this.getUserName()
     this.passwordchecker()
@@ -121,53 +130,57 @@ export default {
         })
     },
     updateProfile() {
-      // checks if New Password not equal to ConfirmedPassword
-      if (this.newPassword !== this.confirmNewPassword) {
-        this.passwordsDoNotMatch = true
-      // checks if Old Password equals to password saved to the saved password
-      } else if (this.oldPassword !== this.oldPasswordDb) {
-        this.passwordsDoNotMatchDB = true
-      } else if (!this.newPassword.length > 7 || // Criteria 1: new password has length 8
-      !/[0-9>]/.test(this.newPassword) || // Criteria 2: new password has atleast one numeric
-      !/[a-z>]/.test(this.newPassword) || // Criteria 3: new password has atleast one small letter
-      !/[A-Z]/.test(this.newPassword) || // Criteria 4: new password has atleaset one Capital letter
-      !/[!@#$%^&*()_+{}\\:;<>,.?~\\-]/.test(this.newPassword)) { // Criteria 5: new password has atleast
-      // one special charater in the password
-      // Password does not meet the strength criteria
-        this.passwordsDoNotMatch = false
-        this.passwordsDoNotMatchDB = false
-        this.passwordsNotStrong = true
+      // Check if any fields are empty
+      if (!this.newPassword || !this.confirmNewPassword || !this.oldPassword) {
+        this.emptyFields = true
       } else {
-        this.passwordsDoNotMatch = false
-        this.passwordsDoNotMatchDB = false
-        this.passwordsNotStrong = false
-
-        // Send a request to update the user profile
-        // You can use Axios or another HTTP library for this
-        const userid = sessionStorage.getItem('userId')
-        const updateUrl = `http://localhost:3000/v1/profiles/${userid}`
-        const requestData = {
-          password: this.newPassword
+        this.emptyFields = false
+        // checks if old password matches database
+        if (this.oldPassword !== this.oldPasswordDb) {
+          this.passwordsDoNotMatchDB = true
+        } else {
+          this.passwordsDoNotMatchDB = false
+          // Checks if the new passwords entered match each other
+          if (this.newPassword !== this.confirmNewPassword) {
+            this.passwordsDoNotMatch = true
+          } else {
+            this.passwordsDoNotMatch = false
+            // Checks if password is strong
+            if (!this.newPassword.length > 7 || // Criteria 1: new password has length 8
+            !/[0-9>]/.test(this.newPassword) || // Criteria 2: new password has atleast one numeric
+            !/[a-z>]/.test(this.newPassword) || // Criteria 3: new password has atleast one small letter
+            !/[A-Z]/.test(this.newPassword) || // Criteria 4: new password has atleaset one Capital letter
+            !/[!@#$%^&*()_+{}\\:;<>,.?~\\-]/.test(this.newPassword)) {
+              this.passwordsNotStrong = true
+            } else {
+              // If all checks pass, change password
+              this.passwordsNotStrong = false
+              const userid = sessionStorage.getItem('userId')
+              const updateUrl = `http://localhost:3000/v1/profiles/${userid}`
+              const requestData = {
+                password: this.newPassword
+              }
+              Api.patch(updateUrl, requestData)
+                .then(response => {
+                  this.passwordsConfirmed = true
+                  this.cancel()
+                  setTimeout(() => {
+                    this.passwordsConfirmed = false
+                  }, 2000)
+                })
+                .catch(error => {
+                  console.error('Error updating the password:', error)
+                })
+            }
+          }
         }
-        // Example using Axios:
-        Api.patch(updateUrl, requestData)
-          .then(response => {
-          // Handle success
-            this.passwordsConfirmed = true
-            this.cancel()
-            setTimeout(() => {
-              this.passwordsConfirmed = false
-            }, 2000)
-          })
-          .catch(error => {
-            console.error('Error updating the password:', error)
-          })
       }
     },
     cancel() {
       this.oldPassword = ''
       this.newPassword = ''
       this.confirmNewPassword = ''
+      this.emptyFields = false
       this.passwordsDoNotMatch = false
       this.passwordsDoNotMatchDB = false
       this.passwordsNotStrong = false
@@ -211,7 +224,6 @@ export default {
 </script>
 
 <style scoped>
-/* Add styling if needed */
 #newPasswordText{
   color: red;
   position: absolute;

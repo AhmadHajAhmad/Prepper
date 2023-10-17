@@ -2,14 +2,14 @@
   <div class="navbar-container">
     <NavbarInternal />
     <div class="main-container">
-      <!-- Display fetched data here -->
       <div class="col-12 col-md- col-lg-10 p-5">
-        <h1>Supplies List</h1>
+        <h1>Supply List</h1>
         <ul class="list-group">
           <li v-for="supply in supplies" :key="supply._id" class="list-group-item d-flex justify-content-between align-content-center">
-            <div class="item-info"> <!-- Using food-info for consistency, consider renaming to item-info for clarity -->
+            <div class="item-info">
             <span class="item-detail"><strong>Item Name:</strong> {{ supply.itemname }}</span>
-            <span class="item-detail"><strong>In-Stock:</strong> {{ supply.instock }}</span>
+            <span class="item-detail" v-if=supply.instock><strong>In-Stock: </strong>Yes</span>
+            <span class="item-detail" v-if=!supply.instock><strong>In-Stock: </strong>No</span>
         </div>
         <div class="btn-container">
             <button @click.stop="updateSupplies(supply)" class="btn">Update</button>
@@ -18,7 +18,7 @@
       </li>
     </ul>
     <button @click="createSupplies" class="btn">
-          Create Supplies
+          Create Supply
         </button>
       </div>
       <div class="centered-content">
@@ -41,7 +41,6 @@
               >
                 <div class="modal-body form-floating">
                   <div class="mb-3 form-floating">
-                    <!-- Field Lable & Input: Item name - Start -->
                     <input
                       v-model="newSupplies.itemname"
                       type="text"
@@ -56,10 +55,8 @@
                     <div class="invalid-feedback">
                       Only Characters accepted!
                     </div>
-                    <!-- Field Lable & Input: Item name - End -->
                   </div>
                   <div class="mb-3 form-check form-switch form-check-reverse">
-                    <!-- Field Lable & Input: Availability - Start -->
                     <input
                       v-model="newSupplies.instock"
                       type="checkbox"
@@ -81,7 +78,6 @@
             </div>
           </div>
         </div>
-        <!-- Integrated Supplies Form ends here -->
       </div>
     </div>
     <NavbarInternalBottom />
@@ -89,7 +85,6 @@
 </template>
 
 <script>
-// import axios from 'axios'
 import { Modal } from 'bootstrap'
 import * as bootstrap from 'bootstrap'
 import NavbarInternal from '../components/NavbarInternal.vue'
@@ -103,7 +98,7 @@ export default {
   },
   data() {
     return {
-      supplies: [], // Store the list of supplies here
+      supplies: [],
       showForm: false,
       modalInstance: null,
       newSupplies: {
@@ -113,9 +108,14 @@ export default {
     }
   },
   mounted() {
-    if (!sessionStorage.getItem('token')) {
+    if (!sessionStorage.getItem('token') && !sessionStorage.getItem('admintoken')) {
       console.log('Token not found. Redirecting to login.')
       this.$router.push({ name: 'login' })
+      return
+    } else if (sessionStorage.getItem('admintoken')) {
+      console.log('Token not found. Redirecting to login.')
+      this.$router.push({ name: 'admin' })
+      return
     }
     this.userid = sessionStorage.getItem('userId')
     this.token = sessionStorage.getItem('token')
@@ -124,7 +124,6 @@ export default {
   watch: {
     showForm() {
       if (this.showForm) {
-        // If showForm is true
         this.$nextTick(() => {
           const modalElement = this.$el.querySelector('.modal')
           if (modalElement) {
@@ -155,7 +154,6 @@ export default {
           this.supplies = []
         }
       } catch (error) {
-        // console.error('Error fetching calories:', error)
         if (error.response && error.response.status === 404) {
           this.supplies = []
         } else {
@@ -197,7 +195,7 @@ export default {
           this.getSupplies()
         }
       } catch (error) {
-        console.error('Error saving the supplies:', error)
+        console.error('Error saving the supplies')
       }
     },
     updateSupplies(supply) {
@@ -217,16 +215,16 @@ export default {
         this.cancel()
         this.getSupplies()
       } catch (error) {
-        console.error('Error deleting the supply:', error)
+        console.error('Error deleting the supplies')
       }
     },
     cancel() {
       const modalElement = this.$el.querySelector('.modal')
       if (modalElement) {
-        const modalInstance = bootstrap.Modal.getInstance(modalElement) // Get the modal instance
-        modalInstance.hide() // Hide the modal properly, removing the backdrop as well
+        const modalInstance = bootstrap.Modal.getInstance(modalElement)
+        modalInstance.hide()
       }
-      this.showForm = false // Now, you can safely set showForm to false
+      this.showForm = false
       this.newSupplies = this.resetForm()
     },
     resetForm() {
@@ -238,26 +236,3 @@ export default {
   }
 }
 </script>
-<style>
-.white-template {
-  background-color: #ffffff;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 20px;
-}
-
-.loading-message {
-  font-size: 18px;
-  color: #333;
-}
-
-.centered-content {
-  text-align: center;
-  padding: 20px;
-}
-
-/* Additional styling for your content can be added here */
-</style>
