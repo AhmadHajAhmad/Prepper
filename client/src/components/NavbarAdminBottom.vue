@@ -3,10 +3,7 @@
         <nav class="navbar fixed-bottom d-block d-sm-none custom-navbar">
         <ul class="nav justify-content-around">
             <li class="nav-item">
-                <router-link class="nav-link" to="/login">Login</router-link>
-            </li>
-            <li class="nav-item">
-                <router-link class="nav-link" to="/register">Register</router-link>
+                <router-link class="nav-link" @click="logOut" to="/login">Log Out</router-link>
             </li>
         </ul>
          <!-- Dark/Light toggle -->
@@ -22,7 +19,7 @@
 import { ref, onMounted } from 'vue'
 
 export default {
-  name: 'NavbarLoginBottom',
+  name: 'NavbarAdminBottom',
   setup() {
     const currentTheme = ref(localStorage.getItem('theme') || 'light')
     document.documentElement.setAttribute('data-theme', currentTheme.value)
@@ -42,6 +39,11 @@ export default {
       isDarkTheme.value = !isDarkTheme.value
     }
 
+    const logOut = () => {
+      sessionStorage.removeItem('admintoken')
+      sessionStorage.removeItem('userId')
+    }
+
     onMounted(() => {
       const savedTheme = localStorage.getItem('theme') || 'light'
       currentTheme.value = savedTheme
@@ -52,6 +54,7 @@ export default {
     return {
       currentTheme,
       isDarkTheme,
+      logOut,
       toggleTheme
     }
   }

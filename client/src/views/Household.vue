@@ -113,10 +113,8 @@
                     <option value="" disabled selected></option>
                     <option value="Male">male</option>
                     <option value="Female">female</option>
-                    <!-- Add other options as needed -->
                   </select>
                 </div>
-                <!-- ...other modal structure... -->
               </div>
               <div class="modal-footer">
                 <button class="btn btn-primary">Save</button>
@@ -137,7 +135,6 @@
 <script>
 import * as bootstrap from 'bootstrap'
 import { Modal } from 'bootstrap'
-// import axios from 'axios'
 import NavbarInternal from '../components/NavbarInternal.vue'
 import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
 import Api from '../Api.js'
@@ -162,9 +159,14 @@ export default {
     }
   },
   mounted() {
-    if (!sessionStorage.getItem('token')) {
+    if (!sessionStorage.getItem('token') && !sessionStorage.getItem('admintoken')) {
       console.log('Token not found. Redirecting to login.')
       this.$router.push({ name: 'login' })
+      return
+    } else if (sessionStorage.getItem('admintoken')) {
+      console.log('Token not found. Redirecting to login.')
+      this.$router.push({ name: 'admin' })
+      return
     }
     this.token = sessionStorage.getItem('token')
     this.userid = sessionStorage.getItem('userId')
@@ -209,13 +211,12 @@ export default {
         this.cancel()
         this.loadPeople()
       } catch (error) {
-        console.error('Error saving the person:', error)
+        console.error('Error saving the person')
       }
     },
     async save() {
       try {
         if (this.newPerson._id) {
-          // If _id exists, it's an update operation
           await Api.patch(
             `http://localhost:3000/v1/profiles/${this.userid}/people/${this.newPerson._id}`,
             this.newPerson,
@@ -226,7 +227,6 @@ export default {
             }
           )
         } else {
-          // If _id doesn't exist, it's a create operation
           await Api.post(
             `http://localhost:3000/v1/profiles/${this.userid}/people`,
             this.newPerson,
@@ -237,14 +237,14 @@ export default {
             }
           )
         }
-        this.cancel() // Close the form modal
-        this.loadPeople() // Reload the list of people
+        this.cancel()
+        this.loadPeople()
       } catch (error) {
         this.cancel()
         this.$router.push({
           path: '/offline'
         })
-        console.error('Error saving the person:', error)
+        console.error('Error saving the person')
       }
     },
 
@@ -260,16 +260,16 @@ export default {
         )
         this.people = response.data
       } catch (error) {
-        console.log('Error loading people', error)
+        console.log('Error loading people')
       }
     },
     cancel() {
       const modalElement = this.$el.querySelector('.modal')
       if (modalElement) {
-        const modalInstance = bootstrap.Modal.getInstance(modalElement) // Get the modal instance
-        modalInstance.hide() // Hide the modal properly, removing the backdrop as well
+        const modalInstance = bootstrap.Modal.getInstance(modalElement)
+        modalInstance.hide()
       }
-      this.showForm = false // Now, you can safely set showForm to false
+      this.showForm = false
       this.newPerson = this.resetForm()
     },
 
@@ -285,10 +285,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-#delete-all-container {
-  top: 0;
-  right: 0;
-  margin: 10px; /* Optional: for some space from the edges */
-}
-</style>

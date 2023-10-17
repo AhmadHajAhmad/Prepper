@@ -3,13 +3,13 @@
     <NavbarInternal />
     <div class="main-container">
         <div class="col-12 col-md-10 col-lg-10 p-5">
-          <h1>Current Food</h1>
+          <h1>Food List</h1>
           <ul class="list-group">
     <li v-for="food in foodList" :key="food.id" class="list-group-item d-flex justify-content-between align-content-center">
         <div class="item-info">
             <span class="item-detail"><strong>Food Name:</strong> {{ food.foodname }}</span>
-            <span class="item-detail"><strong>Calories:</strong> {{ food.calories }}g</span>
-            <span class="item-detail"><strong>Weight:</strong> {{ food.weight }}kcal</span>
+            <span class="item-detail"><strong>Weight:</strong> {{ food.weight }} gram</span>
+            <span class="item-detail"><strong>Calories:</strong> {{ food.calories }} kcal</span>
         </div>
         <div class="btn-container">
             <button @click.stop="updateFood(food)" class="btn">Update</button>
@@ -19,7 +19,6 @@
 </ul>
 
           <button @click="createFood" class="btn">Add Food</button>
-          <p v-if="error" class="text-danger mt-2">{{ error }}</p>
 
           <!-- Bootstrap Modal for Adding Food -->
           <div
@@ -39,7 +38,7 @@
                   class="was-validated form-floating"
                 >
                   <div class="modal-body form-floating">
-                    <div class="mb-3 form floating">
+                    <div class="mb-3 form-floating">
                       <input
                         v-model="newFood.foodname"
                         type="text"
@@ -71,7 +70,7 @@
                         Only Positive Numbers accepted!
                       </div>
                     </div>
-                    <div class="mb-3 form floating">
+                    <div class="mb-3 form-floating">
                       <input
                         v-model="newFood.calories"
                         type="text"
@@ -105,7 +104,7 @@
               <div
                 id="water-bar"
                 role="progressbar"
-                :style="{ width: `${waterQuantity * 4}%` }"
+                :style="{ width: `${waterQuantity / 2}%` }"
                 :aria-valuenow="waterQuantity"
                 aria-valuemin="0"
                 aria-valuemax="25"
@@ -114,11 +113,11 @@
               </div>
             </div>
             <!-- Control Buttons -->
-            <button class="btn mt-3" @click="increaseWater">
-              Increase
-            </button>
             <button class="btn mt-3 ms-2" @click="decreaseWater">
-              Decrease
+              Decrease Water
+            </button>
+            <button class="btn mt-3 ms-2" @click="increaseWater">
+              Increase Water
             </button>
           </div>
         </div>
@@ -131,7 +130,6 @@
 import { ref, onBeforeMount, watch, nextTick } from 'vue'
 import * as bootstrap from 'bootstrap'
 import { Modal } from 'bootstrap'
-// import axios from 'axios'
 import NavbarInternal from '../components/NavbarInternal.vue'
 import NavbarInternalBottom from '../components/NavbarInternalBottom.vue'
 import Api from '../Api'
@@ -154,9 +152,11 @@ export default {
       calories: null
     })
     const showForm = ref(false)
+    let updateWaterTimer
     const waterQuantity = ref(0)
     const userid = ref(sessionStorage.getItem('userId'))
     const token = ref(sessionStorage.getItem('token'))
+    const adminToken = ref(sessionStorage.getItem('admintoken'))
 
     watch(showForm, (newVal) => {
       if (newVal) {
@@ -222,7 +222,6 @@ export default {
     const addFood = async () => {
       try {
         if (newFood.value._id) {
-          // If _id exists, it's an update operation
           await Api.patch(
             `http://localhost:3000/v1/profiles/${userid.value}/food/${newFood.value._id}`,
             newFood.value,
@@ -246,7 +245,7 @@ export default {
         cancel()
         getFood()
       } catch (error) {
-        console.error('Error adding food:', error)
+        console.error('Error adding food')
       }
     }
 
@@ -262,7 +261,7 @@ export default {
         )
         getFood()
       } catch (error) {
-        console.error('Error deleting food:', error)
+        console.error('Error deleting food')
       }
     }
     // Uses HATEOAS links to get the request
@@ -275,34 +274,55 @@ export default {
           }
         })
       } catch (error) {
-        console.error('Error updating water:', error)
+        console.error('Error updating water')
       }
     }
+
+    const triggerUpdate = () => {
+      clearTimeout(updateWaterTimer)
+      updateWaterTimer = setTimeout(() => updateWater({ waterqty: waterQuantity.value }), 750)
+    }
+
     const increaseWater = () => {
-      if (waterQuantity.value <= 24.5) {
-        waterQuantity.value += 0.5
-        updateWater({ waterqty: waterQuantity.value })
+      if (waterQuantity.value < 10) {
+        waterQuantity.value += 1
+      } else if (waterQuantity.value >= 10 && waterQuantity.value < 50) {
+        waterQuantity.value += 2
+      } else if (waterQuantity.value >= 50 && waterQuantity.value < 100) {
+        waterQuantity.value += 5
+      } else if (waterQuantity.value >= 100 && waterQuantity.value <= 190) {
+        waterQuantity.value += 10
       }
+      triggerUpdate()
     }
 
     const decreaseWater = () => {
-      if (waterQuantity.value >= 0.5) {
-        waterQuantity.value -= 0.5
-        updateWater({ waterqty: waterQuantity.value })
+      if (waterQuantity.value >= 1 && waterQuantity.value <= 10) {
+        waterQuantity.value -= 1
+      } else if (waterQuantity.value > 10 && waterQuantity.value <= 50) {
+        waterQuantity.value -= 2
+      } else if (waterQuantity.value > 50 && waterQuantity.value <= 100) {
+        waterQuantity.value -= 5
+      } else if (waterQuantity.value > 100) {
+        waterQuantity.value -= 10
       }
+      triggerUpdate()
     }
 
     onBeforeMount(() => {
-      if (!token.value) {
+      if (!token.value && !adminToken.value) {
         console.error('Token not available. User may not be authenticated.')
         router.push({ path: '/login' })
+        return
+      } else if (adminToken.value) {
+        router.push({ path: '/admin' })
         return
       }
       getFood()
       getWater()
     })
     const cancel = () => {
-      const modalElement = document.querySelector('.modal') // or use refs.modal if you have ref="modal" on the root modal div
+      const modalElement = document.querySelector('.modal')
       if (modalElement) {
         const modalInstance = bootstrap.Modal.getInstance(modalElement)
         modalInstance.hide()
@@ -328,6 +348,7 @@ export default {
       waterQuantity,
       userid,
       token,
+      triggerUpdate,
       getFood,
       getWater,
       addFood,
@@ -353,7 +374,7 @@ export default {
     background-position-x: 100px;
   }
 }
-
+/* ID-Selectors for CSS styling */
 #water-bar {
   background-color: rgb(0, 64, 116);
   background-image: linear-gradient(

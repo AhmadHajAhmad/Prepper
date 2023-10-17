@@ -65,7 +65,6 @@ class HouseController {
         console.log("Detected PATCH");
         return this.updateHouseByID(req, res);
     } else {
-        // Return a default response or error if the header doesn't match expected values
         res.status(400).send("Invalid method override header");
     }
 }
@@ -95,7 +94,7 @@ async updateHouseByID(req, res){
     if (!house) {
         return res.status(404).send('Household not found');
     }
-    const updatedHouse = await HouseModel.findByIdAndUpdate(id, updateData, { new: true });  // { new: true }
+    const updatedHouse = await HouseModel.findByIdAndUpdate(id, updateData, { new: true });
     res.status(200).json(updatedHouse);
 } catch (error) {
     console.error(error);

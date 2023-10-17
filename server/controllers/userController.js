@@ -9,6 +9,7 @@ const SupplyController = require('../controllers/supplyController');
 class UserController {
 
     async createUser(req, res) {
+      
     
         try {
           const username = req.body.username;
@@ -19,6 +20,13 @@ class UserController {
             "password": password,
             "email": email,
           })
+
+          const existingUser = await UserModel.findOne({ username });
+          
+          if (existingUser) {
+            return res.status(500).send("User already exists");
+          } 
+
           await newUser.save();
 
           const waterController = new WaterController;
@@ -88,7 +96,7 @@ async updateByID(req, res){
     if (!user) {
         return res.status(404).send('User not found');
     }
-    const updatedUser = await UserModel.findByIdAndUpdate(id, updateData, { new: true });  // { new: true }
+    const updatedUser = await UserModel.findByIdAndUpdate(id, updateData, { new: true });
     res.status(200).json(updatedUser);
 } catch (error) {
     console.error(error);

@@ -1,13 +1,9 @@
-//const waterModel = require('../models/waterModel');
 const waterModel = require('../models/waterModel');
-
 class waterController {
 
-  
+
 // 2- All water by userid
 async getAllWaterByUser(req,res){
-
-  //await res.send(`getAllWaterByUser: ${req.params.userid}`);
   
   const userid = req.params.userid;
 
@@ -29,13 +25,8 @@ async getAllWaterByUser(req,res){
   
 }
 
-
-
-
 //3-Get water doc by waterid & userid
 async getByUserId(req, res) {
-  //await res.send(`getByUserId: ${req.params.userid}`);
-  
   const waterid = req.params.waterid;
   const userid = req.params.userid;
 
@@ -52,15 +43,8 @@ async getByUserId(req, res) {
   
 }
 
-
-
-
-
 //4- Create water
 async createWater(req, res) {
-
-  //await res.send(`createWater: ${req.params.userid}`);
-    
   try {
     const waterqty = req.body.waterqty;
     
@@ -95,14 +79,8 @@ async createInitialWater(userid) {
   
 }
 
-
-
-
 //5-Delete a water by waterid & UserId
 async deleteByUserId(req, res) {
-
-  //await res.send(`deleteByUserId: ${req.params.userid}`);
-  
   const waterid = req.params.waterid;
   const userid= req.params.userid;
 
@@ -120,28 +98,23 @@ async deleteByUserId(req, res) {
 }
 
 
-
-
-
 //6- Update a water doc by waterid & userid
 async updateByUserId(req, res) {
-  //await res.send(`updateByUserId: ${req.params.userid}`);
-  
   const waterid = req.params.waterid;
   const userid = req.params.userid;
   const updateData = req.body;
 
   try {
       const updatedWater = await waterModel.findOneAndUpdate(
-        { _id: waterid, _userid: userid },  // Filter by both user & water id
-        updateData,  // Data to update
-        { new: true }  // Option to return the new version of the document
+        { _id: waterid, _userid: userid },
+        updateData,
+        { new: true }
       );
 
       if (!updatedWater) {
         return res.status(404).send('Supply item not found');
       }
-      res.status(200).json(updatedWater); // Send the updated supply as a response
+      res.status(200).json(updatedWater);
   } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');

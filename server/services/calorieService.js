@@ -33,15 +33,12 @@ class CalorieService {
             for (let tempPerson of personList) {
                 totalDailyWaterNeed += tempPerson.weight * 0.03;
             }
-    
-            // Assume userWater.storedWater represents the total water stored in liters
-            // Calculate the number of days of water left based on the stored water and daily need
             const daysLeft = userWater.waterqty / totalDailyWaterNeed;
     
             return daysLeft;
     
         } catch (error) {
-            throw error; // Or handle the error appropriately
+            throw error;
         }
     }
 

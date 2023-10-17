@@ -21,14 +21,14 @@ class LoginController {
       let isAdmin;
       if (user.isAdmin) {
         token = jwt.sign({ userId: user._id }, adminSecretKey, {
-          expiresIn: "1h",
+          expiresIn: "10h",
         });
         isAdmin = "yes";
         res.setHeader("admintoken", token);
         res.setHeader("isadmin", isAdmin);
         res.setHeader("userid", user._id);
       } else {
-        token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: "1h" });
+        token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: "10h" });
         isAdmin = "no";
         res.setHeader("usertoken", token);
         res.setHeader("isadmin", isAdmin);

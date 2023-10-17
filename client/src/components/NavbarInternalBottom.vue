@@ -20,33 +20,64 @@
           <li class="nav-item">
             <router-link class="nav-link" @click="logOut" to="/login">Log out</router-link>
           </li>
+          <label class="theme-switch">
+          <input type="checkbox" @change="toggleTheme" :checked="isDarkTheme">
+          <span class="slider round"></span>
+        </label>
         </ul>
       </nav>
     </div>
   </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 export default {
   name: 'NavbarInternalBottom',
   setup() {
     const route = useRoute()
-    const currentRoute = ref(route.path) // Get the current path
+    const currentRoute = ref(route.path)
+    const currentTheme = ref(localStorage.getItem('theme') || 'light')
+    document.documentElement.setAttribute('data-theme', currentTheme.value)
 
-    // Watch for changes in the route and update the currentRoute ref
+    const isDarkTheme = ref(currentTheme.value === 'dark')
+
+    // Watch for changes in the route and update the currentRoute
     watch(() => route.path, (newPath) => {
       currentRoute.value = newPath
     })
     const logOut = () => {
       sessionStorage.removeItem('token')
-      sessionStorage.removeItem('userid')
+      sessionStorage.removeItem('userId')
     }
+
+    const toggleTheme = () => {
+      if (isDarkTheme.value) {
+        currentTheme.value = 'light'
+      } else {
+        currentTheme.value = 'dark'
+      }
+      localStorage.setItem('theme', currentTheme.value)
+
+      // Set the new theme
+      document.documentElement.setAttribute('data-theme', currentTheme.value)
+      isDarkTheme.value = !isDarkTheme.value
+    }
+
+    onMounted(() => {
+      const savedTheme = localStorage.getItem('theme') || 'light'
+      currentTheme.value = savedTheme
+      document.documentElement.setAttribute('data-theme', currentTheme.value)
+      isDarkTheme.value = savedTheme === 'dark'
+    })
 
     return {
       currentRoute,
-      logOut
+      currentTheme,
+      isDarkTheme,
+      logOut,
+      toggleTheme
     }
   }
 }

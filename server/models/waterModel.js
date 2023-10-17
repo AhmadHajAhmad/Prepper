@@ -31,6 +31,6 @@ waterSchema.set('toJSON', {
 });
 
 
-// Create and export the model
+
 module.exports = mongoose.model('Water', waterSchema);
 

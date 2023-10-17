@@ -3,9 +3,6 @@ const FoodModel = require('../models/foodModel');
 class FoodController {
 
     async createFood(req, res) {
-
-      // Create food method
-      console.log(req.params);
         try {
           const foodname = req.body.foodname;
           const calories = req.body.calories;
@@ -124,7 +121,7 @@ async updateByFoodID(req, res){
     if (!food) {
         return res.status(404).send('Food not found');
     }
-    const updatedFood = await FoodModel.findByIdAndUpdate(id, updateData, { new: true });  // { new: true }
+    const updatedFood = await FoodModel.findByIdAndUpdate(id, updateData, { new: true });
     res.status(200).json(updatedFood);
 } catch (error) {
     console.error(error);
@@ -140,15 +137,15 @@ async updateByUserID(req, res) {
 
   try {
       const updatedFood = await FoodModel.findOneAndUpdate(
-        { _id: foodid, _userid: userid },  // Filter by both foodid and userid
-        updateData,  // Data to update
-        { new: true }  // Option to return the new version of the document
+        { _id: foodid, _userid: userid },
+        updateData,
+        { new: true }
       );
 
       if (!updatedFood) {
         return res.status(404).send('Food not found');
       }
-      res.status(200).json(updatedFood); // Send the updated food as a response
+      res.status(200).json(updatedFood);
   } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');

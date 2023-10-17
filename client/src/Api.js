@@ -11,9 +11,7 @@ Api.interceptors.response.use(
     return response
   },
   (error) => {
-    if (error.response && error.response.status === 500) {
-      router.push({ path: '/offline' })
-    } else if (!error.response || error.code === 'ECONNABORTED' || error.code === 'ERR_NETWORK') {
+    if (!error.response || error.code === 'ECONNABORTED' || error.code === 'ERR_NETWORK') {
       console.log(error.code)
       if (router.currentRoute.path !== '/offline') {
         router.push({ path: '/offline' })

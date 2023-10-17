@@ -46,7 +46,7 @@ export default {
   name: 'NavbarInternal',
   setup() {
     const route = useRoute()
-    const currentRoute = ref(route.path) // Get the current path
+    const currentRoute = ref(route.path)
 
     // For theme toggle
     const currentTheme = ref(localStorage.getItem('theme') || 'light')
@@ -78,21 +78,19 @@ export default {
       } else {
         currentTheme.value = 'dark'
       }
-
-      // Save the preference to localStorage
       localStorage.setItem('theme', currentTheme.value)
 
       // Set the new theme
       document.documentElement.setAttribute('data-theme', currentTheme.value)
-      isDarkTheme.value = !isDarkTheme.value // Toggle the boolean value
+      isDarkTheme.value = !isDarkTheme.value
     }
 
     const logOut = () => {
       sessionStorage.removeItem('token')
-      sessionStorage.removeItem('userid')
+      sessionStorage.removeItem('userId')
     }
 
-    // Watch for changes in the route and update the currentRoute ref
+    // Watch for changes in the route and update the currentRoute
     watch(() => route.path, (newPath) => {
       currentRoute.value = newPath
     })
@@ -125,9 +123,9 @@ export default {
 
 <style scoped>
 .navbar-logo {
-    height: 50px;  /* adjust as per your requirement */
+    height: 50px;
     width: auto;
-    vertical-align: middle; /* to ensure it aligns well vertically */
+    vertical-align: middle;
     animation: flicker 1.5s infinite alternate;
 }
 

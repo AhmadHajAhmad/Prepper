@@ -12,9 +12,6 @@ function authenticateToken(req, res, next) {
     if (err) {
       return res.status(401).json({ message: "Unauthorized Error" });
     }
-
-    // Set the authenticated user in the request for further use
-    // req.user = user;
     next();
   });
 }

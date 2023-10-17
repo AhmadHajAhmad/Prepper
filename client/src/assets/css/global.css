@@ -49,16 +49,17 @@ body {
 }
 
 .main-container {
-  display: flex; /* Enables flexbox */
-  flex-direction: column; /* Children are stacked vertically */
-  align-items: center; /* Center children horizontally */
-  height: 100%; /* Take full height of parent or viewport */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
   flex-grow: 1;
   overflow: auto;
   overflow-x: hidden;
-  padding-bottom: 60px;
+  padding-bottom: 240px;
   box-sizing: border-box;
   background: var(--main-container-bg);
+  width: 100%;
 }
 
 .navbar {
@@ -154,13 +155,13 @@ body {
 }
 
 .item-detail {
-  display: block; /* makes each span stack */
-  margin-left: 0; /* ensures no margin on the left */
-  padding-left: 0; /* ensures no padding on the left */
+  display: block;
+  margin-left: 0;
+  padding-left: 0;
 }
 
 .item-info {
-  padding-left: 0; /* Remove padding from the containing div as well to ensure uniformity */
+  padding-left: 0;
   text-align: left;
 }
 
@@ -186,7 +187,7 @@ body {
   width: 60px;
   height: 30px;
   border-radius: 15px;
-  background-color: #808080; /* Medium gray */
+  background-color: #808080;
   transition: 0.3s;
 }
 
@@ -198,15 +199,15 @@ body {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background-color: #808080; /* Slightly yellow */
+  background-color: #808080;
   transition: 0.3s;
-  box-shadow: inset 12px -2px 0px 0px #ffd700; /* Gray shadow on the right side for crescent effect */
+  box-shadow: inset 12px -2px 0px 0px #ffd700;
 }
 
 .theme-switch input:checked + .slider::before {
   transform: translateX(32px);
-  background-color: #ffd700; /* Slightly yellow when checked */
-  box-shadow: none; /* Removing the shadow for a complete circle when checked */
+  background-color: #ffd700;
+  box-shadow: none;
 }
 
 /* Utilities for centering content */

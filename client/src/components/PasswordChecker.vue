@@ -20,7 +20,6 @@ export default {
   },
   methods: {
     passwordchecker(passwordText) {
-      console.log(passwordText)
       let strength = 0
       if (passwordText.length === 0) {
         this.progressBarWidth = '0%'

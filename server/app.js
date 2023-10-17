@@ -33,12 +33,10 @@ app.use(cookieParser());
 app.use(methodOverride("X-HTTP-Method-Override"));
 // HTTP request logger
 app.use(morgan("dev"));
-// Enable cross-origin resource sharing for frontend must be registered before api
-// app.options("*", cors());
 const corsOptions = {
-  origin: "http://localhost:8080", // Specify the allowed origin (your frontend URL)
+  origin: "http://localhost:8080",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true, // Allow credentials (cookies, headers, etc.)
+  credentials: true,
   exposedHeaders: ["usertoken", "admintoken", "isadmin", "userid"],
 };
 
@@ -81,8 +79,7 @@ app.use("/api/*", function (req, res) {
   res.status(404).json({ message: "Not Found" });
 });
 
-// Configuration for serving frontend in production mode
-// Support Vuejs HTML 5 history mode
+
 app.use(history());
 // Serve static assets
 var root = path.normalize(__dirname + "/..");
